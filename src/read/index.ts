@@ -1,7 +1,11 @@
 import NumberReader from './NumberReader.ts'
 
 /**
- * This is a helper that convert a number to a string like the way a real Vietnamese read it.
+ * This is a helper that convert a number to a string like the way a real Vietnamese. It comes with features:
+ *
+ * - Zero dependencies
+ * - Edge runtime built-in support
+ * - Unlimited value (use {@link string} for big number)
  *
  * @example
  * ```ts
