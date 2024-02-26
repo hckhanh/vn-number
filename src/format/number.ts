@@ -34,7 +34,7 @@ function formatNumber(
  * Formats a number as a Vietnamese formatted number.
  *
  * @param number The number to format.
- * @param {String} [fallbackValue='0'] - The fallback value to use if formatting fails.
+ * @param fallbackValue The fallback value to use if formatting fails. Default value is `0`
  * @return The formatted number or the `fallbackValue` if formatting fails.
  */
 export function formatVnNumber(
@@ -49,8 +49,8 @@ export function formatVnNumber(
  * Formats a value as Vietnamese Dong (VND) currency.
  *
  * @param money The value to format as VND currency.
- * @param {String} [fallbackValue='0'] - The fallback value to return if `money` is not a valid number.
- * @return The value formatted as VND currency, or the `fallbackValue` if `money` is not a valid number.
+ * @param fallbackValue The fallback value to return if {@link money} is not a valid number. Default value is `0 ₫`
+ * @return The value formatted as VND currency, or the {@link fallbackValue} if {@link money} is not a valid number.
  */
 export function formatVndCurrency(
   money: string | number | bigint | null | undefined,
