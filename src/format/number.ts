@@ -33,6 +33,14 @@ function formatNumber(
 /**
  * Formats a number as a Vietnamese formatted number.
  *
+ * @example
+ * ```ts
+ * import { formatVnNumber } from '@hckhanh/vn-number'
+ *
+ * formatVnNumber('19990000') // or formatVnNumber(19990000)
+ * // output: 19.990.000
+ * ```
+ *
  * @param number The number to format.
  * @param fallbackValue The fallback value to use if formatting fails. Default value is `0`
  * @return The formatted number or the `fallbackValue` if formatting fails.
@@ -47,6 +55,14 @@ export function formatVnNumber(
 
 /**
  * Formats a value as Vietnamese Dong (VND) currency.
+ *
+ * @example
+ * ```ts
+ * import { formatVnCurrency } from '@hckhanh/vn-number'
+ *
+ * formatVnCurrency('19990000') // or formatVnCurrency(19990000)
+ * // output: 19.990.000 ₫
+ * ```
  *
  * @param money The value to format as VND currency.
  * @param fallbackValue The fallback value to return if `money` is not a valid number. Default value is `0 ₫`
@@ -65,6 +81,14 @@ export function formatVnCurrency(
 
 /**
  * Formats a number or string representing value into a Vietnamese percentage format.
+ *
+ * @example
+ * ```ts
+ * import { formatVnPercent } from '@hckhanh/vn-number'
+ *
+ * formatVnPercent('0.99') // or formatVnPercent(0.99)
+ * // output: 99%
+ * ```
  *
  * @param value The value to format.
  * @param fallbackValue The fallback value to use if the `value` is invalid or not provided.
