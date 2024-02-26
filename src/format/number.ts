@@ -49,8 +49,8 @@ export function formatVnNumber(
  * Formats a value as Vietnamese Dong (VND) currency.
  *
  * @param money The value to format as VND currency.
- * @param fallbackValue The fallback value to return if {@link money} is not a valid number. Default value is `0 ₫`
- * @return The value formatted as VND currency, or the {@link fallbackValue} if {@link money} is not a valid number.
+ * @param fallbackValue The fallback value to return if `money` is not a valid number. Default value is `0 ₫`
+ * @return The value formatted as VND currency, or the `fallbackValue` if `money` is not a valid number.
  */
 export function formatVndCurrency(
   money: string | number | bigint | null | undefined,
