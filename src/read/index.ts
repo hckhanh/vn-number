@@ -12,7 +12,7 @@ import NumberReader from './NumberReader.ts'
  * // output: mười chín triệu chín trăm chín mươi nghìn
  * ```
  *
- * @param number The number to read. It can be string, number or bigint value
+ * @param number - The number to read. It can be string, number or bigint value
  * @return The Vietnamese number in string.
  */
 export function readVnNumber(number: string | number | bigint): string {
