@@ -4,7 +4,7 @@ A bunch of utility functions that work with number in Vietnamese language
 
 ## Features
 
-- [Zero dependencies](https://jsr.io/@hckhanh/vn-number/dependents)
+- [Zero dependencies](https://jsr.io/@hckhanh/vn-number/dependencies)
 - Edge runtime built-in support
 
 ## Functions
