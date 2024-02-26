@@ -31,8 +31,8 @@ yarn dlx jsr add @luca/flag
 - Unlimited number (use string for big number)
 
 ```ts
-import { readVietnameseNumber } from '@hckhanh/vn-number/read'
+import { readVnNumber } from '@hckhanh/vn-number/read'
 
-readVietnameseNumber('19990000') // or readNumber(19990000)
+readVnNumber('19990000') // or readNumber(19990000)
 // output: mười chín triệu chín trăm chín mươi nghìn
 ```

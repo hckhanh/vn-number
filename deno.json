@@ -2,6 +2,6 @@
   "name": "@hckhanh/vn-number",
   "version": "1.0.0",
   "exports": {
-    "./read": "./src/read"
+    "./read": "./src/read/mod.ts"
   }
 }
