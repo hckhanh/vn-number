@@ -13,7 +13,7 @@ export default class NumberReader {
    * @return a string of the number is read in Vietnamese
    */
   public static read(number: string | number | BigInt): string {
-    const s = typeof number !== 'string' ? number.toString() : number
+    const s = number.toString()
 
     const numberGroups = this.getGroupNumbers(s)
     const numbers = this.mapToNumbers(numberGroups)
