@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import NumberReader from '../../src/read/NumberReader'
+import NumberReader from '~/read/NumberReader'
 
 describe('NumberReader', function () {
   it('should throw error when read number: a.000', function () {

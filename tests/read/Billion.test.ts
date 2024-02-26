@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Billion from '../../src/read/Billion'
+import Billion from '~/read/Billion'
 
 describe('Billion', function () {
   it('should read first number: 2.000.000.000', function () {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { readVnNumber } from '../../src/read'
+import { readVnNumber } from '~/read'
 
 describe('index', function () {
   it('should read number 2.000.000.000 in string', function () {
