@@ -11,12 +11,13 @@ import NumberReader from './NumberReader.ts'
  * ```ts
  * import { readVnNumber } from '@hckhanh/vn-number'
  *
- * readVnNumber('19990000') // or readVnNumber(19990000) // output: mười chín triệu chín trăm chín mươi nghìn
+ * readVnNumber('19990000') // or readVnNumber(19990000)
+ * // output: mười chín triệu chín trăm chín mươi nghìn
  * ```
  *
  * @param number the number to read. It can be string or number type
  * @return the Vietnamese number in string.
  */
-export function readVnNumber(number: string | number): string {
+export function readVnNumber(number: string | number | BigInt): string {
   return NumberReader.read(number)
 }
