@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatVnd, formatVnNumber } from './number.ts'
+import { formatVnCurrency, formatVnNumber } from './number.ts'
 
 describe('formatVnNumber', () => {
   it('return formatted value in Vietnamese', () => {
@@ -31,32 +31,32 @@ describe('formatVnNumber', () => {
   })
 })
 
-describe('formatVnd', () => {
+describe('formatVnCurrency', () => {
   it('return formatted value in VND', () => {
-    expect(formatVnd(10000000)).to.match(/10\.000\.000\s₫/)
+    expect(formatVnCurrency(10000000)).to.match(/10\.000\.000\s₫/)
   })
 
   it('format invalid number by fallback value', () => {
-    expect(formatVnd('100,0,0.000')).to.eq('0 ₫')
+    expect(formatVnCurrency('100,0,0.000')).to.eq('0 ₫')
   })
 
   it('format null by fallback value', () => {
-    expect(formatVnd(null, 'Không giới hạn')).to.eq('Không giới hạn')
+    expect(formatVnCurrency(null, 'Không giới hạn')).to.eq('Không giới hạn')
   })
 
   it('format null string by fallback value', () => {
-    expect(formatVnd('null', 'Không giới hạn')).to.eq('Không giới hạn')
+    expect(formatVnCurrency('null', 'Không giới hạn')).to.eq('Không giới hạn')
   })
 
   it('format undefined by empty value', () => {
-    expect(formatVnd(undefined, '')).to.eq('')
+    expect(formatVnCurrency(undefined, '')).to.eq('')
   })
 
   it('format unknown string value by fallback value', () => {
-    expect(formatVnd('unknown')).to.eq('0 ₫')
+    expect(formatVnCurrency('unknown')).to.eq('0 ₫')
   })
 
   it('format NaN value by empty value', () => {
-    expect(formatVnd(NaN, '')).to.eq('')
+    expect(formatVnCurrency(NaN, '')).to.eq('')
   })
 })

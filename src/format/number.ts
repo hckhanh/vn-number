@@ -52,7 +52,7 @@ export function formatVnNumber(
  * @param fallbackValue The fallback value to return if `money` is not a valid number. Default value is `0 ₫`
  * @return The value formatted as VND currency, or the `fallbackValue` if `money` is not a valid number.
  */
-export function formatVnd(
+export function formatVnCurrency(
   money: string | number | bigint | null | undefined,
   fallbackValue: string = '0 ₫'
 ): string {
