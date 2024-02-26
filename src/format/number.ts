@@ -71,7 +71,7 @@ export function formatVnCurrency(
  *
  * @return The value formatted as a Vietnamese percentage, or the `fallbackValue` if `value` is not a valid number.
  */
-export function formatVnPercentage(
+export function formatVnPercent(
   value: string | number | bigint | null | undefined,
   fallbackValue: string = '0%'
 ): string {

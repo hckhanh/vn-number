@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  formatVnCurrency,
-  formatVnNumber,
-  formatVnPercentage
-} from './number.ts'
+import { formatVnCurrency, formatVnNumber, formatVnPercent } from './number.ts'
 
 describe('formatVnNumber', () => {
   it('return formatted value in Vietnamese', () => {
@@ -65,36 +61,36 @@ describe('formatVnCurrency', () => {
   })
 })
 
-describe('formatVnPercentage', () => {
+describe('formatVnPercent', () => {
   it('return formatted value 100% in Vietnamese', () => {
-    expect(formatVnPercentage(1)).to.eq('100%')
+    expect(formatVnPercent(1)).to.eq('100%')
   })
 
   it('return formatted value 10% in Vietnamese', () => {
-    expect(formatVnPercentage(0.1)).to.eq('10%')
+    expect(formatVnPercent(0.1)).to.eq('10%')
   })
 
   it('format invalid number by fallback value', () => {
-    expect(formatVnPercentage('100,0,0.000')).to.eq('0%')
+    expect(formatVnPercent('100,0,0.000')).to.eq('0%')
   })
 
   it('format null by fallback value', () => {
-    expect(formatVnPercentage(null, '')).to.eq('')
+    expect(formatVnPercent(null, '')).to.eq('')
   })
 
   it('format null string by fallback value', () => {
-    expect(formatVnPercentage('null', 'Không xác định')).to.eq('Không xác định')
+    expect(formatVnPercent('null', 'Không xác định')).to.eq('Không xác định')
   })
 
   it('format undefined by empty value', () => {
-    expect(formatVnPercentage(undefined, '')).to.eq('')
+    expect(formatVnPercent(undefined, '')).to.eq('')
   })
 
   it('format unknown string value by fallback value', () => {
-    expect(formatVnPercentage('unknown')).to.eq('0%')
+    expect(formatVnPercent('unknown')).to.eq('0%')
   })
 
   it('format NaN value by empty value', () => {
-    expect(formatVnPercentage(NaN, '')).to.eq('')
+    expect(formatVnPercent(NaN, '')).to.eq('')
   })
 })
