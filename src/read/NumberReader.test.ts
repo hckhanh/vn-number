@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import NumberReader from '~/read/NumberReader'
+import NumberReader from '~/read/NumberReader.ts'
 
 describe('NumberReader', function () {
   it('should throw error when read number: a.000', function () {
@@ -126,6 +126,11 @@ describe('NumberReader', function () {
 
   it('should read number: 1.000.000.000.000.000.000', function () {
     const number: string = '1000000000000000000'
+    expect(NumberReader.read(number)).to.equal('một tỷ tỷ')
+  })
+
+  it('should read BigInt number: 1.000.000.000.000.000.000', function () {
+    const number = BigInt('1000000000000000000')
     expect(NumberReader.read(number)).to.equal('một tỷ tỷ')
   })
 })

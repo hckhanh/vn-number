@@ -12,8 +12,8 @@ export default class NumberReader {
    * @param number the number to read
    * @return a string of the number is read in Vietnamese
    */
-  public static read(number: string | number): string {
-    const s = typeof number === 'number' ? number.toString() : number
+  public static read(number: string | number | BigInt): string {
+    const s = typeof number !== 'string' ? number.toString() : number
 
     const numberGroups = this.getGroupNumbers(s)
     const numbers = this.mapToNumbers(numberGroups)
