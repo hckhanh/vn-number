@@ -5,7 +5,7 @@ import NumberReader from './NumberReader.ts'
  *
  * - Zero dependencies
  * - Edge runtime built-in support
- * - Unlimited value (use {@link string} for big number)
+ * - Unlimited value (use {@link string} for number bigger than {@link BigInt})
  *
  * @example
  * ```ts
