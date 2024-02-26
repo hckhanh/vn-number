@@ -1,11 +1,8 @@
 import NumberReader from './NumberReader.ts'
 
 /**
- * This is a helper that convert a number to a string like the way a real Vietnamese. It comes with features:
- *
- * - Zero dependencies
- * - Edge runtime built-in support
- * - Unlimited value (use {@link string} for number bigger than {@link bigint})
+ * This is a helper that convert a number to a string like the way a real Vietnamese.
+ * It can be used with unlimited value (use {@link string} for number bigger than {@link bigint})
  *
  * @example
  * ```ts
@@ -15,8 +12,8 @@ import NumberReader from './NumberReader.ts'
  * // output: mười chín triệu chín trăm chín mươi nghìn
  * ```
  *
- * @param number the number to read. It can be string or number type
- * @return the Vietnamese number in string.
+ * @param number The number to read. It can be string, number or bigint value
+ * @return The Vietnamese number in string.
  */
 export function readVnNumber(number: string | number | bigint): string {
   return NumberReader.read(number)
