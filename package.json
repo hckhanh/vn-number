@@ -1,6 +1,7 @@
 {
   "name": "@hckhanh/vn-number",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
+  "type": "module",
   "sideEffects": false,
   "scripts": {
     "test": "vitest related src/**/*.ts",
