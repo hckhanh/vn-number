@@ -1,0 +1,44 @@
+{
+  "name": "@hckhanh/vn-number",
+  "description": "A bunch of utility functions that work with number in Vietnamese language",
+  "sideEffects": false,
+  "scripts": {
+    "test": "vitest related src/**/*.ts"
+  },
+  "author": {
+    "name": "Khánh Hoàng",
+    "email": "hi@khanh.sh",
+    "url": "https://khanh.sh"
+  },
+  "license": "MIT",
+  "keywords": [
+    "reader",
+    "read",
+    "number",
+    "vn",
+    "vietnam",
+    "vietnamese",
+    "vietnamese-language",
+    "vietnamese-currency",
+    "currency",
+    "vnd",
+    "vn-lang",
+    "lang",
+    "language",
+    "languages",
+    "language-processing",
+    "text-generation",
+    "helper",
+    "helpers",
+    "helpers-library",
+    "helper-tool",
+    "helper-methods",
+    "helper-class",
+    "helper-functions",
+    "helper-script"
+  ],
+  "devDependencies": {
+    "prettier": "3.2.5",
+    "vitest": "1.3.1"
+  }
+}

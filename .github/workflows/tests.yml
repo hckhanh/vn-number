@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Dependency cruiser check
+        run: pnpm test:deps
+      - name: Prettier check
+        run: pnpm test:prettier
+  test:
+    needs: lints
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20, 21]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - name: Set up Node.js ${{matrix.node}}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{matrix.node}}
+          cache: 'pnpm'
+      - name: Run unit tests
+        run: pnpm test
