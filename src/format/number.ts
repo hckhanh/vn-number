@@ -20,7 +20,7 @@ function formatNumber(
   } else if (typeof number === 'string') {
     try {
       return formatter
-        .format(BigInt(number))
+        .format(Number(number))
         .replace(invalidValue, fallbackValue)
     } catch {
       return fallbackValue
@@ -54,13 +54,13 @@ export function formatVnNumber(
  */
 export function formatVnCurrency(
   money: string | number | bigint | null | undefined,
-  fallbackValue: string = '0 ₫'
+  fallbackValue: string = '0 ₫'
 ): string {
   const formatter = new Intl.NumberFormat('vi-VN', {
     currency: 'VND',
     style: 'currency'
   })
-  return formatNumber(money, formatter, 'NaN ₫', fallbackValue)
+  return formatNumber(money, formatter, 'NaN ₫', fallbackValue)
 }
 
 /**

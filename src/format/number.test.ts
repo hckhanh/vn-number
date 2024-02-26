@@ -37,7 +37,7 @@ describe('formatVnCurrency', () => {
   })
 
   it('format invalid number by fallback value', () => {
-    expect(formatVnCurrency('100,0,0.000')).to.eq('0 ₫')
+    expect(formatVnCurrency('100,0,0.000')).to.eq('0 ₫')
   })
 
   it('format null by fallback value', () => {
@@ -53,7 +53,7 @@ describe('formatVnCurrency', () => {
   })
 
   it('format unknown string value by fallback value', () => {
-    expect(formatVnCurrency('unknown')).to.eq('0 ₫')
+    expect(formatVnCurrency('unknown')).to.eq('0 ₫')
   })
 
   it('format NaN value by empty value', () => {
@@ -64,6 +64,9 @@ describe('formatVnCurrency', () => {
 describe('formatVnPercent', () => {
   it('return formatted value 100% in Vietnamese', () => {
     expect(formatVnPercent(1)).to.eq('100%')
+  })
+  it('return formatted value 99% in Vietnamese', () => {
+    expect(formatVnPercent('0.99')).to.eq('99%')
   })
 
   it('return formatted value 10% in Vietnamese', () => {
