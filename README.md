@@ -9,4 +9,6 @@ A bunch of utility functions that work with number in Vietnamese language
 
 ## Functions
 
-- Read Vietnamese Number
+- Read Vietnamese Number (một triệu hai trăm năm mươi nghìn)
+- Format number in Vietnamese format (1.250.000)
+- Format currency in Vietnamese format (1.250.000 ₫)
