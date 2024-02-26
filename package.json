@@ -3,7 +3,8 @@
   "description": "A bunch of utility functions that work with number in Vietnamese language",
   "sideEffects": false,
   "scripts": {
-    "test": "vitest related src/**/*.ts"
+    "test": "vitest related src/**/*.ts",
+    "test:prettier": "prettier --check ."
   },
   "author": {
     "name": "Khánh Hoàng",
