@@ -34,12 +34,12 @@ function formatNumber(
  * Formats a number as a Vietnamese formatted number.
  *
  * @param number The number to format.
- * @param fallbackValue The fallback value to use if formatting fails.
+ * @param [fallbackValue='0'] - The fallback value to use if formatting fails.
  * @return The formatted number or the `fallbackValue` if formatting fails.
  */
 export function formatVnNumber(
   number: string | number | bigint | null | undefined,
-  fallbackValue = '0'
+  fallbackValue: string = '0'
 ): string {
   const formatter = new Intl.NumberFormat('vi-VN')
   return formatNumber(number, formatter, 'NaN', fallbackValue)
@@ -49,7 +49,7 @@ export function formatVnNumber(
  * Formats a value as Vietnamese Dong (VND) currency.
  *
  * @param money The value to format as VND currency.
- * @param fallbackValue The fallback value to return if `money` is not a valid number.
+ * @param [fallbackValue='0'] - The fallback value to return if `money` is not a valid number.
  * @return The value formatted as VND currency, or the `fallbackValue` if `money` is not a valid number.
  */
 export function formatVndCurrency(
