@@ -12,7 +12,7 @@ export default class NumberReader {
    * @param number the number to read
    * @return a string of the number is read in Vietnamese
    */
-  public static read(number: string | number | BigInt): string {
+  public static read(number: string | number | bigint): string {
     const s = number.toString()
 
     const numberGroups = this.getGroupNumbers(s)

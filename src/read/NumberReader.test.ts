@@ -129,7 +129,7 @@ describe('NumberReader', function () {
     expect(NumberReader.read(number)).to.equal('một tỷ tỷ')
   })
 
-  it('should read BigInt number: 1.000.000.000.000.000.000', function () {
+  it('should read bigint number: 1.000.000.000.000.000.000', function () {
     const number = BigInt('1000000000000000000')
     expect(NumberReader.read(number)).to.equal('một tỷ tỷ')
   })

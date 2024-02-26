@@ -5,7 +5,7 @@ import NumberReader from './NumberReader.ts'
  *
  * - Zero dependencies
  * - Edge runtime built-in support
- * - Unlimited value (use {@link string} for number bigger than {@link BigInt})
+ * - Unlimited value (use {@link string} for number bigger than {@link bigint})
  *
  * @example
  * ```ts
@@ -18,6 +18,6 @@ import NumberReader from './NumberReader.ts'
  * @param number the number to read. It can be string or number type
  * @return the Vietnamese number in string.
  */
-export function readVnNumber(number: string | number | BigInt): string {
+export function readVnNumber(number: string | number | bigint): string {
   return NumberReader.read(number)
 }
