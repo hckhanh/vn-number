@@ -1,6 +1,10 @@
 /**
  * This is a helper that convert a number to a string like the way a real Vietnamese read it.
  *
+ * - Zero dependencies
+ * - Support edge runtimes
+ * - Unlimited number (use string for big number)
+ *
  * @example
  * ```ts
  * import { readVnNumber } from '@hckhanh/vn-number/read'
