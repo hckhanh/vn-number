@@ -1,15 +1,17 @@
 {
   "name": "@hckhanh/vn-number",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "exports": "./src/index.ts",
   "exclude": [
     ".github/",
     "tests/",
     ".git*",
+    ".prettier*",
     ".*ignore",
     "*.yml",
     "*.yaml",
     "*.config.ts",
-    "*.json"
+    "*.json",
+    "!deno.json"
   ]
 }
