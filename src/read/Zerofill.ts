@@ -1,4 +1,4 @@
-import Numbers from './Numbers'
+import Numbers from './Numbers.ts'
 
 /**
  * A group three numbers, this component will deal with three zero numbers

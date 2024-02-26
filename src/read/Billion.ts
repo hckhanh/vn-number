@@ -1,4 +1,4 @@
-import Numbers from './Numbers'
+import Numbers from './Numbers.ts'
 
 /**
  * A group three numbers, a component in a billion position of the input number

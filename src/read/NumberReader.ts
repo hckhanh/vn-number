@@ -1,7 +1,7 @@
-import Billion from './Billion'
-import Million from './Million'
-import Numbers from './Numbers'
-import Thousand from './Thousand'
+import Billion from './Billion.ts'
+import Million from './Million.ts'
+import Numbers from './Numbers.ts'
+import Thousand from './Thousand.ts'
 
 /**
  * A number reader in Vietnamese language helper

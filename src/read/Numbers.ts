@@ -1,4 +1,4 @@
-import { getNumberFromMap } from './Utils'
+import { getNumberFromMap } from './Utils.ts'
 
 /**
  * A group of three numbers, a component in the input number to read

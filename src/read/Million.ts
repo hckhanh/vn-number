@@ -1,4 +1,4 @@
-import Zerofill from './Zerofill'
+import Zerofill from './Zerofill.ts'
 
 /**
  * A group three numbers, a component in a million position of the input number

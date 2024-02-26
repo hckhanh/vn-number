@@ -12,4 +12,4 @@
  *
  * @module
  */
-export * from './index'
+export * from './index.ts'

@@ -1,10 +1,23 @@
-import NumberReader from './NumberReader'
+import NumberReader from './NumberReader.ts'
 
 /**
- * read the number function
+ * This is a helper that convert a number to a string like the way a real Vietnamese read it.
+ *
+ * This is a helper that convert a number to a string like the way a real Vietnamese read it.
+ *
+ * @example
+ * ```ts
+ * import { readVnNumber } from '@hckhanh/vn-number/read'
+ * // import { readVnNumber } from 'jsr:@hckhanh/vn-number/read' // (for deno)
+ *
+ * readVnNumber('19990000') // or readVnNumber(19990000)
+ * // output: mười chín triệu chín trăm chín mươi nghìn
+ * ```
  *
  * @param number the number to read. It can be string or number type
  * @return the Vietnamese number in string.
+ *
+ * @module
  */
 export function readVnNumber(number: string | number): string {
   return NumberReader.read(number)
