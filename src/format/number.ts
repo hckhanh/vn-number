@@ -62,3 +62,23 @@ export function formatVnCurrency(
   })
   return formatNumber(money, formatter, 'NaN ₫', fallbackValue)
 }
+
+/**
+ * Formats a number or string representing value into a Vietnamese percentage format.
+ *
+ * @param value The value to format.
+ * @param fallbackValue The fallback value to use if the `value` is invalid or not provided.
+ *
+ * @return The value formatted as a Vietnamese percentage, or the `fallbackValue` if `value` is not a valid number.
+ */
+export function formatVnPercentage(
+  value: string | number | bigint | null | undefined,
+  fallbackValue: string = '0%'
+): string {
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'percent',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0
+  })
+  return formatNumber(value, formatter, 'NaN%', fallbackValue)
+}
