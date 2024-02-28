@@ -45,5 +45,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           jq --arg version "$VERSION" '.version = $version' deno.json > deno.json.tmp
           mv deno.json.tmp deno.json
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Publish package to JSR
+        if: env.VERSION != '0.0.0-development'
         run: deno publish

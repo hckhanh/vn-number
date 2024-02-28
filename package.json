@@ -42,8 +42,10 @@
     "helper-script"
   ],
   "devDependencies": {
+    "@edge-runtime/vm": "3.2.0",
+    "happy-dom": "13.6.2",
+    "jsdom": "24.0.0",
     "prettier": "3.2.5",
-    "vite-tsconfig-paths": "4.3.1",
     "vitest": "1.3.1"
   }
 }

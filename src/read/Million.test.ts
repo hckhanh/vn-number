@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Million from '~/read/Million.ts'
+import Million from './Million.ts'
 
 describe('Million', function () {
   it('should read first number: 10.100.000', function () {

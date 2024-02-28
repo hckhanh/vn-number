@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Numbers from '~/read/Numbers.ts'
+import Numbers from './Numbers.ts'
 
 describe('Numbers', function () {
   it('should read number: 5', function () {

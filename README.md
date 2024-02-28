@@ -5,7 +5,7 @@ A bunch of utility functions that work with number in Vietnamese language
 ## Features
 
 - [Zero dependency](https://jsr.io/@hckhanh/vn-number/dependencies)
-- Edge runtime built-in support
+- Edge runtime built-in support [![Publish](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml/badge.svg)](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml)
 
 ## Functions
 
