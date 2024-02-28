@@ -15,11 +15,21 @@ const NumberMap: { [key: string]: string } = {
 }
 
 /**
- * This is error exception type of {@link NumberReader }
+ * Used when logic return wrong number from {@link NumberReader }
  */
 export class NotNumberError extends Error {
-  constructor(wrongNumber?: string) {
+  constructor(wrongNumber: string) {
     super(`Invalid number: ${JSON.stringify(wrongNumber)}`)
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}
+
+/**
+ * Used when logic return wrong number type from {@link NumberReader }
+ */
+export class InvalidNumberTypeError extends Error {
+  constructor(wrongType: number) {
+    super(`Invalid number type: ${JSON.stringify(wrongType)}`)
     Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
   }
 }

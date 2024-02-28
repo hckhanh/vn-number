@@ -1,7 +1,15 @@
-import Billion from './Billion.ts'
-import Million from './Million.ts'
-import Numbers from './Numbers.ts'
-import Thousand from './Thousand.ts'
+import Numbers from '~/read/Numbers.ts'
+import Billion from '~/read/Billion.ts'
+import Thousand from '~/read/Thousand.ts'
+import Million from '~/read/Million.ts'
+import { InvalidNumberTypeError } from '~/read/Utils.ts'
+
+enum NumberType {
+  Numbers,
+  Thousand,
+  Million,
+  Billion
+}
 
 /**
  * A number reader in Vietnamese language helper
@@ -9,6 +17,7 @@ import Thousand from './Thousand.ts'
 export default class NumberReader {
   /**
    * Read a number in Vietnamese language
+   *
    * @param number the number to read
    * @return a string of the number is read in Vietnamese
    */
@@ -22,21 +31,23 @@ export default class NumberReader {
 
   /**
    * Convert all {@link Numbers} objects to a string
+   *
    * @param numbers an array of {@link Numbers} objects
    * @return a {@link string} of the number is read in Vietnamese
    */
   private static readNumbers(numbers: Numbers[]): string {
     return numbers
-      .reduce(function (result, group: Numbers, index: number) {
+      .reduce((result, group: Numbers, index: number) => {
         const beforeBillion =
           index + 1 < numbers.length && numbers[index + 1] instanceof Billion
-        return result.trim() + ' ' + group.read(index === 0, beforeBillion)
+        return `${result.trim()} ${group.read(index === 0, beforeBillion)}`
       }, '')
       .trim()
   }
 
   /**
-   * Map all group numbers in {@link string} to {@link Numbers} objects
+   * Map all group numbers in {@link string} to {@link Numbers} objects in reverse order
+   *
    * @param numberGroups group of numbers in string
    * @return an array of {@link Numbers}
    */
@@ -47,48 +58,39 @@ export default class NumberReader {
       numbers.unshift(this.getNumber(numberGroups[i], currentType++))
       currentType = currentType === 4 ? 1 : currentType
     }
+
     return numbers
   }
 
   /**
-   * Generate a group of numbers from a string of number
+   * Generate a group of numbers from the end of a string
+   *
    * @param s input string of number
    */
   private static getGroupNumbers(s: string): string[] {
-    const numberGroups: string[] = []
-    const nGroup = Math.floor(s.length / 3)
+    return s.match(/.{1,3}(?=(.{3})*$)/g) || []
+  }
 
-    for (let i = 0; i < nGroup; i++) {
-      numberGroups.unshift(s.substr(s.length - 3 - i * 3, 3))
-    }
-
-    if (s.length % 3 !== 0) {
-      numberGroups.unshift(s.substr(0, s.length % 3))
-    }
-    return numberGroups
+  private static readonly NumberClasses = {
+    [NumberType.Numbers]: Numbers,
+    [NumberType.Thousand]: Thousand,
+    [NumberType.Million]: Million,
+    [NumberType.Billion]: Billion
   }
 
   /**
    * Map a number in string to a {@link Numbers} object
-   * @param s input string to map
-   * @param type type number of the {@link Numbers} object
+   *
+   * @param s Input string to map
+   * @param type Type number of the {@link Numbers} object
    */
-  private static getNumber(s: string, type: number): Numbers {
-    let number!: Numbers
-    switch (type) {
-      case 0:
-        number = new Numbers(s)
-        break
-      case 1:
-        number = new Thousand(s)
-        break
-      case 2:
-        number = new Million(s)
-        break
-      case 3:
-        number = new Billion(s)
-        break
+  private static getNumber(s: string, type: NumberType): Numbers {
+    const NumberClass = this.NumberClasses[type]
+
+    if (NumberClass) {
+      return new NumberClass(s)
     }
-    return number
+
+    throw new InvalidNumberTypeError(type)
   }
 }
