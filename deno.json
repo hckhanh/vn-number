@@ -11,6 +11,7 @@
     "*.yml",
     "*.yaml",
     "*.config.ts",
+    ".*rc.json",
     "renovate.json",
     "tsconfig.json"
   ]
