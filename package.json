@@ -1,7 +1,9 @@
 {
   "name": "@hckhanh/vn-number",
+  "version": "0.0.0-development",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
   "type": "module",
+  "private": true,
   "sideEffects": false,
   "scripts": {
     "test": "vitest related src/**/*.ts",

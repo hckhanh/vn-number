@@ -1,8 +1,8 @@
-import Numbers from '~/read/Numbers.ts'
-import Billion from '~/read/Billion.ts'
-import Thousand from '~/read/Thousand.ts'
-import Million from '~/read/Million.ts'
-import { InvalidNumberTypeError } from '~/read/Utils.ts'
+import Numbers from './Numbers.ts'
+import Thousand from './Thousand.ts'
+import Million from './Million.ts'
+import Billion from './Billion.ts'
+import { InvalidNumberTypeError } from './Utils.ts'
 
 enum NumberType {
   Numbers,
@@ -15,6 +15,13 @@ enum NumberType {
  * A number reader in Vietnamese language helper
  */
 export default class NumberReader {
+  private static readonly NumberClasses = {
+    [NumberType.Numbers]: Numbers,
+    [NumberType.Thousand]: Thousand,
+    [NumberType.Million]: Million,
+    [NumberType.Billion]: Billion
+  }
+
   /**
    * Read a number in Vietnamese language
    *
@@ -69,13 +76,6 @@ export default class NumberReader {
    */
   private static getGroupNumbers(s: string): string[] {
     return s.match(/.{1,3}(?=(.{3})*$)/g) || []
-  }
-
-  private static readonly NumberClasses = {
-    [NumberType.Numbers]: Numbers,
-    [NumberType.Thousand]: Thousand,
-    [NumberType.Million]: Million,
-    [NumberType.Billion]: Billion
   }
 
   /**

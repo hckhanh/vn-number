@@ -1,6 +1,6 @@
 {
   "name": "@hckhanh/vn-number",
-  "version": "1.6.0",
+  "version": "0.0.0-development",
   "exports": "./src/index.ts",
   "exclude": [
     ".github/",

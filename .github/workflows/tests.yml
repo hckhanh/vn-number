@@ -18,13 +18,18 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
+          node-version: 'lts/*'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
       - name: Prettier check
         run: pnpm test:prettier
-  test:
-    name: Unit tests
+      - name: Checks for known security issues with the installed packages
+        run: pnpm audit
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: pnpm npm audit signatures
+  node:
+    name: Node
     needs: lints
     runs-on: ubuntu-latest
     strategy:
@@ -45,3 +50,13 @@ jobs:
         run: pnpm install
       - name: Run unit tests
         run: pnpm test
+  deno:
+    name: Deno
+    needs: lints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Deno
+        uses: denoland/setup-deno@v1
+      - name: Type-check the dependencies
+        run: deno check src/index.ts

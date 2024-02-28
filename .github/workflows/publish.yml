@@ -1,4 +1,5 @@
 name: Publish
+
 on:
   push:
     branches:
@@ -9,16 +10,40 @@ jobs:
     name: Test
     uses: ./.github/workflows/tests.yml
     secrets: inherit
-  publish:
-    name: Publish
-    runs-on: ubuntu-latest
+  release:
+    name: Release
     needs: test
+    runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      issues: write
+      pull-requests: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Install Deno
         uses: denoland/setup-deno@v1
-      - name: Publish package
+      - name: Install jq
+        uses: dcarbone/install-jq-action@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+      - name: Release on GitHub
+        run: pnpm --package conventional-changelog-conventionalcommits --package semantic-release dlx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update version in deno.json
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          jq --arg version "$VERSION" '.version = $version' deno.json > deno.json.tmp
+          mv deno.json.tmp deno.json
+      - name: Publish package to JSR
         run: deno publish
