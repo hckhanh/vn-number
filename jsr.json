@@ -12,6 +12,7 @@
     "*.yaml",
     "*.config.ts",
     ".*rc.json",
+    "package.json",
     "renovate.json",
     "tsconfig.json"
   ]

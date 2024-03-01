@@ -10,6 +10,9 @@ jobs:
   lints:
     name: Lints
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
@@ -28,6 +31,8 @@ jobs:
         run: pnpm audit
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: pnpm npm audit signatures
+      - name: Verify the package for publishing performing all checks and validations
+        run: pnpm dlx jsr publish --dry-run
   node:
     name: Node
     needs: lints
