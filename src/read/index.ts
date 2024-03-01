@@ -6,8 +6,6 @@ import NumberReader from './NumberReader.ts'
  *
  * @example
  * ```ts
- * import { readVnNumber } from '@hckhanh/vn-number'
- *
  * readVnNumber('19990000') // or readVnNumber(19990000)
  * // output: mười chín triệu chín trăm chín mươi nghìn
  * ```

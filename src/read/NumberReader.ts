@@ -4,10 +4,25 @@ import Million from './Million.ts'
 import Billion from './Billion.ts'
 import { InvalidNumberTypeError } from './Utils.ts'
 
+/**
+ * Type of number
+ */
 enum NumberType {
+  /**
+   * Number of the first group (100.000.000.xxx)
+   */
   Numbers,
+  /**
+   * Number in the thousand group (100.000.xxx.000)
+   */
   Thousand,
+  /**
+   * Number in the million group (100.xxx.000.000)
+   */
   Million,
+  /**
+   * Number in the billion group (xxx.000.000.000)
+   */
   Billion
 }
 

@@ -35,8 +35,6 @@ function formatNumber(
  *
  * @example
  * ```ts
- * import { formatVnNumber } from '@hckhanh/vn-number'
- *
  * formatVnNumber('19990000') // or formatVnNumber(19990000)
  * // output: 19.990.000
  * ```
@@ -58,8 +56,6 @@ export function formatVnNumber(
  *
  * @example
  * ```ts
- * import { formatVnCurrency } from '@hckhanh/vn-number'
- *
  * formatVnCurrency('19990000') // or formatVnCurrency(19990000)
  * // output: 19.990.000 ₫
  * ```
@@ -84,8 +80,6 @@ export function formatVnCurrency(
  *
  * @example
  * ```ts
- * import { formatVnPercent } from '@hckhanh/vn-number'
- *
  * formatVnPercent('0.99') // or formatVnPercent(0.99)
  * // output: 99%
  * ```
