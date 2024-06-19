@@ -52,10 +52,13 @@ jobs:
         run: pnpm install
       - name: Run unit tests
         run: pnpm test -- --environment=node
-  edge:
-    name: Edge Runtime
+  test:
+    name: Test
     needs: lints
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [edge-runtime, jsdom, happy-dom]
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
@@ -70,45 +73,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Run unit tests
-        run: pnpm test -- --environment=edge-runtime
-  jsdom:
-    name: jsdom
-    needs: lints
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
-      - name: Run unit tests
-        run: pnpm test -- --environment=jsdom
-  happy-dom:
-    name: Happy DOM
-    needs: lints
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
-      - name: Run unit tests
-        run: pnpm test -- --environment=happy-dom
+        run: pnpm test -- --environment=${{ matrix.environment }}
   deno:
     name: Deno
     needs: lints
