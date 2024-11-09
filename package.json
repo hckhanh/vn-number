@@ -42,7 +42,7 @@
     "helper-script"
   ],
   "devDependencies": {
-    "@edge-runtime/vm": "3.2.0",
+    "@edge-runtime/vm": "4.0.4",
     "happy-dom": "13.10.1",
     "jsdom": "24.1.1",
     "prettier": "3.3.3",

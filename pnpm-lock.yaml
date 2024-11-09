@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@edge-runtime/vm':
-        specifier: 3.2.0
-        version: 3.2.0
+        specifier: 4.0.4
+        version: 4.0.4
       happy-dom:
         specifier: 13.10.1
         version: 13.10.1
@@ -22,16 +22,16 @@ importers:
         version: 3.3.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@13.10.1)(jsdom@24.1.1)
+        version: 1.6.0(@edge-runtime/vm@4.0.4)(happy-dom@13.10.1)(jsdom@24.1.1)
 
 packages:
 
-  '@edge-runtime/primitives@4.1.0':
-    resolution: {integrity: sha512-Vw0lbJ2lvRUqc7/soqygUX216Xb8T3WBZ987oywz6aJqRxcwSVWwr9e+Nqo2m9bxobA9mdbWNNoRY6S9eko1EQ==}
+  '@edge-runtime/primitives@5.1.1':
+    resolution: {integrity: sha512-osrHE4ObQ3XFkvd1sGBLkheV2mcHUqJI/Bum2AWA0R3U78h9lif3xZAdl6eLD/XnW4xhsdwjPUejLusXbjvI4Q==}
     engines: {node: '>=16'}
 
-  '@edge-runtime/vm@3.2.0':
-    resolution: {integrity: sha512-0dEVyRLM/lG4gp1R/Ik5bfPl/1wX00xFwd5KcNH602tzBa09oF7pbTKETEhR1GjZ75K6OJnYFu8II2dyMhONMw==}
+  '@edge-runtime/vm@4.0.4':
+    resolution: {integrity: sha512-LqPw+yaSPpCNnVZl5XoHQAySEzlnZiC9gReUuQHMh9GI03KKqwpVqWkIK1UfK116Yww7f2WZuAgnY/nhHwTsJA==}
     engines: {node: '>=16'}
 
   '@esbuild/aix-ppc64@0.20.2':
@@ -737,11 +737,11 @@ packages:
 
 snapshots:
 
-  '@edge-runtime/primitives@4.1.0': {}
+  '@edge-runtime/primitives@5.1.1': {}
 
-  '@edge-runtime/vm@3.2.0':
+  '@edge-runtime/vm@4.0.4':
     dependencies:
-      '@edge-runtime/primitives': 4.1.0
+      '@edge-runtime/primitives': 5.1.1
 
   '@esbuild/aix-ppc64@0.20.2':
     optional: true
@@ -1286,7 +1286,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitest@1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@13.10.1)(jsdom@24.1.1):
+  vitest@1.6.0(@edge-runtime/vm@4.0.4)(happy-dom@13.10.1)(jsdom@24.1.1):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -1309,7 +1309,7 @@ snapshots:
       vite-node: 1.6.0
       why-is-node-running: 2.2.2
     optionalDependencies:
-      '@edge-runtime/vm': 3.2.0
+      '@edge-runtime/vm': 4.0.4
       happy-dom: 13.10.1
       jsdom: 24.1.1
     transitivePeerDependencies:
