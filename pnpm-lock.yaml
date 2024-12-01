@@ -12,8 +12,8 @@ importers:
         specifier: 3.2.0
         version: 3.2.0
       happy-dom:
-        specifier: 13.10.1
-        version: 13.10.1
+        specifier: 15.11.7
+        version: 15.11.7
       jsdom:
         specifier: 24.1.1
         version: 24.1.1
@@ -22,7 +22,7 @@ importers:
         version: 3.3.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@13.10.1)(jsdom@24.1.1)
+        version: 1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@15.11.7)(jsdom@24.1.1)
 
 packages:
 
@@ -381,9 +381,9 @@ packages:
     resolution: {integrity: sha512-VaUJspBffn/LMCJVoMvSAdmscJyS1auj5Zulnn5UoYcY531UWmdwhRWkcGKnGU93m5HSXP9LP2usOryrBtQowA==}
     engines: {node: '>=16'}
 
-  happy-dom@13.10.1:
-    resolution: {integrity: sha512-9GZLEFvQL5EgfJX2zcBgu1nsPUn98JF/EiJnSfQbdxI6YEQGqpd09lXXxOmYonRBIEFz9JlGCOiPflDzgS1p8w==}
-    engines: {node: '>=16.0.0'}
+  happy-dom@15.11.7:
+    resolution: {integrity: sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==}
+    engines: {node: '>=18.0.0'}
 
   html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
@@ -1018,7 +1018,7 @@ snapshots:
 
   get-stream@8.0.1: {}
 
-  happy-dom@13.10.1:
+  happy-dom@15.11.7:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -1286,7 +1286,7 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitest@1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@13.10.1)(jsdom@24.1.1):
+  vitest@1.6.0(@edge-runtime/vm@3.2.0)(happy-dom@15.11.7)(jsdom@24.1.1):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -1310,7 +1310,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@edge-runtime/vm': 3.2.0
-      happy-dom: 13.10.1
+      happy-dom: 15.11.7
       jsdom: 24.1.1
     transitivePeerDependencies:
       - less
