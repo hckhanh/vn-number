@@ -11,7 +11,7 @@ jobs:
     name: Lints
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -38,7 +38,7 @@ jobs:
       matrix:
         node: [18, 20, 21]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -60,7 +60,7 @@ jobs:
       matrix:
         environment: [edge-runtime, jsdom, happy-dom]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -79,7 +79,7 @@ jobs:
     needs: lints
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Deno
         uses: denoland/setup-deno@v1
       - name: Type-check the dependencies
