@@ -11,7 +11,7 @@ const NumberMap: { [key: string]: string } = {
   '6': 'sáu',
   '7': 'bảy',
   '8': 'tám',
-  '9': 'chín'
+  '9': 'chín',
 }
 
 /**
@@ -40,7 +40,7 @@ export class InvalidNumberTypeError extends Error {
  * @return string the number in string
  */
 export function getNumberFromMap(number: string[1]): string {
-  if (Object.prototype.hasOwnProperty.call(NumberMap, number)) {
+  if (Object.hasOwn(NumberMap, number)) {
     return NumberMap[number]
   } else {
     throw new NotNumberError(number)

@@ -1,7 +1,7 @@
+import Billion from './Billion.ts'
+import Million from './Million.ts'
 import Numbers from './Numbers.ts'
 import Thousand from './Thousand.ts'
-import Million from './Million.ts'
-import Billion from './Billion.ts'
 import { InvalidNumberTypeError } from './Utils.ts'
 
 /**
@@ -23,7 +23,7 @@ enum NumberType {
   /**
    * Number in the billion group (xxx.000.000.000)
    */
-  Billion
+  Billion,
 }
 
 /**
@@ -34,7 +34,7 @@ export default class NumberReader {
     [NumberType.Numbers]: Numbers,
     [NumberType.Thousand]: Thousand,
     [NumberType.Million]: Million,
-    [NumberType.Billion]: Billion
+    [NumberType.Billion]: Billion,
   }
 
   /**
@@ -46,9 +46,9 @@ export default class NumberReader {
   public static read(number: string | number | bigint): string {
     const s = number.toString()
 
-    const numberGroups = this.getGroupNumbers(s)
-    const numbers = this.mapToNumbers(numberGroups)
-    return this.readNumbers(numbers)
+    const numberGroups = NumberReader.getGroupNumbers(s)
+    const numbers = NumberReader.mapToNumbers(numberGroups)
+    return NumberReader.readNumbers(numbers)
   }
 
   /**
@@ -77,7 +77,7 @@ export default class NumberReader {
     const numbers: Numbers[] = []
 
     for (let i = numberGroups.length - 1, currentType = 0; i >= 0; i--) {
-      numbers.unshift(this.getNumber(numberGroups[i], currentType++))
+      numbers.unshift(NumberReader.getNumber(numberGroups[i], currentType++))
       currentType = currentType === 4 ? 1 : currentType
     }
 
@@ -100,7 +100,7 @@ export default class NumberReader {
    * @param type Type number of the {@link Numbers} object
    */
   private static getNumber(s: string, type: NumberType): Numbers {
-    const NumberClass = this.NumberClasses[type]
+    const NumberClass = NumberReader.NumberClasses[type]
 
     if (NumberClass) {
       return new NumberClass(s)

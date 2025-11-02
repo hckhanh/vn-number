@@ -32,7 +32,7 @@ export default class Numbers {
   private static suffixFirstAndBeforeBillion(
     s: string,
     firstNumber?: boolean,
-    beforeBillion?: boolean
+    beforeBillion?: boolean,
   ): string {
     if (firstNumber && beforeBillion) {
       s += ' nghìn'

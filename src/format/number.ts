@@ -10,7 +10,7 @@ function formatNumber(
   number: string | number | bigint | null | undefined,
   formatter: Intl.NumberFormat,
   invalidValue: string,
-  fallbackValue: string
+  fallbackValue: string,
 ) {
   if (
     (typeof number === 'number' && !isNaN(number)) ||
@@ -45,7 +45,7 @@ function formatNumber(
  */
 export function formatVnNumber(
   number: string | number | bigint | null | undefined,
-  fallbackValue: string = '0'
+  fallbackValue: string = '0',
 ): string {
   const formatter = new Intl.NumberFormat('vi-VN')
   return formatNumber(number, formatter, 'NaN', fallbackValue)
@@ -66,11 +66,11 @@ export function formatVnNumber(
  */
 export function formatVnCurrency(
   money: string | number | bigint | null | undefined,
-  fallbackValue: string = '0 ₫'
+  fallbackValue: string = '0 ₫',
 ): string {
   const formatter = new Intl.NumberFormat('vi-VN', {
     currency: 'VND',
-    style: 'currency'
+    style: 'currency',
   })
   return formatNumber(money, formatter, 'NaN ₫', fallbackValue)
 }
@@ -91,12 +91,12 @@ export function formatVnCurrency(
  */
 export function formatVnPercent(
   value: string | number | bigint | null | undefined,
-  fallbackValue: string = '0%'
+  fallbackValue: string = '0%',
 ): string {
   const formatter = new Intl.NumberFormat('vi-VN', {
     style: 'percent',
     maximumFractionDigits: 2,
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   })
   return formatNumber(value, formatter, 'NaN%', fallbackValue)
 }
