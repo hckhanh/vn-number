@@ -1,20 +1,29 @@
 {
   "name": "@hckhanh/vn-number",
-  "version": "0.0.0-development",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
-  "type": "module",
-  "private": true,
-  "sideEffects": false,
-  "scripts": {
-    "test": "vitest related src/**/*.ts",
-    "test:prettier": "prettier --check ."
-  },
+  "version": "0.0.0-development",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.sh",
     "url": "https://khanh.sh"
   },
-  "license": "MIT",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "format": "biome check --write",
+    "test": "vitest",
+    "test:prettier": "prettier --check ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.2",
+    "@edge-runtime/vm": "3.2.0",
+    "happy-dom": "13.10.1",
+    "jsdom": "24.1.1",
+    "prettier": "3.3.3",
+    "syncpack": "14.0.0-alpha.23",
+    "vitest": "1.6.0"
+  },
   "keywords": [
     "reader",
     "read",
@@ -41,11 +50,5 @@
     "helper-functions",
     "helper-script"
   ],
-  "devDependencies": {
-    "@edge-runtime/vm": "3.2.0",
-    "happy-dom": "13.10.1",
-    "jsdom": "24.1.1",
-    "prettier": "3.3.3",
-    "vitest": "1.6.0"
-  }
+  "license": "MIT"
 }
