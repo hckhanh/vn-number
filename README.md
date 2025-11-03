@@ -1,9 +1,9 @@
 # vn-number 🇻🇳
 
+🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
+
 [![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number)
 [![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
-
-🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
 
 ## Features
 
@@ -52,4 +52,4 @@ console.log(result) // 99,1%
 
 ## Release Notes
 
-You can go to [Releases](https://github.com/hckhanh/vn-number/releases) page to see the release notes.
+You can go to [the Releases](https://github.com/hckhanh/vn-number/releases) page to see the release notes.
