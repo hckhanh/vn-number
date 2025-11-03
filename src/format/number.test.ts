@@ -8,7 +8,9 @@ describe('formatVnNumber', () => {
 
   it('format bigint value', () => {
     expect(formatVnNumber(BigInt(10000000))).to.eq('10.000.000')
-    expect(formatVnNumber(BigInt('9999999999999999'))).to.eq('9.999.999.999.999.999')
+    expect(formatVnNumber(BigInt('9999999999999999'))).to.eq(
+      '9.999.999.999.999.999',
+    )
   })
 
   it('format invalid number by fallback value', () => {
@@ -43,7 +45,9 @@ describe('formatVnCurrency', () => {
 
   it('format bigint value in VND', () => {
     expect(formatVnCurrency(BigInt(10000000))).to.match(/10\.000\.000\s₫/)
-    expect(formatVnCurrency(BigInt('9999999999999999'))).to.match(/9\.999\.999\.999\.999\.999\s₫/)
+    expect(formatVnCurrency(BigInt('9999999999999999'))).to.match(
+      /9\.999\.999\.999\.999\.999\s₫/,
+    )
   })
 
   it('format invalid number by fallback value', () => {

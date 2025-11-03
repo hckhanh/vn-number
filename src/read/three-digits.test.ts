@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  readFirstGroupBeforeBillion,
   readFirstGroup,
+  readFirstGroupBeforeBillion,
   readSubsequentGroup,
 } from './three-digits.ts'
 
@@ -15,7 +15,9 @@ describe('readFirstGroupBeforeBillion', () => {
   it('should add "nghìn" suffix for non-zero groups', () => {
     expect(readFirstGroupBeforeBillion('1')).to.equal('một nghìn')
     expect(readFirstGroupBeforeBillion('12')).to.equal('mười hai nghìn')
-    expect(readFirstGroupBeforeBillion('123')).to.equal('một trăm hai mươi ba nghìn')
+    expect(readFirstGroupBeforeBillion('123')).to.equal(
+      'một trăm hai mươi ba nghìn',
+    )
   })
 
   it('should handle special cases with "nghìn" suffix', () => {
