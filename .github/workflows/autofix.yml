@@ -29,8 +29,10 @@ jobs:
         run: pnpm syncpack fix
       - name: Format package.json
         run: pnpm syncpack format
+      - name: Fix audit issues
+        run: pnpm audit --fix
       - name: Update package lock file
-        run: pnpm install --fix-lockfile --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
       - name: Submit autofix
         uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2
         with:
