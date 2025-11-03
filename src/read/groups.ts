@@ -1,6 +1,6 @@
 import {
-  readFirstGroupBeforeBillion,
   readFirstGroup,
+  readFirstGroupBeforeBillion,
   readSubsequentGroup,
 } from './three-digits.ts'
 import { allFollowingGroupsAreZero } from './utils.ts'
@@ -111,5 +111,10 @@ export function processGroup(
     )
   }
 
-  return processSubsequentGroup(group, type, positionFromRight, hasTrailingZeros)
+  return processSubsequentGroup(
+    group,
+    type,
+    positionFromRight,
+    hasTrailingZeros,
+  )
 }
