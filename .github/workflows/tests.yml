@@ -71,7 +71,6 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
   deno:
     name: Deno
-    needs: lints
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
