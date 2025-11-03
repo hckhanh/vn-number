@@ -1,0 +1,39 @@
+name: autofix.ci
+
+on:
+  pull_request:
+    branches-ignore:
+      - 'renovate/**'
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    name: Apply automated fixes
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'renovate[bot]' && ! contains(github.event.head_commit.author.name , 'renovate[bot]') && ! contains(github.event.head_commit.message , 'chore(release)') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Install Dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Format code
+        run: pnpm biome check --write
+      - name: Fix package.json
+        run: pnpm syncpack fix
+      - name: Format package.json
+        run: pnpm syncpack format
+      - name: Fix audit issues
+        run: pnpm audit --fix
+      - name: Update package lock file
+        run: pnpm install --no-frozen-lockfile
+      - name: Submit autofix
+        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2
+        with:
+          fail-fast: false

@@ -1,19 +1,9 @@
 {
   "name": "@hckhanh/vn-number",
   "version": "0.0.0-development",
+  "license": "MIT",
   "exports": "./src/index.ts",
-  "exclude": [
-    ".github/",
-    "src/**/*.test.ts",
-    ".git*",
-    ".prettier*",
-    ".*ignore",
-    "*.yml",
-    "*.yaml",
-    "*.config.ts",
-    ".*rc.json",
-    "package.json",
-    "renovate.json",
-    "tsconfig.json"
-  ]
+  "publish": {
+    "include": ["LICENSE", "README.md", "src/**/*.ts"]
+  }
 }

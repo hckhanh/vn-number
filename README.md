@@ -1,8 +1,9 @@
 # vn-number 🇻🇳
 
-[![JSR Score](https://jsr.io/badges/@hckhanh/vn-number)](https://jsr.io/@hckhanh/vn-number)
-
 🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
+
+[![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number)
+[![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
 
 ## Features
 
@@ -13,7 +14,7 @@
 
 ## Functions
 
-### Read Vietnamese number (một triệu hai trăm năm mươi nghìn)
+### Read Vietnamese number
 
 ```ts
 import { readVnNumber } from '@hckhanh/vn-number'
@@ -22,7 +23,7 @@ const result = readVnNumber(1250000)
 console.log(result) // một triệu hai trăm năm mươi nghìn
 ```
 
-### Format number in Vietnamese format (1.250.000)
+### Format number in Vietnamese format
 
 ```ts
 import { formatVnNumber } from '@hckhanh/vn-number'
@@ -31,7 +32,7 @@ const result = formatVnNumber(1250000)
 console.log(result) // 1.250.000
 ```
 
-### Format VN currency (VND) (1.250.000 ₫)
+### Format VN currency (VND - ₫)
 
 ```ts
 import { formatVnCurrency } from '@hckhanh/vn-number'
@@ -40,7 +41,7 @@ const result = formatVnCurrency(1250000)
 console.log(result) // 1.250.000 ₫
 ```
 
-### Format percentage in Vietnamese format (99,1%)
+### Format percentage in Vietnamese format
 
 ```ts
 import { formatVnPercent } from '@hckhanh/vn-number'
@@ -51,4 +52,4 @@ console.log(result) // 99,1%
 
 ## Release Notes
 
-You can go to [Releases](https://github.com/hckhanh/vn-number/releases) page to see the release notes.
+You can go to [the Releases](https://github.com/hckhanh/vn-number/releases) page to see the release notes.

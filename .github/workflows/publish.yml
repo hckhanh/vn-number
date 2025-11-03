@@ -12,38 +12,34 @@ jobs:
     secrets: inherit
   release:
     name: Release
-    needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
       id-token: write
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Update npm
+        run: npm install -g npm@latest
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
+        id: changesets
         with:
-          fetch-depth: 0
-      - name: Install jq
-        uses: dcarbone/install-jq-action@v2
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
-      - name: Release on GitHub
-        run: pnpm --package conventional-changelog-conventionalcommits --package semantic-release dlx semantic-release
+          publish: 'pnpm tsdown && pnpm changeset publish'
+          commitMode: 'github-api'
+          title: 'Release new version'
+          commit: 'Bump version package'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update version for JSR registry
+      - name: Publish to JSR
         run: |
           VERSION=$(node -p "require('./package.json').version")
           jq --arg version "$VERSION" '.version = $version' jsr.json > jsr.json.tmp
           mv jsr.json.tmp jsr.json
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-      - name: Publish package to JSR
-        if: env.VERSION != '0.0.0-development'
-        run: pnpm dlx jsr publish
+          pnpm dlx jsr publish --allow-dirty
+        if: steps.changesets.outputs.published == 'true'

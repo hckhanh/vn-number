@@ -1,7 +1,7 @@
 import Numbers from './Numbers.ts'
 
 /**
- * A group three numbers, this component will deal with three zero numbers
+ * Group three numbers, this component will deal with three zero numbers
  */
 export default abstract class Zerofill extends Numbers {
   /**
@@ -9,7 +9,7 @@ export default abstract class Zerofill extends Numbers {
    */
   protected abstract get unitName(): string
 
-  public read(firstNumber?: boolean): string {
+  public override read(firstNumber?: boolean): string {
     if (this.first !== '0' || this.second !== '0' || this.last !== '0') {
       return `${super.read(firstNumber)} ${this.unitName}`
     } else {

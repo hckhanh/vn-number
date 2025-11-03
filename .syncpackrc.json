@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/syncpack/schema.json",
+  "sortFirst": [
+    "name",
+    "description",
+    "version",
+    "productName",
+    "author",
+    "homepage",
+    "repository",
+    "bugs",
+    "private",
+    "publishConfig",
+    "sideEffects",
+    "type",
+    "main",
+    "module",
+    "types",
+    "exports",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "trustedDependencies",
+    "workspaces",
+    "packageManager"
+  ],
+  "sortExports": ["import", "types"],
+  "sortAz": [
+    "exports",
+    "scripts",
+    "workspaces",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "trustedDependencies"
+  ],
+  "semverGroups": [
+    {
+      "label": "All non-peer dependencies must be pinned",
+      "range": "",
+      "dependencyTypes": ["!peer"],
+      "dependencies": ["**"],
+      "packages": ["**"]
+    },
+    {
+      "label": "Allow peer deps to be equal or higher than current versions",
+      "range": ">=",
+      "dependencyTypes": ["peer"],
+      "dependencies": ["**"],
+      "packages": ["**"]
+    }
+  ],
+  "formatBugs": false,
+  "formatRepository": false
+}

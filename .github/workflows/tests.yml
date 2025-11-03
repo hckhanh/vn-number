@@ -11,76 +11,70 @@ jobs:
     name: Lints
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
       - name: Install dependencies
         run: pnpm install
-      - name: Prettier check
-        run: pnpm test:prettier
+      - name: Biome check
+        run: pnpm biome check
+      - name: Syncpack lint
+        run: pnpm syncpack lint
+      - name: Syncpack format
+        run: pnpm syncpack format --check
       - name: Checks for known security issues with the installed packages
         run: pnpm audit
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: pnpm npm audit signatures
       - name: Verify the package for publishing performing all checks and validations
         run: pnpm dlx jsr publish --dry-run
-  node:
-    name: Node
-    needs: lints
+  unit-test:
+    name: Unit Test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [18, 20, 21]
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      - name: Set up Node.js ${{matrix.node}}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{matrix.node}}
-          cache: 'pnpm'
-      - name: Install dependencies
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Install Dependencies
         run: pnpm install
-      - name: Run unit tests
-        run: pnpm test -- --environment=node
-  test:
-    name: Test
-    needs: lints
+      - name: Run Tests
+        run: pnpm vitest --coverage --reporter=junit --outputFile=test-report.junit.xml
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+        with:
+          use_oidc: true
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@47f89e9acb64b76debcd5ea40642d25a4adced9f # v1.1.1
+        if: ${{ !cancelled() }}
+        with:
+          use_oidc: true
+  benchmark:
+    name: Benchmark
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [edge-runtime, jsdom, happy-dom]
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'pnpm'
-      - name: Install dependencies
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Setup toolchains
+        uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
+      - name: Install Dependencies
         run: pnpm install
-      - name: Run unit tests
-        run: pnpm test -- --environment=${{ matrix.environment }}
+      - name: Run Benchmarks
+        uses: CodSpeedHQ/action@4348f634fa7309fe23aac9502e88b999ec90a164 # v4.3.1
+        with:
+          run: pnpm vitest bench
+          mode: 'instrumentation'
   deno:
     name: Deno
-    needs: lints
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
       - name: Install Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2.0.3
       - name: Type-check the dependencies
         run: deno check src/index.ts
