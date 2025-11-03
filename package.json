@@ -1,7 +1,7 @@
 {
   "name": "@hckhanh/vn-number",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
-  "version": "0.0.0-development",
+  "version": "1.5.7",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.sh",
@@ -10,6 +10,13 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "format": "biome check --write",
     "test": "vitest"
@@ -19,8 +26,13 @@
     "@codspeed/vitest-plugin": "5.0.1",
     "@vitest/coverage-v8": "4.0.5",
     "syncpack": "14.0.0-alpha.23",
+    "tsdown": "0.15.12",
+    "typescript": "5.9.3",
     "vitest": "4.0.5"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "reader",
     "read",
