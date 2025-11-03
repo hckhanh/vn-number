@@ -12,7 +12,7 @@ importers:
         specifier: 2.3.2
         version: 2.3.2
       '@changesets/cli':
-        specifier: ^2.29.7
+        specifier: 2.29.7
         version: 2.29.7
       '@codspeed/vitest-plugin':
         specifier: 5.0.1
