@@ -28,8 +28,8 @@ jobs:
         run: pnpm npm audit signatures
       - name: Verify the package for publishing performing all checks and validations
         run: pnpm dlx jsr publish --dry-run
-  test:
-    name: Test
+  unit-test:
+    name: Unit Test
     runs-on: ubuntu-latest
     permissions:
       id-token: write
