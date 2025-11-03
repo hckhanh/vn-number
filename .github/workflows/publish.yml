@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Test
@@ -13,7 +16,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      pull-requests: write
   release:
     name: Release
     runs-on: ubuntu-latest
