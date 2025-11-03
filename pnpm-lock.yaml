@@ -60,9 +60,6 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
     devDependencies:
-      '@biomejs/biome':
-        specifier: 2.3.3
-        version: 2.3.3
       '@tailwindcss/postcss':
         specifier: 4.1.16
         version: 4.1.16
