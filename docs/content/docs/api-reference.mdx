@@ -1,0 +1,603 @@
+---
+title: API Reference
+description: Complete API documentation for all vn-number functions with detailed examples and type signatures
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Type Definitions
+
+### `NumberType`
+
+The input type accepted by all formatting functions.
+
+```typescript
+type NumberType = string | number | bigint | null | undefined;
+```
+
+All functions that format numbers accept this union type, providing flexibility in handling various input sources.
+
+---
+
+## Reading Functions
+
+### `readVnNumber()`
+
+Converts a number to Vietnamese text representation.
+
+```typescript
+function readVnNumber(number: string | number | bigint): string;
+```
+
+**Parameters:**
+
+- `number` - The number to read. Can be a `string`, `number`, or `bigint` value
+
+**Returns:** Vietnamese text representation of the number
+
+**Examples:**
+
+```ts
+import { readVnNumber } from 'vn-number';
+
+// Basic numbers
+readVnNumber(0);
+// → "không"
+
+readVnNumber(15);
+// → "mười lăm"
+
+readVnNumber(21);
+// → "hai mươi mốt"
+
+// Hundreds with special rules
+readVnNumber(101);
+// → "một trăm lẻ một"
+
+readVnNumber(205);
+// → "hai trăm lẻ năm"
+
+// Thousands
+readVnNumber(1234);
+// → "một nghìn hai trăm ba mươi bốn"
+
+readVnNumber(10000);
+// → "mười nghìn"
+
+// Millions
+readVnNumber(1250000);
+// → "một triệu hai trăm năm mươi nghìn"
+
+readVnNumber(19990000);
+// → "mười chín triệu chín trăm chín mươi nghìn"
+
+// Billions (tỷ)
+readVnNumber(1000000000);
+// → "một tỷ"
+
+readVnNumber(2500000000);
+// → "hai tỷ năm trăm triệu"
+
+// Using string for very large numbers
+readVnNumber('1000000000000');
+// → "một nghìn tỷ" (1 trillion)
+
+readVnNumber('1000000000000000');
+// → "một triệu tỷ" (1 quadrillion)
+
+// Using bigint for extremely large numbers
+readVnNumber(BigInt('1000000000000000000'));
+// → "một tỷ tỷ" (1 quintillion)
+
+readVnNumber(BigInt('9999999999999999'));
+// → "chín triệu chín trăm chín mươi chín nghìn chín trăm chín mươi chín tỷ chín trăm chín mươi chín triệu chín trăm chín mươi chín nghìn chín trăm chín mươi chín"
+```
+
+**Vietnamese Language Rules:**
+
+The function follows these Vietnamese language conventions:
+
+1. **"lăm" rule**: The digit 5 is read as "lăm" instead of "năm" when in the ones position of numbers 15, 25, 35, etc.
+
+   ```ts
+   readVnNumber(15); // "mười lăm" (not "mười năm")
+   readVnNumber(25); // "hai mươi lăm"
+   ```
+
+2. **"mốt" rule**: The digit 1 is read as "mốt" instead of "một" when in the ones position after tens (21, 31, 41, etc.)
+
+   ```ts
+   readVnNumber(21); // "hai mươi mốt" (not "hai mươi một")
+   readVnNumber(11); // "mười một" (exception: 11 uses "một")
+   ```
+
+3. **"lẻ" rule**: Used when there's a single digit after hundreds (101, 102, etc.)
+
+   ```ts
+   readVnNumber(101); // "một trăm lẻ một"
+   readVnNumber(305); // "ba trăm lẻ năm"
+   ```
+
+4. **Zero handling**: Zeros in middle groups are read as "không trăm"
+   ```ts
+   readVnNumber(1001); // "một nghìn không trăm lẻ một"
+   readVnNumber(1010); // "một nghìn không trăm mười"
+   ```
+
+**Use Cases:**
+
+- Bank checks and financial documents
+- Invoice text generation
+- Accessibility features (reading prices aloud)
+- Educational applications
+- Voice assistants
+
+---
+
+## Formatting Functions
+
+### `formatVnNumber()`
+
+Formats a number using Vietnamese number format (dots as thousand separators).
+
+```typescript
+function formatVnNumber(
+  number: NumberType,
+  fallbackValue: string = '0',
+): string;
+```
+
+**Parameters:**
+
+- `number` - The number to format (string, number, bigint, null, or undefined)
+- `fallbackValue` - The value to return if formatting fails (default: `'0'`)
+
+**Returns:** Formatted number with dots as thousand separators, or the fallback value
+
+**Examples:**
+
+```ts
+import { formatVnNumber } from 'vn-number';
+
+// Basic formatting
+formatVnNumber(1000);
+// → "1.000"
+
+formatVnNumber(1250000);
+// → "1.250.000"
+
+formatVnNumber(10000000);
+// → "10.000.000"
+
+// Negative numbers
+formatVnNumber(-5000);
+// → "-5.000"
+
+// Decimal numbers
+formatVnNumber(1234.56);
+// → "1.234,56" (note: comma as decimal separator)
+
+// Using bigint for very large numbers
+formatVnNumber(BigInt(10000000));
+// → "10.000.000"
+
+formatVnNumber(BigInt('9999999999999999'));
+// → "9.999.999.999.999.999"
+
+// Handling invalid input with fallback
+formatVnNumber('invalid');
+// → "0" (default fallback)
+
+formatVnNumber('invalid', 'N/A');
+// → "N/A"
+
+formatVnNumber(null, 'Không giới hạn');
+// → "Không giới hạn"
+
+formatVnNumber(undefined, '');
+// → ""
+
+formatVnNumber(Number.NaN, 'Lỗi');
+// → "Lỗi"
+
+// String numbers are parsed
+formatVnNumber('1250000');
+// → "1.250.000"
+
+formatVnNumber('1000.50');
+// → "1.000,5"
+```
+
+**Use Cases:**
+
+- Displaying numbers in Vietnamese format
+- Data tables and reports
+- Dashboard statistics
+- User profile information (followers, likes, etc.)
+
+---
+
+### `formatVnCurrency()`
+
+Formats a value as Vietnamese Dong (VND) currency.
+
+```typescript
+function formatVnCurrency(
+  money: NumberType,
+  fallbackValue: string = '0\u00A0₫',
+): string;
+```
+
+**Parameters:**
+
+- `money` - The monetary value to format (string, number, bigint, null, or undefined)
+- `fallbackValue` - The value to return if formatting fails (default: `'0 ₫'`)
+
+**Returns:** Formatted currency with VND symbol (₫), or the fallback value
+
+**Examples:**
+
+```ts
+import { formatVnCurrency } from 'vn-number';
+
+// Basic currency formatting
+formatVnCurrency(1250000);
+// → "1.250.000 ₫"
+
+formatVnCurrency(50000);
+// → "50.000 ₫"
+
+formatVnCurrency(0);
+// → "0 ₫"
+
+// Negative amounts
+formatVnCurrency(-10000);
+// → "-10.000 ₫"
+
+// Large amounts with bigint
+formatVnCurrency(BigInt(10000000));
+// → "10.000.000 ₫"
+
+formatVnCurrency(BigInt('9999999999999999'));
+// → "9.999.999.999.999.999 ₫"
+
+// Decimal amounts (for partial dong, though rare in practice)
+formatVnCurrency(1234.56);
+// → "1.234,56 ₫"
+
+// Handling invalid input with fallback
+formatVnCurrency(null);
+// → "0 ₫" (default fallback)
+
+formatVnCurrency(null, 'Không giới hạn');
+// → "Không giới hạn"
+
+formatVnCurrency(undefined, '');
+// → ""
+
+formatVnCurrency('invalid', 'Lỗi');
+// → "Lỗi"
+
+formatVnCurrency(Number.NaN, 'Không xác định');
+// → "Không xác định"
+
+// String numbers are parsed
+formatVnCurrency('1250000');
+// → "1.250.000 ₫"
+```
+
+**Use Cases:**
+
+- E-commerce price displays
+- Payment forms and receipts
+- Financial dashboards
+- Shopping cart totals
+- Pricing tables
+- Accounting applications
+
+---
+
+### `formatVnPercent()`
+
+Formats a number or decimal as a Vietnamese percentage.
+
+```typescript
+function formatVnPercent(
+  value: NumberType,
+  fallbackValue: string = '0%',
+): string;
+```
+
+**Parameters:**
+
+- `value` - The value to format (0-1 for percentages, or any number)
+- `fallbackValue` - The value to return if formatting fails (default: `'0%'`)
+
+**Returns:** Formatted percentage with `%` symbol, or the fallback value
+
+**Note:** The function multiplies the input by 100, so `0.5` becomes `50%`. Use `5` directly if you want `500%`.
+
+**Examples:**
+
+```ts
+import { formatVnPercent } from 'vn-number';
+
+// Basic percentage formatting
+formatVnPercent(0.5);
+// → "50%"
+
+formatVnPercent(0.991);
+// → "99,1%"
+
+formatVnPercent(1);
+// → "100%"
+
+formatVnPercent(0.1234);
+// → "12,34%"
+
+// Values over 1 (multiplied by 100)
+formatVnPercent(1.5);
+// → "150%"
+
+formatVnPercent(2);
+// → "200%"
+
+// Very small percentages
+formatVnPercent(0.001);
+// → "0,1%"
+
+formatVnPercent(0.0025);
+// → "0,25%"
+
+// Zero
+formatVnPercent(0);
+// → "0%"
+
+// Negative percentages
+formatVnPercent(-0.15);
+// → "-15%"
+
+// Using bigint (treated as whole number, multiplied by 100)
+formatVnPercent(BigInt(1));
+// → "100%"
+
+formatVnPercent(BigInt(5));
+// → "500%"
+
+// Handling invalid input with fallback
+formatVnPercent('invalid');
+// → "0%" (default fallback)
+
+formatVnPercent(null, 'N/A');
+// → "N/A"
+
+formatVnPercent(undefined, '');
+// → ""
+
+formatVnPercent('null', 'Không xác định');
+// → "Không xác định"
+
+formatVnPercent(Number.NaN, 'Lỗi');
+// → "Lỗi"
+
+// String numbers are parsed
+formatVnPercent('0.99');
+// → "99%"
+
+formatVnPercent('0.5');
+// → "50%"
+```
+
+**Use Cases:**
+
+- Growth rate displays
+- Discount badges in e-commerce
+- Statistical dashboards
+- Progress indicators
+- Financial metrics (ROI, profit margin, etc.)
+- Survey results
+
+---
+
+## Advanced Examples
+
+### Complete E-commerce Product Card
+
+```tsx
+import { formatVnCurrency, formatVnPercent, readVnNumber } from 'vn-number';
+
+interface Product {
+  name: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
+}
+
+function ProductCard({ name, price, originalPrice, discount }: Product) {
+  const priceText = formatVnCurrency(price);
+  const priceInWords = readVnNumber(price);
+
+  return (
+    <div className="product-card">
+      <h3>{name}</h3>
+      <div className="price">
+        <span className="current">{priceText}</span>
+        {originalPrice && (
+          <span className="original">{formatVnCurrency(originalPrice)}</span>
+        )}
+      </div>
+      {discount && (
+        <span className="discount-badge">Giảm {formatVnPercent(discount)}</span>
+      )}
+      <p className="price-words" aria-label={`Giá ${priceInWords} đồng`}>
+        {priceInWords} đồng
+      </p>
+    </div>
+  );
+}
+
+// Usage
+<ProductCard
+  name="Laptop Dell XPS 13"
+  price={25000000}
+  originalPrice={30000000}
+  discount={0.166}
+/>;
+// Displays:
+// Current price: "25.000.000 ₫"
+// Original price: "30.000.000 ₫"
+// Discount: "Giảm 16,6%"
+// Words: "hai mươi lăm triệu đồng"
+```
+
+### Financial Dashboard Statistics
+
+```tsx
+import { formatVnNumber, formatVnCurrency, formatVnPercent } from 'vn-number';
+
+interface Statistics {
+  revenue: number;
+  users: number;
+  growth: number;
+  conversion: number;
+}
+
+function Dashboard({ revenue, users, growth, conversion }: Statistics) {
+  return (
+    <div className="dashboard">
+      <div className="stat-card">
+        <h4>Doanh thu</h4>
+        <p className="value">{formatVnCurrency(revenue)}</p>
+        <p className="growth">
+          {growth >= 0 ? '↑' : '↓'} {formatVnPercent(Math.abs(growth))}
+        </p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Người dùng</h4>
+        <p className="value">{formatVnNumber(users)}</p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Tỷ lệ chuyển đổi</h4>
+        <p className="value">{formatVnPercent(conversion)}</p>
+      </div>
+    </div>
+  );
+}
+
+// Usage
+<Dashboard
+  revenue={125000000}
+  users={1234567}
+  growth={0.157}
+  conversion={0.0342}
+/>;
+```
+
+### Bank Check Generator
+
+```ts
+import { readVnNumber, formatVnCurrency } from 'vn-number';
+
+function generateCheckText(amount: number, recipient: string): string {
+  const amountFormatted = formatVnCurrency(amount);
+  const amountInWords = readVnNumber(amount);
+
+  return `
+Trả cho: ${recipient}
+Số tiền: ${amountFormatted}
+Bằng chữ: ${amountInWords.charAt(0).toUpperCase() + amountInWords.slice(1)} đồng chẵn
+  `.trim();
+}
+
+console.log(generateCheckText(2450000, 'Nguyễn Văn A'));
+// Output:
+// Trả cho: Nguyễn Văn A
+// Số tiền: 2.450.000 ₫
+// Bằng chữ: Hai triệu bốn trăm năm mươi nghìn đồng chẵn
+```
+
+### Form Input Helpers
+
+```tsx
+import { formatVnNumber, formatVnCurrency } from 'vn-number';
+
+function PriceInput() {
+  const [value, setValue] = React.useState('');
+  const [preview, setPreview] = React.useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\./g, '');
+    setValue(rawValue);
+
+    // Show formatted preview
+    const numValue = parseFloat(rawValue);
+    if (!isNaN(numValue)) {
+      setPreview(formatVnCurrency(numValue));
+    } else {
+      setPreview('');
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={value}
+        onChange={handleChange}
+        placeholder="Nhập số tiền"
+      />
+      {preview && <p className="preview">{preview}</p>}
+    </div>
+  );
+}
+```
+
+## Error Handling
+
+All formatting functions (`formatVnNumber`, `formatVnCurrency`, `formatVnPercent`) gracefully handle invalid input:
+
+```ts
+import { formatVnNumber, formatVnCurrency, formatVnPercent } from 'vn-number';
+
+// Invalid strings return fallback
+formatVnNumber('not a number'); // → "0"
+formatVnCurrency('invalid', 'Error'); // → "Error"
+formatVnPercent('xyz'); // → "0%"
+
+// Null and undefined return fallback
+formatVnNumber(null, '-'); // → "-"
+formatVnCurrency(undefined); // → "0 ₫"
+formatVnPercent(null); // → "0%"
+
+// NaN returns fallback
+formatVnNumber(Number.NaN); // → "0"
+formatVnCurrency(Number.NaN, 'N/A'); // → "N/A"
+formatVnPercent(Number.NaN); // → "0%"
+```
+
+<Callout title="Type Safety" type="info">
+  The `readVnNumber` function expects valid numeric input (string, number, or
+  bigint). Always validate user input before passing to this function. The
+  formatting functions are more forgiving and provide fallback values for
+  invalid input.
+</Callout>
+
+## Browser and Runtime Compatibility
+
+vn-number works in all modern JavaScript environments:
+
+- ✅ Node.js 14+
+- ✅ Bun
+- ✅ Deno
+- ✅ Modern browsers (Chrome, Firefox, Safari, Edge)
+- ✅ React Native
+- ✅ Electron
+- ✅ Edge Runtime (Vercel, Cloudflare Workers, etc.)
+
+<Callout title="Zero Dependencies" type="success">
+  vn-number uses the standard Intl.NumberFormat API for formatting, ensuring
+  consistent behavior across all JavaScript environments without external
+  dependencies.
+</Callout>

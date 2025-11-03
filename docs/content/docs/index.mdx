@@ -1,0 +1,228 @@
+---
+title: Getting Started
+description: Get up and running with vn-number in minutes. This guide will walk you through installation and basic usage.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ReadVnNumber } from '@/preview/read-vn-number'
+
+## Installation
+
+<Tabs items={['bun', 'pnpm', 'yarn', 'npm', 'jsr']}>
+  <Tab value="bun">
+    ```bash
+    bun add vn-number
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add vn-number
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add vn-number
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install vn-number
+    ```
+  </Tab>
+  <Tab value="jsr">
+    ```bash
+    deno add jsr:@hckhanh/vn-number
+    ```
+  </Tab>
+</Tabs>
+
+<Callout title="TypeScript Support" type="info">
+  vn-number is written in TypeScript and includes type definitions out of the
+  box. No need to install separate `@types` packages!
+</Callout>
+
+## Basic Usage
+
+### Importing
+
+<ReadVnNumber />
+
+### Read Vietnamese Numbers
+
+Convert numbers to Vietnamese text:
+
+```ts
+import { readVnNumber } from 'vn-number';
+
+readVnNumber(1250000);
+// Output: "một triệu hai trăm năm mươi nghìn"
+
+readVnNumber(15);
+// Output: "mười lăm"
+
+readVnNumber(1001);
+// Output: "một nghìn không trăm lẻ một"
+```
+
+### Format Numbers in Vietnamese Style
+
+Format numbers with Vietnamese thousand separators (dots):
+
+```ts
+import { formatVnNumber } from 'vn-number';
+
+formatVnNumber(1250000);
+// Output: "1.250.000"
+
+formatVnNumber(BigInt('9999999999999999'));
+// Output: "9.999.999.999.999.999"
+```
+
+### Format Vietnamese Currency (VND)
+
+Format numbers as Vietnamese Dong currency:
+
+```ts
+import { formatVnCurrency } from 'vn-number';
+
+formatVnCurrency(1250000);
+// Output: "1.250.000 ₫"
+
+formatVnCurrency(null, 'Không giới hạn');
+// Output: "Không giới hạn"
+```
+
+### Format Percentages
+
+Format numbers as Vietnamese-style percentages:
+
+```ts
+import { formatVnPercent } from 'vn-number';
+
+formatVnPercent(0.991);
+// Output: "99,1%"
+
+formatVnPercent(0.5);
+// Output: "50%"
+```
+
+## Usage Examples
+
+### Working with Large Numbers
+
+The library handles very large numbers using `string` or `bigint`:
+
+```ts
+import { readVnNumber } from 'vn-number';
+
+// Using string for very large numbers
+readVnNumber('1000000000000');
+// Output: "một nghìn tỷ"
+
+// Using bigint
+readVnNumber(BigInt('1000000000000000000'));
+// Output: "một tỷ tỷ"
+```
+
+### Handling Invalid Input
+
+All formatting functions support fallback values:
+
+```ts
+import { formatVnNumber, formatVnCurrency } from 'vn-number';
+
+formatVnNumber('invalid', 'N/A');
+// Output: "N/A"
+
+formatVnNumber(null);
+// Output: "0" (default fallback)
+
+formatVnCurrency(undefined, '');
+// Output: ""
+```
+
+### Vietnamese Number Reading Rules
+
+The `readVnNumber` function follows Vietnamese language rules:
+
+```ts
+import { readVnNumber } from 'vn-number';
+
+// Special rule: "lăm" instead of "năm" in tens position
+readVnNumber(15); // "mười lăm"
+readVnNumber(25); // "hai mươi lăm"
+
+// Special rule: "mốt" instead of "một" after tens
+readVnNumber(21); // "hai mươi mốt"
+readVnNumber(31); // "ba mươi mốt"
+
+// Special rule: "lẻ" for single digits after hundreds
+readVnNumber(101); // "một trăm lẻ một"
+readVnNumber(305); // "ba trăm lẻ năm"
+```
+
+## Common Use Cases
+
+### E-commerce Applications
+
+```ts
+import { formatVnCurrency, readVnNumber } from 'vn-number';
+
+const price = 1500000;
+
+// Display formatted price
+console.log(formatVnCurrency(price));
+// Output: "1.500.000 ₫"
+
+// Read price aloud (for accessibility)
+console.log(readVnNumber(price));
+// Output: "một triệu năm trăm nghìn"
+```
+
+### Banking and Financial Applications
+
+```ts
+import { readVnNumber, formatVnCurrency } from 'vn-number';
+
+const amount = 2450000;
+
+// Show formatted amount
+console.log(`Số tiền: ${formatVnCurrency(amount)}`);
+// Output: "Số tiền: 2.450.000 ₫"
+
+// Generate check text
+console.log(`Bằng chữ: ${readVnNumber(amount)} đồng`);
+// Output: "Bằng chữ: hai triệu bốn trăm năm mươi nghìn đồng"
+```
+
+### Data Visualization
+
+```ts
+import { formatVnNumber, formatVnPercent } from 'vn-number';
+
+const totalUsers = 1234567;
+const growthRate = 0.157;
+
+console.log(`Tổng người dùng: ${formatVnNumber(totalUsers)}`);
+// Output: "Tổng người dùng: 1.234.567"
+
+console.log(`Tăng trưởng: ${formatVnPercent(growthRate)}`);
+// Output: "Tăng trưởng: 15,7%"
+```
+
+<Callout title="Zero Dependencies" type="success">
+  vn-number has zero runtime dependencies, making it lightweight and perfect for
+  performance-critical applications. It uses the standard `Intl.NumberFormat`
+  API for formatting operations.
+</Callout>
+
+## Next Steps
+
+<Cards>
+  <Card title="API Reference" href="/api-reference">
+    Explore the complete API documentation with detailed function signatures and
+    examples
+  </Card>
+</Cards>
