@@ -69,6 +69,8 @@ jobs:
           run: pnpm vitest bench
           mode: 'instrumentation'
           token: ${{ secrets.CODSPEED_TOKEN }}
+        env:
+          NODE_OPTIONS: '--allow-natives-syntax'
   deno:
     name: Deno
     runs-on: ubuntu-latest
