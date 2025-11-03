@@ -6,6 +6,7 @@ description: Get up and running with vn-number in minutes. This guide will walk 
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Card, Cards } from 'fumadocs-ui/components/card';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { ReadVnNumber } from '@/preview/read-vn-number'
 
 ## Installation
 
@@ -46,18 +47,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 ### Importing
 
-<Tabs items={['ES Modules/TypeScript', 'CommonJS']}>
-  <Tab value="ES Modules/TypeScript">
-    ```javascript
-    import { readVnNumber } from 'vn-number';
-    ```
-  </Tab>
-  <Tab value="CommonJS">
-    ```javascript
-    const { readVnNumber } = require('vn-number');
-    ```
-  </Tab>
-</Tabs>
+<ReadVnNumber />
 
 ### Read Vietnamese Numbers
 
