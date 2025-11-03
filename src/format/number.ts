@@ -11,14 +11,14 @@ function formatNumber(
   fallbackValue: string,
 ) {
   if (
-    (typeof number === 'number' && !isNaN(number)) ||
+    (typeof number === 'number' && !Number.isNaN(number)) ||
     typeof number === 'bigint'
   ) {
     return formatter.format(number)
   } else if (typeof number === 'string') {
     try {
       const num = Number(number)
-      return isNaN(num) ? fallbackValue : formatter.format(num)
+      return Number.isNaN(num) ? fallbackValue : formatter.format(num)
     } catch {
       return fallbackValue
     }
