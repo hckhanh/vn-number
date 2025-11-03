@@ -17,6 +17,9 @@
     "email": "hi@khanh.id"
   },
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",
@@ -29,6 +32,7 @@
   "scripts": {
     "format": "biome check --write",
     "prepublishOnly": "tsdown",
+    "release": "tsdown && changeset publish",
     "test": "vitest"
   },
   "devDependencies": {
