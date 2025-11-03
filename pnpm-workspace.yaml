@@ -1,7 +1,2 @@
 onlyBuiltDependencies:
   - esbuild
-
-overrides:
-  happy-dom@<15.10.2: '>=15.10.2'
-  happy-dom@<20.0.0: '>=20.0.0'
-  happy-dom@<20.0.2: '>=20.0.2'
