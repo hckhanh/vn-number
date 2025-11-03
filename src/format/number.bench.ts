@@ -210,7 +210,7 @@ describe('formatVnPercent', () => {
       formatVnPercent(1)
     })
 
-    bench('over 100% (1.5)', () => {
+    bench('over 100 percent (1.5)', () => {
       formatVnPercent(1.5)
     })
 
