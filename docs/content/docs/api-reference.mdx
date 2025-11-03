@@ -1,512 +1,592 @@
 ---
 title: API Reference
-description: Complete API documentation for all fast-url functions with detailed examples and type signatures
+description: Complete API documentation for all vn-number functions with detailed examples and type signatures
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Cards, Card } from 'fumadocs-ui/components/card';
-
-# API Reference
-
-Complete reference for all functions exported by fast-url.
 
 ## Type Definitions
 
-### `ParamMap`
+### `NumberType`
 
-The base type for parameter objects used throughout the API.
+The input type accepted by all formatting functions.
 
 ```typescript
-type ParamMap = Record<string, unknown>;
+type NumberType = string | number | bigint | null | undefined;
 ```
 
-All parameter values are converted to strings during URL encoding. The following types are supported:
-
-- `string` - Used as-is (after URL encoding)
-- `number` - Converted to string
-- `boolean` - Converted to `'true'` or `'false'`
-- `Array` - Each element becomes a separate parameter with the same key
-- `null` / `undefined` - Filtered out and not included in the URL
+All functions that format numbers accept this union type, providing flexibility in handling various input sources.
 
 ---
 
-## Main Functions
+## Reading Functions
 
-### `createUrl()`
+### `readVnNumber()`
 
-The primary function for building URLs with multiple overloads for different use cases.
-
-#### Signature 1: Base Template with Parameters
-
-Build a URL using only a template string with path parameters. Unused parameters become query parameters.
+Converts a number to Vietnamese text representation.
 
 ```typescript
-function createUrl(baseTemplate: string, params: ParamMap): string;
+function readVnNumber(number: string | number | bigint): string;
 ```
 
 **Parameters:**
 
-- `baseTemplate` - A URL template containing zero or more `:param` placeholders
-- `params` - Object with properties that correspond to the `:params` in the template
+- `number` - The number to read. Can be a `string`, `number`, or `bigint` value
 
-**Returns:** A complete URL with path parameters substituted and unused parameters as query string
+**Returns:** Vietnamese text representation of the number
 
-**Example:**
+**Examples:**
 
-```javascript
-import { createUrl } from 'fast-url';
+```ts
+import { readVnNumber } from 'vn-number';
 
-const url = createUrl('http://api.example.com/users/:id', {
-  id: 42,
-  search: 'foo',
-  active: true,
-});
-console.log(url);
-// → 'http://api.example.com/users/42?search=foo&active=true'
+// Basic numbers
+readVnNumber(0);
+// → "không"
+
+readVnNumber(15);
+// → "mười lăm"
+
+readVnNumber(21);
+// → "hai mươi mốt"
+
+// Hundreds with special rules
+readVnNumber(101);
+// → "một trăm lẻ một"
+
+readVnNumber(205);
+// → "hai trăm lẻ năm"
+
+// Thousands
+readVnNumber(1234);
+// → "một nghìn hai trăm ba mươi bốn"
+
+readVnNumber(10000);
+// → "mười nghìn"
+
+// Millions
+readVnNumber(1250000);
+// → "một triệu hai trăm năm mươi nghìn"
+
+readVnNumber(19990000);
+// → "mười chín triệu chín trăm chín mươi nghìn"
+
+// Billions (tỷ)
+readVnNumber(1000000000);
+// → "một tỷ"
+
+readVnNumber(2500000000);
+// → "hai tỷ năm trăm triệu"
+
+// Using string for very large numbers
+readVnNumber('1000000000000');
+// → "một nghìn tỷ" (1 trillion)
+
+readVnNumber('1000000000000000');
+// → "một triệu tỷ" (1 quadrillion)
+
+// Using bigint for extremely large numbers
+readVnNumber(BigInt('1000000000000000000'));
+// → "một tỷ tỷ" (1 quintillion)
+
+readVnNumber(BigInt('9999999999999999'));
+// → "chín triệu chín trăm chín mươi chín nghìn chín trăm chín mươi chín tỷ chín trăm chín mươi chín triệu chín trăm chín mươi chín nghìn chín trăm chín mươi chín"
 ```
 
-#### Signature 2: Base URL with Path
+**Vietnamese Language Rules:**
 
-Concatenate a base URL and path using `/` as separator. Handles duplicate slashes automatically.
+The function follows these Vietnamese language conventions:
+
+1. **"lăm" rule**: The digit 5 is read as "lăm" instead of "năm" when in the ones position of numbers 15, 25, 35, etc.
+
+   ```ts
+   readVnNumber(15); // "mười lăm" (not "mười năm")
+   readVnNumber(25); // "hai mươi lăm"
+   ```
+
+2. **"mốt" rule**: The digit 1 is read as "mốt" instead of "một" when in the ones position after tens (21, 31, 41, etc.)
+
+   ```ts
+   readVnNumber(21); // "hai mươi mốt" (not "hai mươi một")
+   readVnNumber(11); // "mười một" (exception: 11 uses "một")
+   ```
+
+3. **"lẻ" rule**: Used when there's a single digit after hundreds (101, 102, etc.)
+
+   ```ts
+   readVnNumber(101); // "một trăm lẻ một"
+   readVnNumber(305); // "ba trăm lẻ năm"
+   ```
+
+4. **Zero handling**: Zeros in middle groups are read as "không trăm"
+   ```ts
+   readVnNumber(1001); // "một nghìn không trăm lẻ một"
+   readVnNumber(1010); // "một nghìn không trăm mười"
+   ```
+
+**Use Cases:**
+
+- Bank checks and financial documents
+- Invoice text generation
+- Accessibility features (reading prices aloud)
+- Educational applications
+- Voice assistants
+
+---
+
+## Formatting Functions
+
+### `formatVnNumber()`
+
+Formats a number using Vietnamese number format (dots as thousand separators).
 
 ```typescript
-function createUrl(baseUrl: string, path: string): string;
-```
-
-**Parameters:**
-
-- `baseUrl` - The first part of the URL
-- `path` - The second part of the URL to append
-
-**Returns:** Concatenated URL with exactly one `/` separator
-
-**Example:**
-
-```javascript
-import { createUrl } from 'fast-url';
-
-// Handles trailing/leading slashes
-const url1 = createUrl('http://api.example.com/', '/users');
-console.log(url1);
-// → 'http://api.example.com/users'
-
-// Works without slashes too
-const url2 = createUrl('http://api.example.com', 'users');
-console.log(url2);
-// → 'http://api.example.com/users'
-```
-
-#### Signature 3: Complete URL Building
-
-Build a complete URL by combining base URL, path template, and parameters.
-
-```typescript
-function createUrl(
-  baseUrl: string,
-  pathTemplate: string,
-  params: ParamMap
+function formatVnNumber(
+  number: NumberType,
+  fallbackValue: string = '0',
 ): string;
 ```
 
 **Parameters:**
 
-- `baseUrl` - The base URL (protocol + domain)
-- `pathTemplate` - Path template with optional `:param` placeholders
-- `params` - Object with path and query parameters
+- `number` - The number to format (string, number, bigint, null, or undefined)
+- `fallbackValue` - The value to return if formatting fails (default: `'0'`)
 
-**Returns:** Complete URL with substituted path parameters and query string
-
-**Example:**
-
-```javascript
-import { createUrl } from 'fast-url';
-
-const url = createUrl('http://api.example.com/', '/users/:id', {
-  id: 42,
-  search: 'foo',
-  limit: 10,
-  offset: 20,
-});
-console.log(url);
-// → 'http://api.example.com/users/42?search=foo&limit=10&offset=20'
-```
-
-<Callout title="Path vs Query Parameters" type="info">
-  Parameters that match `:param` placeholders in the path template are used for
-  path substitution. All other parameters become query string parameters.
-</Callout>
-
----
-
-## Utility Functions
-
-### `query()`
-
-Build a query string from a parameter object.
-
-```typescript
-function query(params: ParamMap): string;
-```
-
-**Parameters:**
-
-- `params` - Object to convert into a query string
-
-**Returns:** URL-encoded query string (without leading `?`)
+**Returns:** Formatted number with dots as thousand separators, or the fallback value
 
 **Examples:**
 
-```javascript
-import { query } from 'fast-url';
+```ts
+import { formatVnNumber } from 'vn-number';
 
-// Basic usage
-const q1 = query({ name: 'John', age: 30 });
-console.log(q1);
-// → 'name=John&age=30'
+// Basic formatting
+formatVnNumber(1000);
+// → "1.000"
 
-// Special characters are encoded
-const q2 = query({
-  search: 'hello world',
-  filter: 'price>100',
-});
-console.log(q2);
-// → 'search=hello%20world&filter=price%3E100'
+formatVnNumber(1250000);
+// → "1.250.000"
 
-// Arrays create repeated parameters
-const q3 = query({
-  tags: ['javascript', 'typescript'],
-  limit: 10,
-});
-console.log(q3);
-// → 'tags=javascript&tags=typescript&limit=10'
+formatVnNumber(10000000);
+// → "10.000.000"
 
-// Null and undefined are filtered out
-const q4 = query({
-  name: 'John',
-  age: null,
-  city: undefined,
-  country: 'USA',
-});
-console.log(q4);
-// → 'name=John&country=USA'
+// Negative numbers
+formatVnNumber(-5000);
+// → "-5.000"
 
-// Empty object returns empty string
-const q5 = query({});
-console.log(q5);
-// → ''
+// Decimal numbers
+formatVnNumber(1234.56);
+// → "1.234,56" (note: comma as decimal separator)
+
+// Using bigint for very large numbers
+formatVnNumber(BigInt(10000000));
+// → "10.000.000"
+
+formatVnNumber(BigInt('9999999999999999'));
+// → "9.999.999.999.999.999"
+
+// Handling invalid input with fallback
+formatVnNumber('invalid');
+// → "0" (default fallback)
+
+formatVnNumber('invalid', 'N/A');
+// → "N/A"
+
+formatVnNumber(null, 'Không giới hạn');
+// → "Không giới hạn"
+
+formatVnNumber(undefined, '');
+// → ""
+
+formatVnNumber(Number.NaN, 'Lỗi');
+// → "Lỗi"
+
+// String numbers are parsed
+formatVnNumber('1250000');
+// → "1.250.000"
+
+formatVnNumber('1000.50');
+// → "1.000,5"
 ```
 
 **Use Cases:**
 
-- Building query strings independently
-- Updating existing URLs with new parameters
-- Creating search or filter parameters
+- Displaying numbers in Vietnamese format
+- Data tables and reports
+- Dashboard statistics
+- User profile information (followers, likes, etc.)
 
 ---
 
-### `subst()`
+### `formatVnCurrency()`
 
-Substitute path parameters in a template string without building a full URL.
+Formats a value as Vietnamese Dong (VND) currency.
 
 ```typescript
-function subst(template: string, params: ParamMap): string;
+function formatVnCurrency(
+  money: NumberType,
+  fallbackValue: string = '0\u00A0₫',
+): string;
 ```
 
 **Parameters:**
 
-- `template` - String containing `:param` placeholders
-- `params` - Object with keys matching the placeholders
+- `money` - The monetary value to format (string, number, bigint, null, or undefined)
+- `fallbackValue` - The value to return if formatting fails (default: `'0 ₫'`)
 
-**Returns:** Template with all `:param` placeholders replaced with URL-encoded values
+**Returns:** Formatted currency with VND symbol (₫), or the fallback value
 
 **Examples:**
 
-```javascript
-import { subst } from 'fast-url';
+```ts
+import { formatVnCurrency } from 'vn-number';
 
-// Basic substitution
-const path1 = subst('/users/:id/posts/:postId', {
-  id: 42,
-  postId: 123,
-});
-console.log(path1);
-// → '/users/42/posts/123'
+// Basic currency formatting
+formatVnCurrency(1250000);
+// → "1.250.000 ₫"
 
-// Extra parameters are ignored
-const path2 = subst('/users/:id', {
-  id: 42,
-  limit: 10, // Ignored
-  sort: 'name', // Ignored
-});
-console.log(path2);
-// → '/users/42'
+formatVnCurrency(50000);
+// → "50.000 ₫"
 
-// Special characters in values are encoded
-const path3 = subst('/search/:query', {
-  query: 'hello world & goodbye',
-});
-console.log(path3);
-// → '/search/hello%20world%20%26%20goodbye'
+formatVnCurrency(0);
+// → "0 ₫"
 
-// Unicode is properly handled
-const path4 = subst('/users/:name', {
-  name: '田中',
-});
-console.log(path4);
-// → '/users/%E7%94%B0%E4%B8%AD'
-```
+// Negative amounts
+formatVnCurrency(-10000);
+// → "-10.000 ₫"
 
-**Errors:**
+// Large amounts with bigint
+formatVnCurrency(BigInt(10000000));
+// → "10.000.000 ₫"
 
-```javascript
-import { subst } from 'fast-url';
+formatVnCurrency(BigInt('9999999999999999'));
+// → "9.999.999.999.999.999 ₫"
 
-// Missing parameter throws error
-try {
-  subst('/users/:id', {});
-} catch (error) {
-  console.error(error.message);
-  // → "Missing value for path parameter id."
-}
+// Decimal amounts (for partial dong, though rare in practice)
+formatVnCurrency(1234.56);
+// → "1.234,56 ₫"
 
-// Invalid type throws error
-try {
-  subst('/users/:id', { id: {} });
-} catch (error) {
-  console.error(error.message);
-  // → "Path parameter id cannot be of type object. Allowed types are: boolean, string, number."
-}
+// Handling invalid input with fallback
+formatVnCurrency(null);
+// → "0 ₫" (default fallback)
 
-// Empty string throws error
-try {
-  subst('/users/:id', { id: '' });
-} catch (error) {
-  console.error(error.message);
-  // → "Path parameter id cannot be an empty string."
-}
+formatVnCurrency(null, 'Không giới hạn');
+// → "Không giới hạn"
+
+formatVnCurrency(undefined, '');
+// → ""
+
+formatVnCurrency('invalid', 'Lỗi');
+// → "Lỗi"
+
+formatVnCurrency(Number.NaN, 'Không xác định');
+// → "Không xác định"
+
+// String numbers are parsed
+formatVnCurrency('1250000');
+// → "1.250.000 ₫"
 ```
 
 **Use Cases:**
 
-- Building URL paths without query strings
-- Template rendering
-- Path parameter validation
+- E-commerce price displays
+- Payment forms and receipts
+- Financial dashboards
+- Shopping cart totals
+- Pricing tables
+- Accounting applications
 
 ---
 
-### `join()`
+### `formatVnPercent()`
 
-Join two strings using a separator, ensuring exactly one occurrence at the boundary.
+Formats a number or decimal as a Vietnamese percentage.
 
 ```typescript
-function join(part1: string, separator: string, part2: string): string;
+function formatVnPercent(
+  value: NumberType,
+  fallbackValue: string = '0%',
+): string;
 ```
 
 **Parameters:**
 
-- `part1` - First string
-- `separator` - Separator character(s)
-- `part2` - Second string
+- `value` - The value to format (0-1 for percentages, or any number)
+- `fallbackValue` - The value to return if formatting fails (default: `'0%'`)
 
-**Returns:** Joined string with exactly one separator
+**Returns:** Formatted percentage with `%` symbol, or the fallback value
+
+**Note:** The function multiplies the input by 100, so `0.5` becomes `50%`. Use `5` directly if you want `500%`.
 
 **Examples:**
 
-```javascript
-import { join } from 'fast-url';
+```ts
+import { formatVnPercent } from 'vn-number';
 
-// URL path joining
-const url1 = join('http://api.example.com/', '/', '/users');
-console.log(url1);
-// → 'http://api.example.com/users'
+// Basic percentage formatting
+formatVnPercent(0.5);
+// → "50%"
 
-// Works with different separators
-const url2 = join('http://api.example.com', '/', 'users');
-console.log(url2);
-// → 'http://api.example.com/users'
+formatVnPercent(0.991);
+// → "99,1%"
 
-// Query string joining
-const query1 = join('name=John', '&', '&age=30');
-console.log(query1);
-// → 'name=John&age=30'
+formatVnPercent(1);
+// → "100%"
 
-// Handles empty strings
-const url3 = join('', '/', 'users');
-console.log(url3);
-// → 'users'
+formatVnPercent(0.1234);
+// → "12,34%"
 
-const url4 = join('http://api.example.com', '/', '');
-console.log(url4);
-// → 'http://api.example.com'
+// Values over 1 (multiplied by 100)
+formatVnPercent(1.5);
+// → "150%"
 
-// Multiple character separators
-const text = join('Hello', ', ', ', World');
-console.log(text);
-// → 'Hello, World'
+formatVnPercent(2);
+// → "200%"
+
+// Very small percentages
+formatVnPercent(0.001);
+// → "0,1%"
+
+formatVnPercent(0.0025);
+// → "0,25%"
+
+// Zero
+formatVnPercent(0);
+// → "0%"
+
+// Negative percentages
+formatVnPercent(-0.15);
+// → "-15%"
+
+// Using bigint (treated as whole number, multiplied by 100)
+formatVnPercent(BigInt(1));
+// → "100%"
+
+formatVnPercent(BigInt(5));
+// → "500%"
+
+// Handling invalid input with fallback
+formatVnPercent('invalid');
+// → "0%" (default fallback)
+
+formatVnPercent(null, 'N/A');
+// → "N/A"
+
+formatVnPercent(undefined, '');
+// → ""
+
+formatVnPercent('null', 'Không xác định');
+// → "Không xác định"
+
+formatVnPercent(Number.NaN, 'Lỗi');
+// → "Lỗi"
+
+// String numbers are parsed
+formatVnPercent('0.99');
+// → "99%"
+
+formatVnPercent('0.5');
+// → "50%"
 ```
 
 **Use Cases:**
 
-- Safe URL concatenation
-- Building paths from segments
-- Joining strings with any separator
+- Growth rate displays
+- Discount badges in e-commerce
+- Statistical dashboards
+- Progress indicators
+- Financial metrics (ROI, profit margin, etc.)
+- Survey results
 
 ---
 
 ## Advanced Examples
 
-### Building Complex API Clients
+### Complete E-commerce Product Card
 
-```typescript
-import { createUrl, query } from 'fast-url';
+```tsx
+import { formatVnCurrency, formatVnPercent, readVnNumber } from 'vn-number';
 
-class GitHubAPI {
-  private baseUrl = 'https://api.github.com';
-
-  // List user repositories with filters
-  getUserRepos(
-    username: string,
-    options: {
-      type?: 'all' | 'owner' | 'member';
-      sort?: 'created' | 'updated' | 'pushed' | 'full_name';
-      direction?: 'asc' | 'desc';
-      per_page?: number;
-      page?: number;
-    } = {}
-  ) {
-    return createUrl(this.baseUrl, '/users/:username/repos', {
-      username,
-      ...options,
-    });
-  }
-
-  // Get a specific commit
-  getCommit(owner: string, repo: string, sha: string) {
-    return createUrl(this.baseUrl, '/repos/:owner/:repo/commits/:sha', {
-      owner,
-      repo,
-      sha,
-    });
-  }
-
-  // Search repositories
-  searchRepos(
-    q: string,
-    options: {
-      sort?: 'stars' | 'forks' | 'updated';
-      order?: 'asc' | 'desc';
-      per_page?: number;
-    } = {}
-  ) {
-    return createUrl(this.baseUrl, '/search/repositories', {
-      q,
-      ...options,
-    });
-  }
+interface Product {
+  name: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
 }
 
-const github = new GitHubAPI();
+function ProductCard({ name, price, originalPrice, discount }: Product) {
+  const priceText = formatVnCurrency(price);
+  const priceInWords = readVnNumber(price);
 
-console.log(
-  github.getUserRepos('octocat', {
-    type: 'owner',
-    sort: 'updated',
-    per_page: 50,
-  })
-);
-// → https://api.github.com/users/octocat/repos?type=owner&sort=updated&per_page=50
-
-console.log(github.getCommit('facebook', 'react', 'abc123'));
-// → https://api.github.com/repos/facebook/react/commits/abc123
-
-console.log(
-  github.searchRepos('fast-url language:typescript', {
-    sort: 'stars',
-    order: 'desc',
-  })
-);
-// → https://api.github.com/search/repositories?q=fast-url%20language%3Atypescript&sort=stars&order=desc
-```
-
-### Dynamic Route Building
-
-```typescript
-import { createUrl } from 'fast-url';
-
-// Route configuration
-const routes = {
-  home: '/',
-  userProfile: '/users/:userId',
-  userPosts: '/users/:userId/posts',
-  post: '/posts/:postId',
-  search: '/search',
-};
-
-// Helper to build routes
-function route(name: keyof typeof routes, params: Record<string, any> = {}) {
-  return createUrl('https://myblog.com', routes[name], params);
+  return (
+    <div className="product-card">
+      <h3>{name}</h3>
+      <div className="price">
+        <span className="current">{priceText}</span>
+        {originalPrice && (
+          <span className="original">{formatVnCurrency(originalPrice)}</span>
+        )}
+      </div>
+      {discount && (
+        <span className="discount-badge">Giảm {formatVnPercent(discount)}</span>
+      )}
+      <p className="price-words" aria-label={`Giá ${priceInWords} đồng`}>
+        {priceInWords} đồng
+      </p>
+    </div>
+  );
 }
 
-console.log(route('home'));
-// → https://myblog.com/
-
-console.log(route('userProfile', { userId: 123 }));
-// → https://myblog.com/users/123
-
-console.log(route('userPosts', { userId: 123, page: 2 }));
-// → https://myblog.com/users/123/posts?page=2
-
-console.log(route('search', { q: 'typescript', tag: 'tutorial' }));
-// → https://myblog.com/search?q=typescript&tag=tutorial
+// Usage
+<ProductCard
+  name="Laptop Dell XPS 13"
+  price={25000000}
+  originalPrice={30000000}
+  discount={0.166}
+/>;
+// Displays:
+// Current price: "25.000.000 ₫"
+// Original price: "30.000.000 ₫"
+// Discount: "Giảm 16,6%"
+// Words: "hai mươi lăm triệu đồng"
 ```
 
-### Pagination Helper
+### Financial Dashboard Statistics
 
-```typescript
-import { createUrl } from 'fast-url';
+```tsx
+import { formatVnNumber, formatVnCurrency, formatVnPercent } from 'vn-number';
 
-function buildPaginatedUrl(
-  baseUrl: string,
-  path: string,
-  page: number,
-  pageSize: number,
-  filters: Record<string, any> = {}
-) {
-  return createUrl(baseUrl, path, {
-    ...filters,
-    page,
-    per_page: pageSize,
-    offset: (page - 1) * pageSize,
-  });
+interface Statistics {
+  revenue: number;
+  users: number;
+  growth: number;
+  conversion: number;
 }
 
-console.log(
-  buildPaginatedUrl('https://api.example.com', '/products', 3, 20, {
-    category: 'electronics',
-    sort: 'price',
-  })
-);
-// → https://api.example.com/products?category=electronics&sort=price&page=3&per_page=20&offset=40
+function Dashboard({ revenue, users, growth, conversion }: Statistics) {
+  return (
+    <div className="dashboard">
+      <div className="stat-card">
+        <h4>Doanh thu</h4>
+        <p className="value">{formatVnCurrency(revenue)}</p>
+        <p className="growth">
+          {growth >= 0 ? '↑' : '↓'} {formatVnPercent(Math.abs(growth))}
+        </p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Người dùng</h4>
+        <p className="value">{formatVnNumber(users)}</p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Tỷ lệ chuyển đổi</h4>
+        <p className="value">{formatVnPercent(conversion)}</p>
+      </div>
+    </div>
+  );
+}
+
+// Usage
+<Dashboard
+  revenue={125000000}
+  users={1234567}
+  growth={0.157}
+  conversion={0.0342}
+/>;
 ```
 
-## Performance Notes
+### Bank Check Generator
 
-fast-url is optimized for performance:
+```ts
+import { readVnNumber, formatVnCurrency } from 'vn-number';
 
-- **Query string encoding**: Matches Node.js performance with optimized implementations
-- **Direct constant access**: Better V8 JIT optimization
-- **Minimal allocations**: Efficient memory usage
-- **Zero dependencies**: Only relies on fast-querystring
+function generateCheckText(amount: number, recipient: string): string {
+  const amountFormatted = formatVnCurrency(amount);
+  const amountInWords = readVnNumber(amount);
 
-<Callout title="Benchmarks" type="success">
-  In performance benchmarks, fast-url achieves 5-20% better performance than the
-  original urlcat implementation in many scenarios while maintaining full
-  compatibility.
+  return `
+Trả cho: ${recipient}
+Số tiền: ${amountFormatted}
+Bằng chữ: ${amountInWords.charAt(0).toUpperCase() + amountInWords.slice(1)} đồng chẵn
+  `.trim();
+}
+
+console.log(generateCheckText(2450000, 'Nguyễn Văn A'));
+// Output:
+// Trả cho: Nguyễn Văn A
+// Số tiền: 2.450.000 ₫
+// Bằng chữ: Hai triệu bốn trăm năm mươi nghìn đồng chẵn
+```
+
+### Form Input Helpers
+
+```tsx
+import { formatVnNumber, formatVnCurrency } from 'vn-number';
+
+function PriceInput() {
+  const [value, setValue] = React.useState('');
+  const [preview, setPreview] = React.useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\./g, '');
+    setValue(rawValue);
+
+    // Show formatted preview
+    const numValue = parseFloat(rawValue);
+    if (!isNaN(numValue)) {
+      setPreview(formatVnCurrency(numValue));
+    } else {
+      setPreview('');
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={value}
+        onChange={handleChange}
+        placeholder="Nhập số tiền"
+      />
+      {preview && <p className="preview">{preview}</p>}
+    </div>
+  );
+}
+```
+
+## Error Handling
+
+All formatting functions (`formatVnNumber`, `formatVnCurrency`, `formatVnPercent`) gracefully handle invalid input:
+
+```ts
+import { formatVnNumber, formatVnCurrency, formatVnPercent } from 'vn-number';
+
+// Invalid strings return fallback
+formatVnNumber('not a number'); // → "0"
+formatVnCurrency('invalid', 'Error'); // → "Error"
+formatVnPercent('xyz'); // → "0%"
+
+// Null and undefined return fallback
+formatVnNumber(null, '-'); // → "-"
+formatVnCurrency(undefined); // → "0 ₫"
+formatVnPercent(null); // → "0%"
+
+// NaN returns fallback
+formatVnNumber(Number.NaN); // → "0"
+formatVnCurrency(Number.NaN, 'N/A'); // → "N/A"
+formatVnPercent(Number.NaN); // → "0%"
+```
+
+<Callout title="Type Safety" type="info">
+  The `readVnNumber` function expects valid numeric input (string, number, or
+  bigint). Always validate user input before passing to this function. The
+  formatting functions are more forgiving and provide fallback values for
+  invalid input.
 </Callout>
 
-## Browser and Node.js Compatibility
+## Browser and Runtime Compatibility
 
-fast-url works in all modern JavaScript environments:
+vn-number works in all modern JavaScript environments:
 
 - ✅ Node.js 14+
 - ✅ Bun
@@ -514,14 +594,10 @@ fast-url works in all modern JavaScript environments:
 - ✅ Modern browsers (Chrome, Firefox, Safari, Edge)
 - ✅ React Native
 - ✅ Electron
+- ✅ Edge Runtime (Vercel, Cloudflare Workers, etc.)
 
-## Next Steps
-
-<Cards>
-  <Card title="Getting Started" href="/docs/getting-started">
-    Learn how to install and use fast-url in your project
-  </Card>
-  <Card title="Introduction" href="/docs/introduction">
-    Understand why fast-url was created and its key features
-  </Card>
-</Cards>
+<Callout title="Zero Dependencies" type="success">
+  vn-number uses the standard Intl.NumberFormat API for formatting, ensuring
+  consistent behavior across all JavaScript environments without external
+  dependencies.
+</Callout>

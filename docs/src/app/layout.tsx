@@ -6,21 +6,27 @@ import { jetbrainsMono } from '@/fonts'
 export const metadata: Metadata = {
   title: {
     default:
-      'fast-url - High-Performance URL Builder for JavaScript & TypeScript',
-    template: '%s | fast-url',
+      'vn-number - Vietnamese Number Utilities for JavaScript & TypeScript',
+    template: '%s | vn-number',
   },
   description:
-    'Build correct URLs easily with fast-url. A fast, type-safe, lightweight URL building library for JavaScript and TypeScript. Modern fork of urlcat with better performance.',
+    'A bunch of utility functions that work with numbers in Vietnamese language. Zero dependencies, type-safe, and built for Edge runtime. Read, format, and display numbers in Vietnamese.',
   keywords: [
-    'url builder',
-    'urlcat',
-    'url',
-    'query string',
+    'vietnamese',
+    'vietnam',
+    'vn',
+    'number',
+    'number formatting',
+    'currency',
+    'vnd',
+    'vietnamese dong',
+    'read number',
     'typescript',
     'javascript',
-    'fast-url',
-    'url encoding',
-    'path parameters',
+    'vietnamese language',
+    'number to text',
+    'format currency',
+    'percentage',
   ],
   authors: [
     {
@@ -29,21 +35,21 @@ export const metadata: Metadata = {
     },
   ],
   creator: 'Khánh Hoàng',
-  metadataBase: new URL('https://fast-url.khanh.id'),
+  metadataBase: new URL('https://vn-number.khanh.id'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://fast-url.khanh.id',
-    title: 'fast-url - High-Performance URL Builder',
+    url: 'https://vn-number.khanh.id',
+    title: 'vn-number - Vietnamese Number Utilities',
     description:
-      'Build correct URLs easily. Fast, type-safe, lightweight URL building library for JavaScript and TypeScript.',
-    siteName: 'fast-url',
+      'A bunch of utility functions that work with numbers in Vietnamese language. Read, format, and display numbers in Vietnamese.',
+    siteName: 'vn-number',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'fast-url - High-Performance URL Builder',
+    title: 'vn-number - Vietnamese Number Utilities',
     description:
-      'Build correct URLs easily. Fast, type-safe, lightweight URL building library for JavaScript and TypeScript.',
+      'A bunch of utility functions that work with numbers in Vietnamese language. Read, format, and display numbers in Vietnamese.',
   },
   robots: {
     index: true,
