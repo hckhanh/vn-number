@@ -30,7 +30,7 @@ function getUnitSuffix(
   const needsBillionSuffix = positionFromRight >= 3 && hasTrailingZeros
 
   if (type === 3) {
-    // Billion: double "tỷ" for second billion cycle (position >= 6)
+    // Billion: double "tỷ" for the second billion cycle (position >= 6)
     if (positionFromRight >= 6 && hasTrailingZeros) {
       return ' tỷ tỷ'
     }
@@ -72,7 +72,7 @@ function processFirstGroup(
 }
 
 /**
- * Process a subsequent (non-first) group in the number sequence
+ * Process the later (non-first) group in the number sequence
  */
 function processSubsequentGroup(
   group: string,

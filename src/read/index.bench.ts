@@ -28,33 +28,41 @@ describe('readVnNumber - typical usage scenarios', () => {
 })
 
 describe('readVnNumber - realistic batch operations', () => {
-  bench('read 50 product quantities (1-100)', () => {
-    for (let i = 0; i < 50; i++) {
+  bench(
+    'read 50 product quantities (1-100)',
+    () => {
       const quantity = Math.floor(Math.random() * 100) + 1
       readVnNumber(quantity)
-    }
-  })
+    },
+    { iterations: 50 },
+  )
 
-  bench('read 50 e-commerce prices (10k-50M VND)', () => {
-    for (let i = 0; i < 50; i++) {
+  bench(
+    'read 50 e-commerce prices (10k-50M VND)',
+    () => {
       const price = Math.floor(Math.random() * 49990000) + 10000
       readVnNumber(price)
-    }
-  })
+    },
+    { iterations: 50 },
+  )
 
-  bench('read 50 invoice totals (100k-100M VND)', () => {
-    for (let i = 0; i < 50; i++) {
+  bench(
+    'read 50 invoice totals (100k-100M VND)',
+    () => {
       const total = Math.floor(Math.random() * 99900000) + 100000
       readVnNumber(total)
-    }
-  })
+    },
+    { iterations: 50 },
+  )
 
-  bench('read 50 financial amounts (1M-10B VND)', () => {
-    for (let i = 0; i < 50; i++) {
+  bench(
+    'read 50 financial amounts (1M-10B VND)',
+    () => {
       const amount = Math.floor(Math.random() * 9999000000) + 1000000
       readVnNumber(amount)
-    }
-  })
+    },
+    { iterations: 50 },
+  )
 })
 
 describe('readVnNumber - real-world application scenarios', () => {
@@ -74,8 +82,9 @@ describe('readVnNumber - real-world application scenarios', () => {
     })
   })
 
-  bench('display invoice line items (10 items)', () => {
-    for (let i = 0; i < 10; i++) {
+  bench(
+    'display invoice line items (10 items)',
+    () => {
       const quantity = Math.floor(Math.random() * 20) + 1
       const unitPrice = Math.floor(Math.random() * 5000000) + 50000
       const lineTotal = quantity * unitPrice
@@ -83,8 +92,9 @@ describe('readVnNumber - real-world application scenarios', () => {
       readVnNumber(quantity)
       readVnNumber(unitPrice)
       readVnNumber(lineTotal)
-    }
-  })
+    },
+    { iterations: 10 },
+  )
 
   bench('display financial dashboard (20 metrics)', () => {
     const metrics = {
@@ -113,8 +123,9 @@ describe('readVnNumber - real-world application scenarios', () => {
     })
   })
 
-  bench('display product catalog (20 products)', () => {
-    for (let i = 0; i < 20; i++) {
+  bench(
+    'display product catalog (20 products)',
+    () => {
       const price = Math.floor(Math.random() * 10000000) + 10000
       const stock = Math.floor(Math.random() * 1000) + 1
       const sold = Math.floor(Math.random() * 5000)
@@ -122,8 +133,9 @@ describe('readVnNumber - real-world application scenarios', () => {
       readVnNumber(price)
       readVnNumber(stock)
       readVnNumber(sold)
-    }
-  })
+    },
+    { iterations: 20 },
+  )
 
   bench('display payment receipt (typical transaction)', () => {
     const subtotal = 5450000

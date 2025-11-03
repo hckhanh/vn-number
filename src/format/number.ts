@@ -1,4 +1,12 @@
 /**
+ * NumberType is a TypeScript type alias that represents a value
+ * which can be of the following types: string, number, bigint,
+ * null, or undefined. It is intended to be used in scenarios
+ * where a variable can accept any of these types as a valid value.
+ */
+type NumberType = string | number | bigint | null | undefined
+
+/**
  * Formats a number using the provided formatter.
  * @param number The number to format.
  * @param formatter The formatter to use for number formatting.
@@ -6,7 +14,7 @@
  * @return The formatted number or the `fallbackValue` if formatting fails.
  */
 function formatNumber(
-  number: string | number | bigint | null | undefined,
+  number: NumberType,
   formatter: Intl.NumberFormat,
   fallbackValue: string,
 ) {
@@ -35,7 +43,7 @@ const VN_NUMBER_FORMATTER = new Intl.NumberFormat('vi-VN')
  * @return The formatted number or the `fallbackValue` if formatting fails.
  */
 export function formatVnNumber(
-  number: string | number | bigint | null | undefined,
+  number: NumberType,
   fallbackValue: string = '0',
 ): string {
   return formatNumber(number, VN_NUMBER_FORMATTER, fallbackValue)
@@ -60,7 +68,7 @@ const VN_CURRENCY_FORMATTER = new Intl.NumberFormat('vi-VN', {
  * @return The value formatted as VND currency, or the `fallbackValue` if `money` is not a valid number.
  */
 export function formatVnCurrency(
-  money: string | number | bigint | null | undefined,
+  money: NumberType,
   fallbackValue: string = '0\u00A0₫',
 ): string {
   return formatNumber(money, VN_CURRENCY_FORMATTER, fallbackValue)
@@ -87,7 +95,7 @@ const VN_PERCENT_FORMATTER = new Intl.NumberFormat('vi-VN', {
  * @return The value formatted as a Vietnamese percentage, or the `fallbackValue` if `value` is not a valid number.
  */
 export function formatVnPercent(
-  value: string | number | bigint | null | undefined,
+  value: NumberType,
   fallbackValue: string = '0%',
 ): string {
   return formatNumber(value, VN_PERCENT_FORMATTER, fallbackValue)

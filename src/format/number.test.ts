@@ -34,7 +34,7 @@ describe('formatVnNumber', () => {
   })
 
   it('format NaN value by empty value', () => {
-    expect(formatVnNumber(NaN, '')).to.eq('')
+    expect(formatVnNumber(Number.NaN, '')).to.eq('')
   })
 })
 
@@ -71,7 +71,7 @@ describe('formatVnCurrency', () => {
   })
 
   it('format NaN value by empty value', () => {
-    expect(formatVnCurrency(NaN, '')).to.eq('')
+    expect(formatVnCurrency(Number.NaN, '')).to.eq('')
   })
 })
 
@@ -113,6 +113,6 @@ describe('formatVnPercent', () => {
   })
 
   it('format NaN value by empty value', () => {
-    expect(formatVnPercent(NaN, '')).to.eq('')
+    expect(formatVnPercent(Number.NaN, '')).to.eq('')
   })
 })

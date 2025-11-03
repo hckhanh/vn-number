@@ -1,7 +1,7 @@
 import { getDigitWord } from './digits.ts'
 
 /**
- * Read the hundreds digit
+ * Read the "hundreds" digit
  */
 function readHundreds(first: string, hasHundredsPosition: boolean): string {
   if (!hasHundredsPosition) return ''
@@ -9,7 +9,7 @@ function readHundreds(first: string, hasHundredsPosition: boolean): string {
 }
 
 /**
- * Read the tens digit
+ * Read the "tens" digit
  */
 function readTens(second: string, hasTensPosition: boolean): string {
   if (!hasTensPosition) return ''
@@ -20,7 +20,7 @@ function readTens(second: string, hasTensPosition: boolean): string {
 }
 
 /**
- * Read the ones digit with special rules
+ * Read the "ones" digit with special rules
  */
 function readOnes(
   last: string,
@@ -102,7 +102,7 @@ export function readFirstGroup(group: string): string {
 }
 
 /**
- * Read the subsequent (non-first) group in the number sequence
+ * Read the later (non-first) group in the number sequence
  */
 export function readSubsequentGroup(group: string): string {
   if (isAllZeros(group)) {

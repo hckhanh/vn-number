@@ -2,7 +2,7 @@ import { calculateGroupTypes, processGroup } from './groups.ts'
 import { splitIntoGroups } from './utils.ts'
 
 /**
- * This is a helper that convert a number to a string like the way a real Vietnamese.
+ * This is a helper that converts a number to a string like the way a real Vietnamese.
  * It can be used with unlimited value (use {@link string} for number bigger than {@link bigint})
  *
  * @example
