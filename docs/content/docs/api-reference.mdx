@@ -1,0 +1,527 @@
+---
+title: API Reference
+description: Complete API documentation for all fast-url functions with detailed examples and type signatures
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Cards, Card } from 'fumadocs-ui/components/card';
+
+# API Reference
+
+Complete reference for all functions exported by fast-url.
+
+## Type Definitions
+
+### `ParamMap`
+
+The base type for parameter objects used throughout the API.
+
+```typescript
+type ParamMap = Record<string, unknown>;
+```
+
+All parameter values are converted to strings during URL encoding. The following types are supported:
+
+- `string` - Used as-is (after URL encoding)
+- `number` - Converted to string
+- `boolean` - Converted to `'true'` or `'false'`
+- `Array` - Each element becomes a separate parameter with the same key
+- `null` / `undefined` - Filtered out and not included in the URL
+
+---
+
+## Main Functions
+
+### `createUrl()`
+
+The primary function for building URLs with multiple overloads for different use cases.
+
+#### Signature 1: Base Template with Parameters
+
+Build a URL using only a template string with path parameters. Unused parameters become query parameters.
+
+```typescript
+function createUrl(baseTemplate: string, params: ParamMap): string;
+```
+
+**Parameters:**
+
+- `baseTemplate` - A URL template containing zero or more `:param` placeholders
+- `params` - Object with properties that correspond to the `:params` in the template
+
+**Returns:** A complete URL with path parameters substituted and unused parameters as query string
+
+**Example:**
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const url = createUrl('http://api.example.com/users/:id', {
+  id: 42,
+  search: 'foo',
+  active: true,
+});
+console.log(url);
+// → 'http://api.example.com/users/42?search=foo&active=true'
+```
+
+#### Signature 2: Base URL with Path
+
+Concatenate a base URL and path using `/` as separator. Handles duplicate slashes automatically.
+
+```typescript
+function createUrl(baseUrl: string, path: string): string;
+```
+
+**Parameters:**
+
+- `baseUrl` - The first part of the URL
+- `path` - The second part of the URL to append
+
+**Returns:** Concatenated URL with exactly one `/` separator
+
+**Example:**
+
+```javascript
+import { createUrl } from 'fast-url';
+
+// Handles trailing/leading slashes
+const url1 = createUrl('http://api.example.com/', '/users');
+console.log(url1);
+// → 'http://api.example.com/users'
+
+// Works without slashes too
+const url2 = createUrl('http://api.example.com', 'users');
+console.log(url2);
+// → 'http://api.example.com/users'
+```
+
+#### Signature 3: Complete URL Building
+
+Build a complete URL by combining base URL, path template, and parameters.
+
+```typescript
+function createUrl(
+  baseUrl: string,
+  pathTemplate: string,
+  params: ParamMap
+): string;
+```
+
+**Parameters:**
+
+- `baseUrl` - The base URL (protocol + domain)
+- `pathTemplate` - Path template with optional `:param` placeholders
+- `params` - Object with path and query parameters
+
+**Returns:** Complete URL with substituted path parameters and query string
+
+**Example:**
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const url = createUrl('http://api.example.com/', '/users/:id', {
+  id: 42,
+  search: 'foo',
+  limit: 10,
+  offset: 20,
+});
+console.log(url);
+// → 'http://api.example.com/users/42?search=foo&limit=10&offset=20'
+```
+
+<Callout title="Path vs Query Parameters" type="info">
+  Parameters that match `:param` placeholders in the path template are used for
+  path substitution. All other parameters become query string parameters.
+</Callout>
+
+---
+
+## Utility Functions
+
+### `query()`
+
+Build a query string from a parameter object.
+
+```typescript
+function query(params: ParamMap): string;
+```
+
+**Parameters:**
+
+- `params` - Object to convert into a query string
+
+**Returns:** URL-encoded query string (without leading `?`)
+
+**Examples:**
+
+```javascript
+import { query } from 'fast-url';
+
+// Basic usage
+const q1 = query({ name: 'John', age: 30 });
+console.log(q1);
+// → 'name=John&age=30'
+
+// Special characters are encoded
+const q2 = query({
+  search: 'hello world',
+  filter: 'price>100',
+});
+console.log(q2);
+// → 'search=hello%20world&filter=price%3E100'
+
+// Arrays create repeated parameters
+const q3 = query({
+  tags: ['javascript', 'typescript'],
+  limit: 10,
+});
+console.log(q3);
+// → 'tags=javascript&tags=typescript&limit=10'
+
+// Null and undefined are filtered out
+const q4 = query({
+  name: 'John',
+  age: null,
+  city: undefined,
+  country: 'USA',
+});
+console.log(q4);
+// → 'name=John&country=USA'
+
+// Empty object returns empty string
+const q5 = query({});
+console.log(q5);
+// → ''
+```
+
+**Use Cases:**
+
+- Building query strings independently
+- Updating existing URLs with new parameters
+- Creating search or filter parameters
+
+---
+
+### `subst()`
+
+Substitute path parameters in a template string without building a full URL.
+
+```typescript
+function subst(template: string, params: ParamMap): string;
+```
+
+**Parameters:**
+
+- `template` - String containing `:param` placeholders
+- `params` - Object with keys matching the placeholders
+
+**Returns:** Template with all `:param` placeholders replaced with URL-encoded values
+
+**Examples:**
+
+```javascript
+import { subst } from 'fast-url';
+
+// Basic substitution
+const path1 = subst('/users/:id/posts/:postId', {
+  id: 42,
+  postId: 123,
+});
+console.log(path1);
+// → '/users/42/posts/123'
+
+// Extra parameters are ignored
+const path2 = subst('/users/:id', {
+  id: 42,
+  limit: 10, // Ignored
+  sort: 'name', // Ignored
+});
+console.log(path2);
+// → '/users/42'
+
+// Special characters in values are encoded
+const path3 = subst('/search/:query', {
+  query: 'hello world & goodbye',
+});
+console.log(path3);
+// → '/search/hello%20world%20%26%20goodbye'
+
+// Unicode is properly handled
+const path4 = subst('/users/:name', {
+  name: '田中',
+});
+console.log(path4);
+// → '/users/%E7%94%B0%E4%B8%AD'
+```
+
+**Errors:**
+
+```javascript
+import { subst } from 'fast-url';
+
+// Missing parameter throws error
+try {
+  subst('/users/:id', {});
+} catch (error) {
+  console.error(error.message);
+  // → "Missing value for path parameter id."
+}
+
+// Invalid type throws error
+try {
+  subst('/users/:id', { id: {} });
+} catch (error) {
+  console.error(error.message);
+  // → "Path parameter id cannot be of type object. Allowed types are: boolean, string, number."
+}
+
+// Empty string throws error
+try {
+  subst('/users/:id', { id: '' });
+} catch (error) {
+  console.error(error.message);
+  // → "Path parameter id cannot be an empty string."
+}
+```
+
+**Use Cases:**
+
+- Building URL paths without query strings
+- Template rendering
+- Path parameter validation
+
+---
+
+### `join()`
+
+Join two strings using a separator, ensuring exactly one occurrence at the boundary.
+
+```typescript
+function join(part1: string, separator: string, part2: string): string;
+```
+
+**Parameters:**
+
+- `part1` - First string
+- `separator` - Separator character(s)
+- `part2` - Second string
+
+**Returns:** Joined string with exactly one separator
+
+**Examples:**
+
+```javascript
+import { join } from 'fast-url';
+
+// URL path joining
+const url1 = join('http://api.example.com/', '/', '/users');
+console.log(url1);
+// → 'http://api.example.com/users'
+
+// Works with different separators
+const url2 = join('http://api.example.com', '/', 'users');
+console.log(url2);
+// → 'http://api.example.com/users'
+
+// Query string joining
+const query1 = join('name=John', '&', '&age=30');
+console.log(query1);
+// → 'name=John&age=30'
+
+// Handles empty strings
+const url3 = join('', '/', 'users');
+console.log(url3);
+// → 'users'
+
+const url4 = join('http://api.example.com', '/', '');
+console.log(url4);
+// → 'http://api.example.com'
+
+// Multiple character separators
+const text = join('Hello', ', ', ', World');
+console.log(text);
+// → 'Hello, World'
+```
+
+**Use Cases:**
+
+- Safe URL concatenation
+- Building paths from segments
+- Joining strings with any separator
+
+---
+
+## Advanced Examples
+
+### Building Complex API Clients
+
+```typescript
+import { createUrl, query } from 'fast-url';
+
+class GitHubAPI {
+  private baseUrl = 'https://api.github.com';
+
+  // List user repositories with filters
+  getUserRepos(
+    username: string,
+    options: {
+      type?: 'all' | 'owner' | 'member';
+      sort?: 'created' | 'updated' | 'pushed' | 'full_name';
+      direction?: 'asc' | 'desc';
+      per_page?: number;
+      page?: number;
+    } = {}
+  ) {
+    return createUrl(this.baseUrl, '/users/:username/repos', {
+      username,
+      ...options,
+    });
+  }
+
+  // Get a specific commit
+  getCommit(owner: string, repo: string, sha: string) {
+    return createUrl(this.baseUrl, '/repos/:owner/:repo/commits/:sha', {
+      owner,
+      repo,
+      sha,
+    });
+  }
+
+  // Search repositories
+  searchRepos(
+    q: string,
+    options: {
+      sort?: 'stars' | 'forks' | 'updated';
+      order?: 'asc' | 'desc';
+      per_page?: number;
+    } = {}
+  ) {
+    return createUrl(this.baseUrl, '/search/repositories', {
+      q,
+      ...options,
+    });
+  }
+}
+
+const github = new GitHubAPI();
+
+console.log(
+  github.getUserRepos('octocat', {
+    type: 'owner',
+    sort: 'updated',
+    per_page: 50,
+  })
+);
+// → https://api.github.com/users/octocat/repos?type=owner&sort=updated&per_page=50
+
+console.log(github.getCommit('facebook', 'react', 'abc123'));
+// → https://api.github.com/repos/facebook/react/commits/abc123
+
+console.log(
+  github.searchRepos('fast-url language:typescript', {
+    sort: 'stars',
+    order: 'desc',
+  })
+);
+// → https://api.github.com/search/repositories?q=fast-url%20language%3Atypescript&sort=stars&order=desc
+```
+
+### Dynamic Route Building
+
+```typescript
+import { createUrl } from 'fast-url';
+
+// Route configuration
+const routes = {
+  home: '/',
+  userProfile: '/users/:userId',
+  userPosts: '/users/:userId/posts',
+  post: '/posts/:postId',
+  search: '/search',
+};
+
+// Helper to build routes
+function route(name: keyof typeof routes, params: Record<string, any> = {}) {
+  return createUrl('https://myblog.com', routes[name], params);
+}
+
+console.log(route('home'));
+// → https://myblog.com/
+
+console.log(route('userProfile', { userId: 123 }));
+// → https://myblog.com/users/123
+
+console.log(route('userPosts', { userId: 123, page: 2 }));
+// → https://myblog.com/users/123/posts?page=2
+
+console.log(route('search', { q: 'typescript', tag: 'tutorial' }));
+// → https://myblog.com/search?q=typescript&tag=tutorial
+```
+
+### Pagination Helper
+
+```typescript
+import { createUrl } from 'fast-url';
+
+function buildPaginatedUrl(
+  baseUrl: string,
+  path: string,
+  page: number,
+  pageSize: number,
+  filters: Record<string, any> = {}
+) {
+  return createUrl(baseUrl, path, {
+    ...filters,
+    page,
+    per_page: pageSize,
+    offset: (page - 1) * pageSize,
+  });
+}
+
+console.log(
+  buildPaginatedUrl('https://api.example.com', '/products', 3, 20, {
+    category: 'electronics',
+    sort: 'price',
+  })
+);
+// → https://api.example.com/products?category=electronics&sort=price&page=3&per_page=20&offset=40
+```
+
+## Performance Notes
+
+fast-url is optimized for performance:
+
+- **Query string encoding**: Matches Node.js performance with optimized implementations
+- **Direct constant access**: Better V8 JIT optimization
+- **Minimal allocations**: Efficient memory usage
+- **Zero dependencies**: Only relies on fast-querystring
+
+<Callout title="Benchmarks" type="success">
+  In performance benchmarks, fast-url achieves 5-20% better performance than the
+  original urlcat implementation in many scenarios while maintaining full
+  compatibility.
+</Callout>
+
+## Browser and Node.js Compatibility
+
+fast-url works in all modern JavaScript environments:
+
+- ✅ Node.js 14+
+- ✅ Bun
+- ✅ Deno
+- ✅ Modern browsers (Chrome, Firefox, Safari, Edge)
+- ✅ React Native
+- ✅ Electron
+
+## Next Steps
+
+<Cards>
+  <Card title="Getting Started" href="/docs/getting-started">
+    Learn how to install and use fast-url in your project
+  </Card>
+  <Card title="Introduction" href="/docs/introduction">
+    Understand why fast-url was created and its key features
+  </Card>
+</Cards>

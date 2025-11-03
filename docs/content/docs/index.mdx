@@ -1,0 +1,220 @@
+---
+title: Introduction
+description: Learn about fast-url – a high-performance URL building library that makes constructing URLs safe and convenient
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Feather, ShieldCheck, Lock, Globe, Wrench, Zap } from 'lucide-react';
+
+# Introduction
+
+**fast-url** is a lightweight, high-performance JavaScript/TypeScript library for building URLs safely and conveniently. It's a modern fork of [urlcat](https://github.com/balazsbotond/urlcat) with a strong focus on performance optimization and code simplicity.
+
+<Callout title="Why fast-url?" type="info">
+  Building URLs manually is error-prone and tedious. fast-url handles parameter
+  escaping, proper URL segment joining, and clean separation of path and query
+  parameters automatically.
+</Callout>
+
+## Why This Fork Was Created
+
+The original [urlcat](https://github.com/balazsbotond/urlcat) library is a solid foundation for URL building, but over time it has faced several challenges:
+
+### Problems with the Original Project
+
+- **🐌 Performance bottlenecks**: The original implementation wasn't optimized for high-throughput scenarios
+- **📦 Outdated dependencies**: Not regularly updated with the latest Node.js optimizations
+- **🔧 Maintenance gaps**: Infrequent updates and slower adoption of modern JavaScript features
+- **⚡ Query string encoding**: Used older, less efficient encoding methods
+
+### How fast-url Addresses These Issues
+
+**fast-url** was created to solve these problems while maintaining compatibility:
+
+1. **Performance-first approach**:
+
+   - Optimized query string encoding matching Node.js performance
+   - Reduced function call overhead
+   - Direct constant access for better V8 JIT optimization
+   - 5-20% faster than previous implementations in many scenarios
+
+2. **Regular maintenance**:
+
+   - Active development and quick bug fixes
+   - Regular dependency updates
+   - Modern TypeScript implementation
+
+3. **Simplified codebase**:
+
+   - Minimal dependencies (only fast-querystring)
+   - Clean, maintainable code
+   - Focus on core functionality
+
+4. **Production-ready**:
+   - Comprehensive test coverage
+   - Battle-tested in real-world applications
+   - Performance benchmarks with CodSpeed integration
+
+## Key Features
+
+<Cards>
+  <Card title="Lightweight" icon={<Feather />}>
+    Only one dependency (fast-querystring) with minimal bundle size - perfect
+    for performance-critical applications
+  </Card>
+  <Card title="Type Safe" icon={<ShieldCheck />}>
+    Written in TypeScript with full type definitions for better development
+    experience and compile-time safety
+  </Card>
+  <Card title="URL Safe" icon={<Lock />}>
+    Automatically escapes parameters and handles edge cases - no more broken
+    URLs from special characters
+  </Card>
+  <Card title="Unicode-aware" icon={<Globe />}>
+    Uses `codePointAt` for proper Unicode handling, including graceful encoding
+    of lone surrogates and emojis
+  </Card>
+  <Card title="Flexible" icon={<Wrench />}>
+    Multiple ways to build URLs for different use cases - from simple
+    concatenation to complex path and query parameters
+  </Card>
+  <Card title="High Performance" icon={<Zap />}>
+    Optimized for speed with benchmarks showing significant improvements over
+    the original implementation
+  </Card>
+</Cards>
+
+## The Problem
+
+Building URLs manually is error-prone and difficult to maintain:
+
+```javascript
+// ❌ Error-prone manual approach
+const url = `${baseUrl}/users/${id}/posts?limit=${limit}&offset=${offset}`;
+
+await fetch(url);
+```
+
+**Issues with manual URL building:**
+
+- 🔴 Double slashes when joining paths
+- 🔴 Unescaped parameters breaking URLs
+- 🔴 Complex string concatenation logic
+- 🔴 No validation of parameter types
+- 🔴 Difficult to maintain and read
+
+## The Solution
+
+fast-url provides a clean, safe API for URL construction:
+
+```javascript
+// ✅ Clean and safe with fast-url
+import { createUrl } from 'fast-url';
+
+const url = createUrl(baseUrl, '/users/:id/posts', { id, limit, offset });
+
+await fetch(url);
+```
+
+**Benefits:**
+
+- ✅ Automatic parameter escaping
+- ✅ Proper URL segment joining
+- ✅ Clean separation of path and query parameters
+- ✅ Type checking for path parameters
+- ✅ Easy to read and maintain
+
+<Callout title="Performance Matters" type="success">
+  In performance benchmarks, fast-url matches or exceeds the original urlcat
+  implementation while providing additional safety features and better Unicode
+  handling.
+</Callout>
+
+## Visual Example
+
+Here's a visual representation of how fast-url simplifies URL building:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcSet="/urlcat-basic-usage-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcSet="/urlcat-basic-usage.svg" />
+  <img src="/urlcat-basic-usage.svg" alt="Basic usage example showing how fast-url builds URLs" />
+</picture>
+
+## When to Use fast-url
+
+fast-url is ideal for:
+
+- 🌐 **REST API clients**: Building dynamic API endpoints
+- 🔗 **URL generators**: Creating shareable links with query parameters
+- 📱 **Single-page applications**: Managing client-side routing and navigation
+- 🛠️ **Backend services**: Constructing URLs for external API calls
+- 📊 **Analytics tracking**: Building tracking URLs with parameters
+
+## Quick Example
+
+Here's a real-world example showing how fast-url simplifies URL building:
+
+<Tabs items={['API Client', 'Manual Approach']}>
+  <Tab value="API Client">
+    ```typescript
+    import { createUrl } from 'fast-url';
+    
+    class UserAPI {
+      private baseUrl = 'https://api.example.com';
+      
+      getUserPosts(userId: number, page = 1, limit = 10) {
+        return fetch(
+          createUrl(this.baseUrl, '/users/:userId/posts', {
+            userId,
+            page,
+            limit,
+            sort: 'created_at'
+          })
+        );
+      }
+    }
+    
+    // Generated URL: 
+    // https://api.example.com/users/42/posts?page=1&limit=10&sort=created_at
+    ```
+  </Tab>
+  <Tab value="Manual Approach">
+    ```typescript
+    class UserAPI {
+      private baseUrl = 'https://api.example.com';
+      
+      getUserPosts(userId: number, page = 1, limit = 10) {
+        // Remove trailing slash from baseUrl if present
+        const base = this.baseUrl.endsWith('/') 
+          ? this.baseUrl.slice(0, -1) 
+          : this.baseUrl;
+        
+        // Build path with encoded userId
+        const path = `/users/${encodeURIComponent(userId)}/posts`;
+        
+        // Build query string
+        const params = new URLSearchParams({
+          page: String(page),
+          limit: String(limit),
+          sort: 'created_at'
+        });
+        
+        return fetch(`${base}${path}?${params.toString()}`);
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<Cards>
+  <Card title="Getting Started" href="/docs/getting-started">
+    Learn how to install and use fast-url in your project
+  </Card>
+  <Card title="API Reference" href="/docs/api-reference">
+    Explore the complete API documentation with examples
+  </Card>
+</Cards>

@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/ocean.css";
+@import "fumadocs-ui/css/preset.css";
+
+@theme {
+  --font-mono: var(--font-mono);
+}

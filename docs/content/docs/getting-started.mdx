@@ -1,0 +1,361 @@
+---
+title: Getting Started
+description: Quick start guide to install and use fast-url in your JavaScript or TypeScript project
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+# Getting Started
+
+Get up and running with fast-url in minutes. This guide will walk you through installation and basic usage.
+
+## Installation
+
+Install fast-url using your preferred package manager:
+
+<Tabs items={['bun', 'pnpm', 'yarn', 'npm', 'jsr']}>
+  <Tab value="bun">
+    ```bash
+    bun add fast-url
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm add fast-url
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn add fast-url
+    ```
+  </Tab>
+  <Tab value="npm">
+    ```bash
+    npm install fast-url
+    ```
+  </Tab>
+  <Tab value="jsr">
+    ```bash
+    deno add jsr:@hckhanh/fast-url
+    ```
+  </Tab>
+</Tabs>
+
+<Callout title="TypeScript Support" type="info">
+  fast-url is written in TypeScript and includes type definitions out of the
+  box. No need to install separate `@types` packages!
+</Callout>
+
+## Basic Usage
+
+### Importing
+
+<Tabs items={['ES Modules/TypeScript', 'CommonJS']}>
+  <Tab value="ES Modules/TypeScript">
+    ```javascript
+    import { createUrl } from 'fast-url';
+    ```
+  </Tab>
+  <Tab value="CommonJS">
+    ```javascript
+    const { createUrl } = require('fast-url');
+    ```
+  </Tab>
+</Tabs>
+
+### Quick Examples
+
+Here are some common use cases to get you started:
+
+#### Path Parameters
+
+Replace placeholders in a URL path with actual values:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const userId = 123;
+const url = createUrl('https://api.example.com', '/users/:id', { id: userId });
+console.log(url);
+// → 'https://api.example.com/users/123'
+```
+
+#### Query Parameters
+
+Add query string parameters to a URL:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const url = createUrl('https://api.example.com', '/users', {
+  limit: 10,
+  offset: 20,
+  sort: 'name',
+});
+console.log(url);
+// → 'https://api.example.com/users?limit=10&offset=20&sort=name'
+```
+
+#### Combined Path and Query Parameters
+
+Mix path substitution with query parameters:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const url = createUrl('https://api.example.com', '/users/:id/posts', {
+  id: 123,
+  limit: 10,
+  published: true,
+});
+console.log(url);
+// → 'https://api.example.com/users/123/posts?limit=10&published=true'
+```
+
+## Step-by-Step Tutorial
+
+Let's build a simple REST API client using fast-url:
+
+<Steps>
+  <Step>
+    ### Create the API Client Class
+    
+    Start by creating a basic API client structure:
+    
+    ```typescript
+    import { createUrl } from 'fast-url';
+    
+    class BlogAPI {
+      private baseUrl = 'https://api.blog.com';
+      
+      constructor(apiKey: string) {
+        this.apiKey = apiKey;
+      }
+    }
+    ```
+  </Step>
+  
+  <Step>
+    ### Add a Method to Fetch Posts
+    
+    Use createUrl to build the endpoint URL with query parameters:
+    
+    ```typescript
+    async getPosts(options = {}) {
+      const url = createUrl(this.baseUrl, '/posts', {
+        page: options.page || 1,
+        limit: options.limit || 10,
+        tag: options.tag
+      });
+      
+      const response = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${this.apiKey}` }
+      });
+      
+      return response.json();
+    }
+    ```
+  </Step>
+  
+  <Step>
+    ### Add a Method to Fetch a Single Post
+    
+    Use path parameters for resource IDs:
+    
+    ```typescript
+    async getPost(postId: number) {
+      const url = createUrl(this.baseUrl, '/posts/:id', { id: postId });
+      
+      const response = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${this.apiKey}` }
+      });
+      
+      return response.json();
+    }
+    ```
+  </Step>
+  
+  <Step>
+    ### Use the API Client
+    
+    Now you can use your API client with clean, type-safe URLs:
+    
+    ```typescript
+    const api = new BlogAPI('your-api-key');
+    
+    // Fetch paginated posts with a tag filter
+    const posts = await api.getPosts({ 
+      page: 2, 
+      limit: 20, 
+      tag: 'javascript' 
+    });
+    // URL: https://api.blog.com/posts?page=2&limit=20&tag=javascript
+    
+    // Fetch a specific post
+    const post = await api.getPost(42);
+    // URL: https://api.blog.com/posts/42
+    ```
+  </Step>
+</Steps>
+
+## Common Patterns
+
+### Handling Optional Parameters
+
+fast-url automatically filters out `null` and `undefined` values:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+const url = createUrl('https://api.example.com', '/search', {
+  q: 'javascript',
+  category: null, // Will be omitted
+  author: undefined, // Will be omitted
+  limit: 10,
+});
+console.log(url);
+// → 'https://api.example.com/search?q=javascript&limit=10'
+```
+
+### Working with Arrays
+
+Arrays are automatically converted to repeated parameters:
+
+```javascript
+import { query } from 'fast-url';
+
+const queryString = query({
+  tags: ['javascript', 'typescript', 'node'],
+  limit: 10,
+});
+console.log(queryString);
+// → 'tags=javascript&tags=typescript&tags=node&limit=10'
+```
+
+### Building Query Strings Only
+
+Use the `query` helper when you only need a query string:
+
+```javascript
+import { query } from 'fast-url';
+
+const params = query({
+  name: 'John Doe',
+  age: 30,
+  city: 'New York',
+});
+console.log(params);
+// → 'name=John%20Doe&age=30&city=New%20York'
+```
+
+### Substituting Path Parameters Only
+
+Use `subst` when you only need path parameter substitution:
+
+```javascript
+import { subst } from 'fast-url';
+
+const path = subst('/users/:userId/posts/:postId', {
+  userId: 123,
+  postId: 456,
+});
+console.log(path);
+// → '/users/123/posts/456'
+```
+
+### Joining URL Parts
+
+Use `join` to safely concatenate URL segments:
+
+```javascript
+import { join } from 'fast-url';
+
+const url = join('https://api.example.com/', '/', '/users');
+console.log(url);
+// → 'https://api.example.com/users'
+
+// Works with any separator
+const query = join('name=John', '&', '&age=30');
+console.log(query);
+// → 'name=John&age=30'
+```
+
+## Special Characters and Unicode
+
+fast-url properly handles special characters and Unicode:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+// Special characters are automatically encoded
+const url1 = createUrl('https://api.example.com', '/search', {
+  q: 'hello world & goodbye',
+  filter: 'price>100',
+});
+// → 'https://api.example.com/search?q=hello%20world%20%26%20goodbye&filter=price%3E100'
+
+// Unicode characters are properly handled
+const url2 = createUrl('https://api.example.com', '/users/:name', {
+  name: '田中太郎',
+});
+// → 'https://api.example.com/users/%E7%94%B0%E4%B8%AD%E5%A4%AA%E9%83%8E'
+
+// Even emojis work correctly
+const url3 = createUrl('https://api.example.com', '/posts', {
+  mood: '😊🎉',
+});
+// → 'https://api.example.com/posts?mood=%F0%9F%98%8A%F0%9F%8E%89'
+```
+
+## Error Handling
+
+fast-url validates path parameters and throws helpful errors:
+
+```javascript
+import { createUrl } from 'fast-url';
+
+try {
+  // Missing required path parameter
+  createUrl('https://api.example.com', '/users/:id', {});
+} catch (error) {
+  console.error(error.message);
+  // → "Missing value for path parameter id."
+}
+
+try {
+  // Invalid path parameter type
+  createUrl('https://api.example.com', '/users/:id', {
+    id: { invalid: 'object' },
+  });
+} catch (error) {
+  console.error(error.message);
+  // → "Path parameter id cannot be of type object. Allowed types are: boolean, string, number."
+}
+
+try {
+  // Empty string path parameter
+  createUrl('https://api.example.com', '/users/:id', { id: '' });
+} catch (error) {
+  console.error(error.message);
+  // → "Path parameter id cannot be an empty string."
+}
+```
+
+<Callout title="Type Safety" type="success">
+  When using TypeScript, many of these errors can be caught at compile time
+  thanks to fast-url's type definitions!
+</Callout>
+
+## Next Steps
+
+<Cards>
+  <Card title="API Reference" href="/docs/api-reference">
+    Explore the complete API documentation with detailed examples
+  </Card>
+  <Card title="Introduction" href="/docs/introduction">
+    Learn more about why fast-url was created and its key features
+  </Card>
+</Cards>
