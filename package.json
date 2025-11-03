@@ -7,7 +7,7 @@
     "email": "hi@khanh.sh",
     "url": "https://khanh.sh"
   },
-  "private": true,
+  "private": false,
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",
