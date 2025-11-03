@@ -37,7 +37,7 @@ describe('formatVnCurrency', () => {
   })
 
   it('format invalid number by fallback value', () => {
-    expect(formatVnCurrency('100,0,0.000')).to.eq('0 ₫')
+    expect(formatVnCurrency('100,0,0.000')).to.eq('0\u00A0₫')
   })
 
   it('format null by fallback value', () => {
@@ -53,7 +53,7 @@ describe('formatVnCurrency', () => {
   })
 
   it('format unknown string value by fallback value', () => {
-    expect(formatVnCurrency('unknown')).to.eq('0 ₫')
+    expect(formatVnCurrency('unknown')).to.eq('0\u00A0₫')
   })
 
   it('format NaN value by empty value', () => {

@@ -2,14 +2,12 @@
  * Formats a number using the provided formatter.
  * @param number The number to format.
  * @param formatter The formatter to use for number formatting.
- * @param invalidValue The value to replace if `number` is invalid.
  * @param fallbackValue The fallback value to use if the formatting fails.
  * @return The formatted number or the `fallbackValue` if formatting fails.
  */
 function formatNumber(
   number: string | number | bigint | null | undefined,
   formatter: Intl.NumberFormat,
-  invalidValue: string,
   fallbackValue: string,
 ) {
   if (
@@ -19,9 +17,8 @@ function formatNumber(
     return formatter.format(number)
   } else if (typeof number === 'string') {
     try {
-      return formatter
-        .format(Number(number))
-        .replace(invalidValue, fallbackValue)
+      const num = Number(number)
+      return isNaN(num) ? fallbackValue : formatter.format(num)
     } catch {
       return fallbackValue
     }
@@ -29,6 +26,8 @@ function formatNumber(
     return fallbackValue
   }
 }
+
+const VN_NUMBER_FORMATTER = new Intl.NumberFormat('vi-VN')
 
 /**
  * Formats a number as a Vietnamese formatted number.
@@ -47,9 +46,13 @@ export function formatVnNumber(
   number: string | number | bigint | null | undefined,
   fallbackValue: string = '0',
 ): string {
-  const formatter = new Intl.NumberFormat('vi-VN')
-  return formatNumber(number, formatter, 'NaN', fallbackValue)
+  return formatNumber(number, VN_NUMBER_FORMATTER, fallbackValue)
 }
+
+const VN_CURRENCY_FORMATTER = new Intl.NumberFormat('vi-VN', {
+  currency: 'VND',
+  style: 'currency',
+})
 
 /**
  * Formats a value as Vietnamese Dong (VND) currency.
@@ -57,7 +60,7 @@ export function formatVnNumber(
  * @example
  * ```ts
  * formatVnCurrency('19990000') // or formatVnCurrency(19990000)
- * // output: 19.990.000 ₫
+ * // output: 19.990.000\u00A0₫
  * ```
  *
  * @param money The value to format as VND currency.
@@ -66,14 +69,16 @@ export function formatVnNumber(
  */
 export function formatVnCurrency(
   money: string | number | bigint | null | undefined,
-  fallbackValue: string = '0 ₫',
+  fallbackValue: string = '0\u00A0₫',
 ): string {
-  const formatter = new Intl.NumberFormat('vi-VN', {
-    currency: 'VND',
-    style: 'currency',
-  })
-  return formatNumber(money, formatter, 'NaN ₫', fallbackValue)
+  return formatNumber(money, VN_CURRENCY_FORMATTER, fallbackValue)
 }
+
+const VN_PERCENT_FORMATTER = new Intl.NumberFormat('vi-VN', {
+  style: 'percent',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+})
 
 /**
  * Formats a number or string representing value into a Vietnamese percentage format.
@@ -93,10 +98,5 @@ export function formatVnPercent(
   value: string | number | bigint | null | undefined,
   fallbackValue: string = '0%',
 ): string {
-  const formatter = new Intl.NumberFormat('vi-VN', {
-    style: 'percent',
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 0,
-  })
-  return formatNumber(value, formatter, 'NaN%', fallbackValue)
+  return formatNumber(value, VN_PERCENT_FORMATTER, fallbackValue)
 }
