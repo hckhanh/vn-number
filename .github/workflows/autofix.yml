@@ -22,7 +22,7 @@ jobs:
       - name: Setup toolchains
         uses: jdx/mise-action@be3be2260bc02bc3fbf94c5e2fed8b7964baf074 # v3.4.0
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Format code
         run: pnpm biome check --write
       - name: Fix package.json
