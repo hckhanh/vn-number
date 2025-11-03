@@ -7,7 +7,7 @@
 
 ## Features
 
-- [Zero dependencies](https://jsr.io/@hckhanh/vn-number/dependencies)
+- Zero dependencies
 - Built-in support for Edge runtime
 - Typesafe with TypeScript
 - Fully documented
