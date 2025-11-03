@@ -1,11 +1,20 @@
 {
   "name": "vn-number",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
-  "version": "1.5.7",
+  "version": "1.6.0",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.id",
     "url": "https://www.khanh.id"
+  },
+  "homepage": "https://vn-number.khanh.id",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hckhanh/vn-number.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hckhanh/vn-number/issues",
+    "email": "hi@khanh.id"
   },
   "private": false,
   "sideEffects": false,
