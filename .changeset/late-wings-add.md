@@ -2,7 +2,7 @@
 "vn-number": major
 ---
 
-## Performance Optimization & Code Quality Improvements
+Performance Optimization & Code Quality Improvements
 
 ### Breaking Changes
 
