@@ -40,7 +40,7 @@ jobs:
           publish: pnpm release
           commitMode: 'github-api'
           title: 'Release new version'
-          commit: 'Bump version package'
+          commit: 'chore(release): bump new version'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to JSR
