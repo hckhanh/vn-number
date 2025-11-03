@@ -10,6 +10,9 @@ jobs:
     name: Test
     uses: ./.github/workflows/tests.yml
     secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
   release:
     name: Release
     runs-on: ubuntu-latest
