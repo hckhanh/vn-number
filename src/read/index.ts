@@ -1,4 +1,5 @@
-import NumberReader from './NumberReader.ts'
+import { calculateGroupTypes, processGroup } from './groups.ts'
+import { splitIntoGroups } from './utils.ts'
 
 /**
  * This is a helper that convert a number to a string like the way a real Vietnamese.
@@ -14,5 +15,17 @@ import NumberReader from './NumberReader.ts'
  * @return The Vietnamese number in string.
  */
 export function readVnNumber(number: string | number | bigint): string {
-  return NumberReader.read(number)
+  const numStr = number.toString()
+  const groups = splitIntoGroups(numStr)
+  const groupTypes = calculateGroupTypes(groups.length)
+
+  const parts: string[] = []
+  for (let i = 0; i < groups.length; i++) {
+    const result = processGroup(groups[i], i, groups, groupTypes)
+    if (result) {
+      parts.push(result)
+    }
+  }
+
+  return parts.join(' ').trim()
 }
