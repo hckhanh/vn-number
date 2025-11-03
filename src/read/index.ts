@@ -189,13 +189,10 @@ export function readVnNumber(number: string | number | bigint): string {
         } else {
           parts.push(`${groupReading} nghìn`)
         }
+      } else if (needsBillionSuffix) { // Units
+        parts.push(`${groupReading} tỷ`)
       } else {
-        // Units
-        if (needsBillionSuffix) {
-          parts.push(`${groupReading} tỷ`)
-        } else {
-          parts.push(groupReading)
-        }
+        parts.push(groupReading)
       }
     }
   }
