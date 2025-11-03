@@ -66,7 +66,7 @@ jobs:
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@4348f634fa7309fe23aac9502e88b999ec90a164 # v4.3.1
         with:
-          run: pnpm vitest bench --testTimeout 10000
+          run: pnpm vitest bench
           mode: 'instrumentation'
   deno:
     name: Deno

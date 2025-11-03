@@ -1,361 +1,394 @@
 import { bench, describe } from 'vitest'
 import { formatVnCurrency, formatVnNumber, formatVnPercent } from './number.ts'
 
-describe('formatVnNumber', () => {
-  describe('various number sizes', () => {
-    bench('small number (123)', () => {
-      formatVnNumber(123)
-    })
-
-    bench('thousands (12,345)', () => {
-      formatVnNumber(12345)
-    })
-
-    bench('millions (1,234,567)', () => {
-      formatVnNumber(1234567)
-    })
-
-    bench('billions (1,234,567,890)', () => {
-      formatVnNumber(1234567890)
-    })
+describe('formatVnNumber - typical usage scenarios', () => {
+  bench('format product quantity (15)', () => {
+    formatVnNumber(15)
   })
 
-  describe('input type variations', () => {
-    const testNumber = 19990000
-
-    bench('number input', () => {
-      formatVnNumber(testNumber)
-    })
-
-    bench('string input', () => {
-      formatVnNumber(String(testNumber))
-    })
-
-    bench('bigint input', () => {
-      formatVnNumber(BigInt(testNumber))
-    })
-
-    bench('decimal number', () => {
-      formatVnNumber(12345.67)
-    })
-
-    bench('all input types for same value', () => {
-      formatVnNumber(testNumber)
-      formatVnNumber(String(testNumber))
-      formatVnNumber(BigInt(testNumber))
-    })
+  bench('format order count (1,234)', () => {
+    formatVnNumber(1234)
   })
 
-  describe('edge cases', () => {
-    bench('null with default fallback', () => {
-      formatVnNumber(null)
-    })
-
-    bench('undefined with default fallback', () => {
-      formatVnNumber(undefined)
-    })
-
-    bench('invalid string with custom fallback', () => {
-      formatVnNumber('not a number', 'N/A')
-    })
-
-    bench('zero', () => {
-      formatVnNumber(0)
-    })
-
-    bench('negative number', () => {
-      formatVnNumber(-12345)
-    })
-
-    bench('NaN', () => {
-      formatVnNumber(NaN)
-    })
-
-    bench('empty string', () => {
-      formatVnNumber('')
-    })
-
-    bench('very large number', () => {
-      formatVnNumber(Number.MAX_SAFE_INTEGER)
-    })
+  bench('format total sales (125,678)', () => {
+    formatVnNumber(125678)
   })
 
-  describe('stress tests', () => {
-    bench('100 random numbers', () => {
-      for (let i = 0; i < 100; i++) {
-        formatVnNumber(Math.floor(Math.random() * 1000000000))
-      }
-    })
+  bench('format user count (5,432,100)', () => {
+    formatVnNumber(5432100)
+  })
 
-    bench('mixed valid and invalid inputs (100 iterations)', () => {
-      for (let i = 0; i < 100; i++) {
-        if (i % 3 === 0) formatVnNumber(null)
-        else if (i % 3 === 1) formatVnNumber(undefined)
-        else formatVnNumber(Math.floor(Math.random() * 1000000))
-      }
-    })
+  bench('format decimal value (12,345.67)', () => {
+    formatVnNumber(12345.67)
+  })
+
+  bench('format negative value (-5,432)', () => {
+    formatVnNumber(-5432)
   })
 })
 
-describe('formatVnCurrency', () => {
-  describe('various currency amounts', () => {
-    bench('small amount (1,000)', () => {
-      formatVnCurrency(1000)
-    })
-
-    bench('typical amount (500,000)', () => {
-      formatVnCurrency(500000)
-    })
-
-    bench('large amount (19,990,000)', () => {
-      formatVnCurrency(19990000)
-    })
-
-    bench('very large amount (1,000,000,000)', () => {
-      formatVnCurrency(1000000000)
-    })
-
-    bench('trillion (1,000,000,000,000)', () => {
-      formatVnCurrency(1000000000000)
-    })
+describe('formatVnCurrency - typical usage scenarios', () => {
+  bench('format small price (15,000 VND)', () => {
+    formatVnCurrency(15000)
   })
 
-  describe('input type variations', () => {
-    const testAmount = 19990000
-
-    bench('number input', () => {
-      formatVnCurrency(testAmount)
-    })
-
-    bench('string input', () => {
-      formatVnCurrency(String(testAmount))
-    })
-
-    bench('bigint input', () => {
-      formatVnCurrency(BigInt(testAmount))
-    })
-
-    bench('decimal amount', () => {
-      formatVnCurrency(19990000.5)
-    })
-
-    bench('all input types for same value', () => {
-      formatVnCurrency(testAmount)
-      formatVnCurrency(String(testAmount))
-      formatVnCurrency(BigInt(testAmount))
-    })
+  bench('format typical product price (199,000 VND)', () => {
+    formatVnCurrency(199000)
   })
 
-  describe('edge cases', () => {
-    bench('null with default fallback', () => {
-      formatVnCurrency(null)
-    })
-
-    bench('undefined with default fallback', () => {
-      formatVnCurrency(undefined)
-    })
-
-    bench('invalid string with custom fallback', () => {
-      formatVnCurrency('invalid', 'N/A')
-    })
-
-    bench('zero', () => {
-      formatVnCurrency(0)
-    })
-
-    bench('negative amount', () => {
-      formatVnCurrency(-50000)
-    })
-
-    bench('NaN', () => {
-      formatVnCurrency(NaN)
-    })
-
-    bench('fractional currency', () => {
-      formatVnCurrency(12345.99)
-    })
+  bench('format invoice total (5,450,000 VND)', () => {
+    formatVnCurrency(5450000)
   })
 
-  describe('stress tests', () => {
-    bench('100 random amounts', () => {
-      for (let i = 0; i < 100; i++) {
-        formatVnCurrency(Math.floor(Math.random() * 100000000))
-      }
-    })
+  bench('format transaction amount (19,990,000 VND)', () => {
+    formatVnCurrency(19990000)
+  })
 
-    bench('typical e-commerce prices (100 iterations)', () => {
-      for (let i = 0; i < 100; i++) {
-        // Prices between 10,000 and 50,000,000 VND
-        formatVnCurrency(Math.floor(Math.random() * 49990000) + 10000)
-      }
-    })
+  bench('format monthly revenue (125,000,000 VND)', () => {
+    formatVnCurrency(125000000)
+  })
+
+  bench('format annual budget (2,500,000,000 VND)', () => {
+    formatVnCurrency(2500000000)
+  })
+
+  bench('format large contract (15,000,000,000 VND)', () => {
+    formatVnCurrency(15000000000)
+  })
+
+  bench('format decimal amount (199,000.50 VND)', () => {
+    formatVnCurrency(199000.5)
   })
 })
 
-describe('formatVnPercent', () => {
-  describe('various percentage values', () => {
-    bench('zero percent (0)', () => {
-      formatVnPercent(0)
-    })
-
-    bench('typical percentage (0.99)', () => {
-      formatVnPercent(0.99)
-    })
-
-    bench('half percent (0.5)', () => {
-      formatVnPercent(0.5)
-    })
-
-    bench('full percentage (1)', () => {
-      formatVnPercent(1)
-    })
-
-    bench('over 100 percent (1.5)', () => {
-      formatVnPercent(1.5)
-    })
-
-    bench('small percentage (0.0123)', () => {
-      formatVnPercent(0.0123)
-    })
-
-    bench('very large percentage (10)', () => {
-      formatVnPercent(10)
-    })
+describe('formatVnPercent - typical usage scenarios', () => {
+  bench('format discount rate (15%)', () => {
+    formatVnPercent(0.15)
   })
 
-  describe('input type variations', () => {
-    bench('number input (0.75)', () => {
-      formatVnPercent(0.75)
-    })
-
-    bench('string input ("0.75")', () => {
-      formatVnPercent('0.75')
-    })
-
-    bench('bigint input (1n)', () => {
-      formatVnPercent(1n)
-    })
-
-    bench('all input types', () => {
-      formatVnPercent(0.75)
-      formatVnPercent('0.75')
-      formatVnPercent(1n)
-    })
+  bench('format interest rate (5.5%)', () => {
+    formatVnPercent(0.055)
   })
 
-  describe('edge cases', () => {
-    bench('null with default fallback', () => {
-      formatVnPercent(null)
-    })
-
-    bench('undefined with default fallback', () => {
-      formatVnPercent(undefined)
-    })
-
-    bench('invalid string with custom fallback', () => {
-      formatVnPercent('not a number', 'N/A')
-    })
-
-    bench('negative percentage', () => {
-      formatVnPercent(-0.25)
-    })
-
-    bench('very small decimal', () => {
-      formatVnPercent(0.00001)
-    })
-
-    bench('NaN', () => {
-      formatVnPercent(NaN)
-    })
+  bench('format completion rate (75%)', () => {
+    formatVnPercent(0.75)
   })
 
-  describe('stress tests', () => {
-    bench('100 random percentages (0-1)', () => {
-      for (let i = 0; i < 100; i++) {
-        formatVnPercent(Math.random())
-      }
-    })
+  bench('format growth rate (25%)', () => {
+    formatVnPercent(0.25)
+  })
 
-    bench('100 random percentages (0-2)', () => {
-      for (let i = 0; i < 100; i++) {
-        formatVnPercent(Math.random() * 2)
-      }
-    })
+  bench('format conversion rate (2.5%)', () => {
+    formatVnPercent(0.025)
+  })
+
+  bench('format full completion (100%)', () => {
+    formatVnPercent(1)
+  })
+
+  bench('format over target (125%)', () => {
+    formatVnPercent(1.25)
+  })
+
+  bench('format small percentage (0.5%)', () => {
+    formatVnPercent(0.005)
+  })
+
+  bench('format negative change (-10%)', () => {
+    formatVnPercent(-0.1)
   })
 })
 
-describe('comparison benchmarks', () => {
-  const testNumber = 19990000
-
-  bench('formatVnNumber vs formatVnCurrency', () => {
-    formatVnNumber(testNumber)
-    formatVnCurrency(testNumber)
+describe('formatVnNumber - realistic batch operations', () => {
+  bench('format 50 order counts', () => {
+    for (let i = 0; i < 50; i++) {
+      const count = Math.floor(Math.random() * 10000)
+      formatVnNumber(count)
+    }
   })
 
-  bench('all three format functions', () => {
-    formatVnNumber(testNumber)
-    formatVnCurrency(testNumber)
-    formatVnPercent(0.99)
-  })
-
-  bench('formatVnNumber: number vs string vs bigint', () => {
-    formatVnNumber(testNumber)
-    formatVnNumber(String(testNumber))
-    formatVnNumber(BigInt(testNumber))
-  })
-
-  bench('formatVnCurrency: number vs string vs bigint', () => {
-    formatVnCurrency(testNumber)
-    formatVnCurrency(String(testNumber))
-    formatVnCurrency(BigInt(testNumber))
-  })
-
-  bench('all functions with error handling', () => {
-    formatVnNumber(null, 'N/A')
-    formatVnCurrency(null, 'N/A')
-    formatVnPercent(null, 'N/A')
+  bench('format 50 product quantities', () => {
+    for (let i = 0; i < 50; i++) {
+      const quantity = Math.floor(Math.random() * 1000)
+      formatVnNumber(quantity)
+    }
   })
 })
 
-describe('real-world scenarios', () => {
-  bench('e-commerce product display (price + quantity)', () => {
+describe('formatVnCurrency - realistic batch operations', () => {
+  bench('format 50 e-commerce prices (10k-50M VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const price = Math.floor(Math.random() * 49990000) + 10000
+      formatVnCurrency(price)
+    }
+  })
+
+  bench('format 50 invoice totals (100k-100M VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const total = Math.floor(Math.random() * 99900000) + 100000
+      formatVnCurrency(total)
+    }
+  })
+
+  bench('format 50 financial amounts (1M-10B VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const amount = Math.floor(Math.random() * 9999000000) + 1000000
+      formatVnCurrency(amount)
+    }
+  })
+})
+
+describe('formatVnPercent - realistic batch operations', () => {
+  bench('format 50 growth rates (-50% to +150%)', () => {
+    for (let i = 0; i < 50; i++) {
+      const growth = Math.random() * 2 - 0.5
+      formatVnPercent(growth)
+    }
+  })
+
+  bench('format 50 conversion rates (0-10%)', () => {
+    for (let i = 0; i < 50; i++) {
+      const rate = Math.random() * 0.1
+      formatVnPercent(rate)
+    }
+  })
+
+  bench('format 50 completion rates (0-100%)', () => {
+    for (let i = 0; i < 50; i++) {
+      const completion = Math.random()
+      formatVnPercent(completion)
+    }
+  })
+})
+
+describe('real-world application scenarios', () => {
+  bench('display e-commerce product card', () => {
     const price = 199000
-    const quantity = 5
-    const total = price * quantity
+    const discount = 0.15
+    const finalPrice = price * (1 - discount)
+    const stock = 45
+    const sold = 1234
 
     formatVnCurrency(price)
-    formatVnNumber(quantity)
+    formatVnPercent(discount)
+    formatVnCurrency(finalPrice)
+    formatVnNumber(stock)
+    formatVnNumber(sold)
+  })
+
+  bench('display shopping cart (5 items)', () => {
+    const cart = [
+      { quantity: 2, price: 199000 },
+      { quantity: 1, price: 450000 },
+      { quantity: 5, price: 89000 },
+      { quantity: 3, price: 250000 },
+      { quantity: 1, price: 1200000 },
+    ]
+
+    let subtotal = 0
+    cart.forEach((item) => {
+      const lineTotal = item.quantity * item.price
+      subtotal += lineTotal
+
+      formatVnNumber(item.quantity)
+      formatVnCurrency(item.price)
+      formatVnCurrency(lineTotal)
+    })
+
+    const shippingFee = 30000
+    const discount = 0.1
+    const discountAmount = subtotal * discount
+    const total = subtotal + shippingFee - discountAmount
+
+    formatVnCurrency(subtotal)
+    formatVnCurrency(shippingFee)
+    formatVnPercent(discount)
+    formatVnCurrency(discountAmount)
     formatVnCurrency(total)
   })
 
-  bench('financial dashboard (100 records)', () => {
-    for (let i = 0; i < 100; i++) {
-      const revenue = Math.floor(Math.random() * 100000000)
-      const growth = Math.random() * 2 - 0.5 // -50% to +150%
-      const orders = Math.floor(Math.random() * 10000)
+  bench('display invoice (10 line items)', () => {
+    let subtotal = 0
 
-      formatVnCurrency(revenue)
-      formatVnPercent(growth)
-      formatVnNumber(orders)
+    for (let i = 0; i < 10; i++) {
+      const quantity = Math.floor(Math.random() * 20) + 1
+      const unitPrice = Math.floor(Math.random() * 5000000) + 50000
+      const lineTotal = quantity * unitPrice
+      subtotal += lineTotal
+
+      formatVnNumber(quantity)
+      formatVnCurrency(unitPrice)
+      formatVnCurrency(lineTotal)
     }
+
+    const taxRate = 0.1
+    const taxAmount = subtotal * taxRate
+    const total = subtotal + taxAmount
+
+    formatVnCurrency(subtotal)
+    formatVnPercent(taxRate)
+    formatVnCurrency(taxAmount)
+    formatVnCurrency(total)
   })
 
-  bench('data table rendering (50 rows × 4 columns)', () => {
-    for (let i = 0; i < 50; i++) {
-      formatVnNumber(Math.floor(Math.random() * 1000))
-      formatVnCurrency(Math.floor(Math.random() * 10000000))
-      formatVnPercent(Math.random())
-      formatVnNumber(Math.floor(Math.random() * 100000))
-    }
-  })
+  bench('display financial dashboard (weekly metrics)', () => {
+    const weeklyData = Array.from({ length: 7 }, () => ({
+      revenue: Math.floor(Math.random() * 50000000) + 1000000,
+      orders: Math.floor(Math.random() * 500) + 10,
+      avgOrderValue: Math.floor(Math.random() * 2000000) + 100000,
+      conversionRate: Math.random() * 0.1,
+    }))
 
-  bench('form validation and display', () => {
-    // Simulate user input validation and formatting
-    const inputs = ['19990000', 'invalid', null, '12345.67', undefined, '0.99']
-
-    inputs.forEach((input) => {
-      formatVnNumber(input, 'Invalid')
-      formatVnCurrency(input, 'Invalid')
+    weeklyData.forEach((day) => {
+      formatVnCurrency(day.revenue)
+      formatVnNumber(day.orders)
+      formatVnCurrency(day.avgOrderValue)
+      formatVnPercent(day.conversionRate)
     })
+
+    const totalRevenue = weeklyData.reduce((sum, day) => sum + day.revenue, 0)
+    const totalOrders = weeklyData.reduce((sum, day) => sum + day.orders, 0)
+    const avgRevenue = totalRevenue / 7
+    const avgOrders = totalOrders / 7
+
+    formatVnCurrency(totalRevenue)
+    formatVnNumber(totalOrders)
+    formatVnCurrency(avgRevenue)
+    formatVnNumber(avgOrders)
+  })
+
+  bench('display product catalog (20 products)', () => {
+    for (let i = 0; i < 20; i++) {
+      const price = Math.floor(Math.random() * 10000000) + 10000
+      const discount = Math.random() * 0.5
+      const finalPrice = price * (1 - discount)
+      const stock = Math.floor(Math.random() * 1000) + 1
+      const sold = Math.floor(Math.random() * 5000)
+      const rating = 3 + Math.random() * 2
+
+      formatVnCurrency(price)
+      formatVnPercent(discount)
+      formatVnCurrency(finalPrice)
+      formatVnNumber(stock)
+      formatVnNumber(sold)
+      formatVnNumber(rating)
+    }
+  })
+
+  bench('display sales report (monthly performance)', () => {
+    const monthlyData = Array.from({ length: 12 }, () => ({
+      revenue: Math.floor(Math.random() * 500000000) + 10000000,
+      orders: Math.floor(Math.random() * 5000) + 100,
+      newCustomers: Math.floor(Math.random() * 500) + 10,
+      returningRate: Math.random() * 0.5 + 0.3,
+      growthRate: Math.random() * 0.4 - 0.1,
+    }))
+
+    monthlyData.forEach((month) => {
+      formatVnCurrency(month.revenue)
+      formatVnNumber(month.orders)
+      formatVnNumber(month.newCustomers)
+      formatVnPercent(month.returningRate)
+      formatVnPercent(month.growthRate)
+    })
+  })
+
+  bench('display payment summary', () => {
+    const subtotal = 5450000
+    const shippingFee = 30000
+    const discount = 0.15
+    const discountAmount = subtotal * discount
+    const taxRate = 0.1
+    const taxableAmount = subtotal - discountAmount
+    const taxAmount = taxableAmount * taxRate
+    const total = taxableAmount + taxAmount + shippingFee
+
+    formatVnCurrency(subtotal)
+    formatVnCurrency(shippingFee)
+    formatVnPercent(discount)
+    formatVnCurrency(discountAmount)
+    formatVnPercent(taxRate)
+    formatVnCurrency(taxAmount)
+    formatVnCurrency(total)
+  })
+
+  bench('display data table (50 rows × 6 columns)', () => {
+    for (let i = 0; i < 50; i++) {
+      const orderId = Math.floor(Math.random() * 100000)
+      const quantity = Math.floor(Math.random() * 100) + 1
+      const unitPrice = Math.floor(Math.random() * 5000000) + 10000
+      const total = quantity * unitPrice
+      const discount = Math.random() * 0.3
+      const status = Math.random()
+
+      formatVnNumber(orderId)
+      formatVnNumber(quantity)
+      formatVnCurrency(unitPrice)
+      formatVnCurrency(total)
+      formatVnPercent(discount)
+      formatVnPercent(status)
+    }
+  })
+})
+
+describe('input type variations - real-world scenarios', () => {
+  const typicalPrice = 19990000
+
+  bench('formatVnCurrency with different input types', () => {
+    formatVnCurrency(typicalPrice)
+    formatVnCurrency(String(typicalPrice))
+    formatVnCurrency(BigInt(typicalPrice))
+  })
+
+  bench('formatVnNumber with different input types', () => {
+    const count = 1234
+    formatVnNumber(count)
+    formatVnNumber(String(count))
+    formatVnNumber(BigInt(count))
+  })
+
+  bench('formatVnPercent with different input types', () => {
+    const rate = 0.15
+    formatVnPercent(rate)
+    formatVnPercent(String(rate))
+  })
+
+  bench('mixed input types in data processing (30 values)', () => {
+    for (let i = 0; i < 30; i++) {
+      const value = Math.floor(Math.random() * 100000000)
+      const inputType = i % 3
+
+      if (inputType === 0) {
+        formatVnCurrency(value)
+      } else if (inputType === 1) {
+        formatVnCurrency(String(value))
+      } else {
+        formatVnCurrency(BigInt(value))
+      }
+    }
+  })
+})
+
+describe('combined operations - real-world scenarios', () => {
+  bench('format all three types together (typical dashboard row)', () => {
+    const revenue = 19990000
+    const growth = 0.25
+    const orders = 1234
+
+    formatVnCurrency(revenue)
+    formatVnPercent(growth)
+    formatVnNumber(orders)
+  })
+
+  bench('format complete product listing (30 products)', () => {
+    for (let i = 0; i < 30; i++) {
+      const price = Math.floor(Math.random() * 10000000) + 10000
+      const discount = Math.random() * 0.5
+      const stock = Math.floor(Math.random() * 1000) + 1
+
+      formatVnCurrency(price)
+      formatVnPercent(discount)
+      formatVnNumber(stock)
+    }
   })
 })

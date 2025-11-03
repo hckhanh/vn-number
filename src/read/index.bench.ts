@@ -1,161 +1,151 @@
 import { bench, describe } from 'vitest'
 import { readVnNumber } from './index.ts'
 
-describe('readVnNumber', () => {
-  describe('small numbers', () => {
-    bench('single digit (5)', () => {
-      readVnNumber(5)
-    })
+describe('readVnNumber - typical usage scenarios', () => {
+  bench('product quantity (5 items)', () => {
+    readVnNumber(5)
+  })
 
-    bench('double digit (42)', () => {
-      readVnNumber(42)
-    })
+  bench('typical product price (199,000 VND)', () => {
+    readVnNumber(199000)
+  })
 
-    bench('three digits (999)', () => {
-      readVnNumber(999)
+  bench('invoice total (5,450,000 VND)', () => {
+    readVnNumber(5450000)
+  })
+
+  bench('transaction amount (19,990,000 VND)', () => {
+    readVnNumber(19990000)
+  })
+
+  bench('annual revenue (2,500,000,000 VND)', () => {
+    readVnNumber(2500000000)
+  })
+
+  bench('large contract value (15,000,000,000 VND)', () => {
+    readVnNumber(15000000000)
+  })
+})
+
+describe('readVnNumber - realistic batch operations', () => {
+  bench('read 50 product quantities (1-100)', () => {
+    for (let i = 0; i < 50; i++) {
+      const quantity = Math.floor(Math.random() * 100) + 1
+      readVnNumber(quantity)
+    }
+  })
+
+  bench('read 50 e-commerce prices (10k-50M VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const price = Math.floor(Math.random() * 49990000) + 10000
+      readVnNumber(price)
+    }
+  })
+
+  bench('read 50 invoice totals (100k-100M VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const total = Math.floor(Math.random() * 99900000) + 100000
+      readVnNumber(total)
+    }
+  })
+
+  bench('read 50 financial amounts (1M-10B VND)', () => {
+    for (let i = 0; i < 50; i++) {
+      const amount = Math.floor(Math.random() * 9999000000) + 1000000
+      readVnNumber(amount)
+    }
+  })
+})
+
+describe('readVnNumber - real-world application scenarios', () => {
+  bench('display shopping cart (5 items with quantities)', () => {
+    const cart = [
+      { quantity: 2, price: 199000 },
+      { quantity: 1, price: 450000 },
+      { quantity: 5, price: 89000 },
+      { quantity: 3, price: 250000 },
+      { quantity: 1, price: 1200000 },
+    ]
+
+    cart.forEach((item) => {
+      readVnNumber(item.quantity)
+      readVnNumber(item.price)
+      readVnNumber(item.quantity * item.price)
     })
   })
 
-  describe('medium numbers', () => {
-    bench('thousands (5,000)', () => {
-      readVnNumber(5000)
-    })
+  bench('display invoice line items (10 items)', () => {
+    for (let i = 0; i < 10; i++) {
+      const quantity = Math.floor(Math.random() * 20) + 1
+      const unitPrice = Math.floor(Math.random() * 5000000) + 50000
+      const lineTotal = quantity * unitPrice
 
-    bench('ten thousands (50,000)', () => {
-      readVnNumber(50000)
-    })
-
-    bench('hundreds of thousands (500,000)', () => {
-      readVnNumber(500000)
-    })
+      readVnNumber(quantity)
+      readVnNumber(unitPrice)
+      readVnNumber(lineTotal)
+    }
   })
 
-  describe('large numbers', () => {
-    bench('millions (1,000,000)', () => {
-      readVnNumber(1000000)
-    })
+  bench('display financial dashboard (20 metrics)', () => {
+    const metrics = {
+      dailyRevenue: Array.from({ length: 7 }, () => Math.floor(Math.random() * 50000000) + 1000000),
+      orderCounts: Array.from({ length: 7 }, () => Math.floor(Math.random() * 500) + 10),
+      avgOrderValue: Array.from({ length: 7 }, () => Math.floor(Math.random() * 2000000) + 100000),
+    }
 
-    bench('tens of millions (19,990,000)', () => {
-      readVnNumber(19990000)
-    })
-
-    bench('hundreds of millions (999,999,999)', () => {
-      readVnNumber(999999999)
-    })
+    metrics.dailyRevenue.forEach((revenue) => readVnNumber(revenue))
+    metrics.orderCounts.forEach((count) => readVnNumber(count))
+    metrics.avgOrderValue.forEach((avg) => readVnNumber(avg))
   })
 
-  describe('very large numbers', () => {
-    bench('billions (1,000,000,000)', () => {
-      readVnNumber(1000000000)
-    })
+  bench('display product catalog (20 products)', () => {
+    for (let i = 0; i < 20; i++) {
+      const price = Math.floor(Math.random() * 10000000) + 10000
+      const stock = Math.floor(Math.random() * 1000) + 1
+      const sold = Math.floor(Math.random() * 5000)
 
-    bench('complex billion (123,456,789,012)', () => {
-      readVnNumber(123456789012)
-    })
-
-    bench('very large number as string', () => {
-      readVnNumber('999999999999999999999999')
-    })
-
-    bench('extremely large number string', () => {
-      readVnNumber('123456789012345678901234567890')
-    })
+      readVnNumber(price)
+      readVnNumber(stock)
+      readVnNumber(sold)
+    }
   })
 
-  describe('input type variations', () => {
-    const testNumber = 19990000
+  bench('display payment receipt (typical transaction)', () => {
+    const subtotal = 5450000
+    const shippingFee = 30000
+    const discount = 500000
+    const total = subtotal + shippingFee - discount
 
-    bench('number input (19990000)', () => {
-      readVnNumber(testNumber)
-    })
+    readVnNumber(subtotal)
+    readVnNumber(shippingFee)
+    readVnNumber(discount)
+    readVnNumber(total)
+  })
+})
 
-    bench('string input ("19990000")', () => {
-      readVnNumber(String(testNumber))
-    })
+describe('readVnNumber - input type variations', () => {
+  const typicalPrice = 19990000
 
-    bench('bigint input (19990000n)', () => {
-      readVnNumber(BigInt(testNumber))
-    })
-
-    bench('all input types for same value', () => {
-      readVnNumber(testNumber)
-      readVnNumber(String(testNumber))
-      readVnNumber(BigInt(testNumber))
-    })
+  bench('number input (typical price)', () => {
+    readVnNumber(typicalPrice)
   })
 
-  describe('edge cases', () => {
-    bench('zero', () => {
-      readVnNumber(0)
-    })
-
-    bench('single digit string ("1")', () => {
-      readVnNumber('1')
-    })
-
-    bench('large bigint', () => {
-      readVnNumber(999999999999999999n)
-    })
-
-    bench('max safe integer', () => {
-      readVnNumber(Number.MAX_SAFE_INTEGER)
-    })
+  bench('string input (from API/form)', () => {
+    readVnNumber(String(typicalPrice))
   })
 
-  describe('performance patterns', () => {
-    bench('sequential small numbers (1-10)', () => {
-      for (let i = 1; i <= 10; i++) {
-        readVnNumber(i)
-      }
-    })
-
-    bench('sequential hundreds (100, 200, ..., 1000)', () => {
-      for (let i = 100; i <= 1000; i += 100) {
-        readVnNumber(i)
-      }
-    })
-
-    bench('powers of 10 (1 to 1,000,000,000)', () => {
-      readVnNumber(1)
-      readVnNumber(10)
-      readVnNumber(100)
-      readVnNumber(1000)
-      readVnNumber(10000)
-      readVnNumber(100000)
-      readVnNumber(1000000)
-      readVnNumber(10000000)
-      readVnNumber(100000000)
-      readVnNumber(1000000000)
-    })
+  bench('bigint input (large transaction)', () => {
+    readVnNumber(BigInt(typicalPrice))
   })
 
-  describe('stress tests', () => {
-    bench('100 random small numbers (0-999)', () => {
-      for (let i = 0; i < 100; i++) {
-        readVnNumber(Math.floor(Math.random() * 1000))
-      }
-    })
+  bench('mixed input types in data processing (30 values)', () => {
+    for (let i = 0; i < 30; i++) {
+      const value = Math.floor(Math.random() * 100000000)
+      const inputType = i % 3
 
-    bench('100 random medium numbers (1,000-999,999)', () => {
-      for (let i = 0; i < 100; i++) {
-        readVnNumber(Math.floor(Math.random() * 1000000) + 1000)
-      }
-    })
-
-    bench('100 random large numbers (1,000,000-999,999,999)', () => {
-      for (let i = 0; i < 100; i++) {
-        readVnNumber(Math.floor(Math.random() * 1000000000) + 1000000)
-      }
-    })
-
-    bench('mixed input types (100 iterations)', () => {
-      for (let i = 0; i < 100; i++) {
-        const num = Math.floor(Math.random() * 1000000)
-        const type = i % 3
-        if (type === 0) readVnNumber(num)
-        else if (type === 1) readVnNumber(String(num))
-        else readVnNumber(BigInt(num))
-      }
-    })
+      if (inputType === 0) readVnNumber(value)
+      else if (inputType === 1) readVnNumber(String(value))
+      else readVnNumber(BigInt(value))
+    }
   })
 })
