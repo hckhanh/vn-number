@@ -10,21 +10,13 @@ function formatNumber(
   formatter: Intl.NumberFormat,
   fallbackValue: string,
 ) {
-  if (
-    (typeof number === 'number' && !Number.isNaN(number)) ||
-    typeof number === 'bigint'
-  ) {
-    return formatter.format(number)
-  } else if (typeof number === 'string') {
-    try {
-      const num = Number(number)
-      return Number.isNaN(num) ? fallbackValue : formatter.format(num)
-    } catch {
-      return fallbackValue
-    }
-  } else {
-    return fallbackValue
-  }
+  if (number == null) return fallbackValue
+  if (typeof number === 'bigint') return formatter.format(number)
+  if (typeof number === 'number')
+    return Number.isNaN(number) ? fallbackValue : formatter.format(number)
+
+  const num = Number(number)
+  return Number.isNaN(num) ? fallbackValue : formatter.format(num)
 }
 
 const VN_NUMBER_FORMATTER = new Intl.NumberFormat('vi-VN')

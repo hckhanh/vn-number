@@ -8,9 +8,19 @@ import {
 export default defineConfig({
   plugins: [codspeed()],
   test: {
-    exclude: [...defaultExclude, 'tsdown.config.*'],
+    exclude: [
+      ...defaultExclude,
+      'tsdown.config.*',
+      'src/index.ts',
+      'src/format/index.ts',
+    ],
     coverage: {
-      exclude: [...coverageConfigDefaults.exclude, 'tsdown.config.*'],
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        'tsdown.config.*',
+        'src/index.ts',
+        'src/format/index.ts',
+      ],
     },
   },
 })
