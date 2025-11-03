@@ -88,14 +88,29 @@ describe('readVnNumber - real-world application scenarios', () => {
 
   bench('display financial dashboard (20 metrics)', () => {
     const metrics = {
-      dailyRevenue: Array.from({ length: 7 }, () => Math.floor(Math.random() * 50000000) + 1000000),
-      orderCounts: Array.from({ length: 7 }, () => Math.floor(Math.random() * 500) + 10),
-      avgOrderValue: Array.from({ length: 7 }, () => Math.floor(Math.random() * 2000000) + 100000),
+      dailyRevenue: Array.from(
+        { length: 7 },
+        () => Math.floor(Math.random() * 50000000) + 1000000,
+      ),
+      orderCounts: Array.from(
+        { length: 7 },
+        () => Math.floor(Math.random() * 500) + 10,
+      ),
+      avgOrderValue: Array.from(
+        { length: 7 },
+        () => Math.floor(Math.random() * 2000000) + 100000,
+      ),
     }
 
-    metrics.dailyRevenue.forEach((revenue) => readVnNumber(revenue))
-    metrics.orderCounts.forEach((count) => readVnNumber(count))
-    metrics.avgOrderValue.forEach((avg) => readVnNumber(avg))
+    metrics.dailyRevenue.forEach((revenue) => {
+      readVnNumber(revenue)
+    })
+    metrics.orderCounts.forEach((count) => {
+      readVnNumber(count)
+    })
+    metrics.avgOrderValue.forEach((avg) => {
+      readVnNumber(avg)
+    })
   })
 
   bench('display product catalog (20 products)', () => {
