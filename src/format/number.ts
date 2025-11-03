@@ -60,7 +60,7 @@ const VN_CURRENCY_FORMATTER = new Intl.NumberFormat('vi-VN', {
  * @example
  * ```ts
  * formatVnCurrency('19990000') // or formatVnCurrency(19990000)
- * // output: 19.990.000 ₫
+ * // output: 19.990.000\u00A0₫
  * ```
  *
  * @param money The value to format as VND currency.
