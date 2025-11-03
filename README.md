@@ -2,6 +2,9 @@
 
 🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
 
+[![Publish](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml/badge.svg)](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hckhanh_vn-number&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hckhanh_vn-number)
+[![CodSpeed Badge](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/hckhanh/vn-number?utm_source=badge)
 [![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number)
 [![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
 
