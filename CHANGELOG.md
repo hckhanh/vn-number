@@ -1,5 +1,11 @@
 # vn-number
 
+## 1.6.1
+
+### Patch Changes
+
+- 9814a4d: Fix configurations for release workflow
+
 ## 1.6.0
 
 ### Minor Changes
