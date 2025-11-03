@@ -1,6 +1,7 @@
 # vn-number 🇻🇳
 
-[![JSR Score](https://jsr.io/badges/@hckhanh/vn-number)](https://jsr.io/@hckhanh/vn-number)
+[![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number)
+[![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
 
 🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
 
