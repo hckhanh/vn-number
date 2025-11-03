@@ -20,9 +20,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4(jiti@2.6.1)(tsx@4.20.6))
-      'cli: 2.29.7':
-        specifier: 'link:@changesets/cli: 2.29.7'
-        version: 'link:@changesets/cli: 2.29.7'
       syncpack:
         specifier: 14.0.0-alpha.23
         version: 14.0.0-alpha.23
