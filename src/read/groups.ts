@@ -1,4 +1,8 @@
-import { readThreeDigits } from './three-digits.ts'
+import {
+  readFirstGroupBeforeBillion,
+  readFirstGroup,
+  readSubsequentGroup,
+} from './three-digits.ts'
 import { allFollowingGroupsAreZero } from './utils.ts'
 
 /**
@@ -46,6 +50,44 @@ function getUnitSuffix(
 }
 
 /**
+ * Process the first group in the number sequence
+ */
+function processFirstGroup(
+  group: string,
+  type: number,
+  nextGroupType: number,
+  positionFromRight: number,
+  hasTrailingZeros: boolean,
+): string {
+  const isBeforeBillion = type === 0 && nextGroupType === 3
+
+  const groupReading = isBeforeBillion
+    ? readFirstGroupBeforeBillion(group)
+    : readFirstGroup(group)
+
+  if (!groupReading) return ''
+
+  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
+  return `${groupReading}${unitSuffix}`
+}
+
+/**
+ * Process a subsequent (non-first) group in the number sequence
+ */
+function processSubsequentGroup(
+  group: string,
+  type: number,
+  positionFromRight: number,
+  hasTrailingZeros: boolean,
+): string {
+  const groupReading = readSubsequentGroup(group)
+  if (!groupReading) return ''
+
+  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
+  return `${groupReading}${unitSuffix}`
+}
+
+/**
  * Process a single group and return its reading with unit suffix
  */
 export function processGroup(
@@ -54,17 +96,20 @@ export function processGroup(
   groups: string[],
   groupTypes: number[],
 ): string {
-  const isFirst = index === 0
   const type = groupTypes[index]
-  const nextGroupType = index + 1 < groups.length ? groupTypes[index + 1] : -1
-  const isBeforeBillion = type === 0 && nextGroupType === 3
-
-  const groupReading = readThreeDigits(group, isFirst, isBeforeBillion)
-  if (!groupReading) return ''
-
   const positionFromRight = groups.length - 1 - index
   const hasTrailingZeros = allFollowingGroupsAreZero(groups, index)
-  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
 
-  return `${groupReading}${unitSuffix}`
+  if (index === 0) {
+    const nextGroupType = groups.length > 1 ? groupTypes[1] : -1
+    return processFirstGroup(
+      group,
+      type,
+      nextGroupType,
+      positionFromRight,
+      hasTrailingZeros,
+    )
+  }
+
+  return processSubsequentGroup(group, type, positionFromRight, hasTrailingZeros)
 }

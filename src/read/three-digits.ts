@@ -45,48 +45,69 @@ function readOnes(
 }
 
 /**
- * Add suffix for first group before billion
+ * Core reading logic for a 3-digit group
  */
-function addFirstBeforeBillionSuffix(
-  isFirst: boolean,
-  isBeforeBillion: boolean,
-): string {
-  return isFirst && isBeforeBillion ? ' nghìn' : ''
-}
-
-/**
- * Read a 3-digit group
- * @param group - 3-digit string (can be 1-3 chars)
- * @param isFirst - is this the first group
- * @param isBeforeBillion - is this group before a billion group
- * @returns Vietnamese reading of the group
- */
-export function readThreeDigits(
-  group: string,
-  isFirst: boolean,
-  isBeforeBillion: boolean,
-): string {
+function readThreeDigitsCore(group: string): string {
   const len = group.length
   const first = len > 2 ? group[len - 3] : '0'
   const second = len > 1 ? group[len - 2] : '0'
   const last = group[len - 1] || '0'
 
-  // Handle all zeros
-  if (first === '0' && second === '0' && last === '0') {
-    return isFirst ? 'không' : ''
-  }
-
   let result = readHundreds(first, len > 2)
 
   // If the last two digits are zero, return early
   if (second === '0' && last === '0') {
-    result += addFirstBeforeBillionSuffix(isFirst, isBeforeBillion)
     return result.trim()
   }
 
   result += readTens(second, len > 1)
   result += readOnes(last, second, len > 1)
-  result += addFirstBeforeBillionSuffix(isFirst, isBeforeBillion)
 
   return result.trim()
+}
+
+/**
+ * Check if a group contains all zeros
+ */
+function isAllZeros(group: string): boolean {
+  const len = group.length
+  const first = len > 2 ? group[len - 3] : '0'
+  const second = len > 1 ? group[len - 2] : '0'
+  const last = group[len - 1] || '0'
+  return first === '0' && second === '0' && last === '0'
+}
+
+/**
+ * Read the first group in the number sequence when it's before a billion group
+ * This adds a special "nghìn" suffix
+ */
+export function readFirstGroupBeforeBillion(group: string): string {
+  if (isAllZeros(group)) {
+    return 'không'
+  }
+
+  const result = readThreeDigitsCore(group)
+  return result ? `${result} nghìn` : ''
+}
+
+/**
+ * Read the first group in the number sequence (normal case)
+ */
+export function readFirstGroup(group: string): string {
+  if (isAllZeros(group)) {
+    return 'không'
+  }
+
+  return readThreeDigitsCore(group)
+}
+
+/**
+ * Read the subsequent (non-first) group in the number sequence
+ */
+export function readSubsequentGroup(group: string): string {
+  if (isAllZeros(group)) {
+    return ''
+  }
+
+  return readThreeDigitsCore(group)
 }
