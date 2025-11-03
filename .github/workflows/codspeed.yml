@@ -1,4 +1,4 @@
-name: Benchmark
+name: CodSpeed
 
 on:
   workflow_call:
