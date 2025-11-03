@@ -1,5 +1,5 @@
 import { bench, describe } from 'vitest'
-import { formatVnNumber, formatVnCurrency, formatVnPercent } from './number.ts'
+import { formatVnCurrency, formatVnNumber, formatVnPercent } from './number.ts'
 
 describe('formatVnNumber', () => {
   describe('various number sizes', () => {
