@@ -30,8 +30,8 @@ function getUnitSuffix(
   const needsBillionSuffix = positionFromRight >= 3 && hasTrailingZeros
 
   if (type === 3) {
-    // Billion: repeat "tỷ" based on position (position 3 = "tỷ", position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
-    if (positionFromRight >= 3 && hasTrailingZeros) {
+    // Billion: repeat "tỷ" based on position (position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
+    if (positionFromRight >= 6 && hasTrailingZeros) {
       const billionCount = Math.floor(positionFromRight / 3)
       return ' ' + new Array(billionCount).fill('tỷ').join(' ')
     }
