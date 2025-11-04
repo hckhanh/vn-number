@@ -84,7 +84,10 @@ When working with number-to-text conversion, follow these Vietnamese language co
 - Only add devDependencies for tooling
 
 ### Package Manager
-- Use **pnpm** (not npm or yarn)
+- **ONLY use pnpm** - npm and yarn are NOT allowed in this repository
+- Never use `npm install` or `yarn install` commands
+- All dependency management must be done with `pnpm` commands
+- Lock files: Only `pnpm-lock.yaml` is allowed (package-lock.json and yarn.lock are ignored)
 - Workspaces are configured for the `docs` subdirectory
 
 ## Security Best Practices
