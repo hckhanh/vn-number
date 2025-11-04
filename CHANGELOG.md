@@ -1,5 +1,12 @@
 # vn-number
 
+## 2.0.1
+
+### Patch Changes
+
+- e9b3f15: Simplified `readVnNumber` string conversion to improve performance
+- e9b3f15: Fixed logic to repeat "tỷ" based on group position dynamically, ensuring accurate representation for billions, octillions, and undecillions.
+
 ## 2.0.0
 
 ### Major Changes
