@@ -1,5 +1,11 @@
 # vn-number
 
+## 2.0.2
+
+### Patch Changes
+
+- 6c3cdee: Exclude test and benchmark files from the JSR package
+
 ## 2.0.1
 
 ### Patch Changes
