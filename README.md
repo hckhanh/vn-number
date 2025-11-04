@@ -19,7 +19,7 @@
 ## Installation
 
 ```bash
-npm install vn-number
+pnpm add vn-number
 ```
 
 ```bash
