@@ -15,6 +15,7 @@
 - Fully documented
 - Works with `number`, `string`, and `bigint` types
 - Handles very large numbers (up to quintillions)
+- Battle-tested in production apps and dashboards
 
 ## Installation
 
