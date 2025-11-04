@@ -46,8 +46,7 @@
     "vitest": "3.2.4"
   },
   "workspaces": [
-    ".",
-    "docs"
+    "."
   ],
   "files": [
     "dist"
