@@ -18,7 +18,7 @@ This repository contains `vn-number`, a TypeScript library providing utility fun
 
 ### Style Guidelines
 - **Quotes**: Use single quotes for strings
-- **Semicolons**: Use semicolons only when needed (ASNeeded style)
+- **Semicolons**: Use semicolons only when needed (asNeeded style)
 - **Arrow Functions**: Always use parentheses around arrow function parameters
 - **Indentation**: 2 spaces
 - **Import Organization**: Organize imports automatically (enabled in Biome config)
@@ -117,14 +117,18 @@ src/
 ├── format/            # Number formatting functions
 │   ├── index.ts       # Format module exports
 │   ├── number.ts      # Implementation
-│   └── number.test.ts # Tests
+│   ├── number.test.ts # Tests
+│   └── number.bench.ts # Performance benchmarks
 └── read/              # Number reading (text conversion) functions
     ├── index.ts       # Read module exports
+    ├── index.bench.ts # Performance benchmarks
     ├── digits.ts      # Digit processing
+    ├── digits.test.ts # Digit tests
     ├── groups.ts      # Group processing
+    ├── groups.test.ts # Group tests
     ├── three-digits.ts # Three-digit processing
-    ├── utils.ts       # Utility functions
-    └── *.test.ts      # Test files
+    ├── three-digits.test.ts # Three-digit tests
+    └── utils.ts       # Utility functions
 ```
 
 ## Contributing Guidelines
