@@ -2,4 +2,4 @@
 "vn-number": patch
 ---
 
-Simplified `readVnNumber` string conversion for improved readability
+Simplified `readVnNumber` string conversion to improve performance
