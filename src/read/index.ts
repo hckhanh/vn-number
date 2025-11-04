@@ -15,8 +15,7 @@ import { splitIntoGroups } from './utils.ts'
  * @return The Vietnamese number in string.
  */
 export function readVnNumber(number: string | number | bigint): string {
-  const numStr = number.toString()
-  const groups = splitIntoGroups(numStr)
+  const groups = splitIntoGroups('' + number)
   const groupTypes = calculateGroupTypes(groups.length)
 
   const parts: string[] = []

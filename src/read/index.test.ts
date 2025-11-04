@@ -228,6 +228,24 @@ describe('readVnNumber', () => {
       expect(readVnNumber(BigInt('1000000000000000000'))).to.equal('một tỷ tỷ')
     })
 
+    it('should handle octillions (tỷ tỷ tỷ)', () => {
+      expect(readVnNumber('1000000000000000000000000000')).to.equal(
+        'một tỷ tỷ tỷ',
+      )
+      expect(readVnNumber('12000000000000000000000000000')).to.equal(
+        'mười hai tỷ tỷ tỷ',
+      )
+    })
+
+    it('should handle undecillions (tỷ tỷ tỷ tỷ)', () => {
+      expect(readVnNumber('1000000000000000000000000000000000000')).to.equal(
+        'một tỷ tỷ tỷ tỷ',
+      )
+      expect(readVnNumber('12000000000000000000000000000000000000')).to.equal(
+        'mười hai tỷ tỷ tỷ tỷ',
+      )
+    })
+
     it('should handle very large numbers with all groups', () => {
       expect(readVnNumber('1234567890123456')).to.equal(
         'một triệu hai trăm ba mươi bốn nghìn năm trăm sáu mươi bảy tỷ tám trăm chín mươi triệu một trăm hai mươi ba nghìn bốn trăm năm mươi sáu',
