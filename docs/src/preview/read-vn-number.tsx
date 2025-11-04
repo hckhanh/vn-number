@@ -21,14 +21,14 @@ const result = readVnNumber(${number});
       <DynamicCodeBlock code={displayCode} lang='ts' />
       <div className='mt-4 sm:w-1/2'>
         <label
-          className='block font-medium text-sm/6 text-white'
+          className='block font-medium text-gray-900 text-sm/6 dark:text-white'
           htmlFor='input-example'
         >
           Enter any non-negative number &#x2728;
         </label>
         <div className='mt-2'>
           <input
-            className='-outline-offset-1 focus:-outline-offset-2 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:outline-blue-500 sm:text-sm/6'
+            className='-outline-offset-1 focus:-outline-offset-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-blue-500 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500'
             id='input-example'
             name='input-example'
             onChange={handleNumberChange}
