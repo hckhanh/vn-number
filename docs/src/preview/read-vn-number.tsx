@@ -13,13 +13,13 @@ export function ReadVnNumber() {
 
   const displayCode = `import { readVnNumber } from 'vn-number';
 
-const number = ${number || 0};
-const result = readVnNumber(number);
-// result: ${number && !number.startsWith('-') ? readVnNumber(number) : '(Enter a number above \u261D to see the result)'}`
+const result = readVnNumber(${number});
+// result: ${number && !number.startsWith('-') ? readVnNumber(number) : '(Enter a number below \u{1F447} to see the result)'}`
 
   return (
     <div>
-      <div className='mb-3'>
+      <DynamicCodeBlock code={displayCode} lang='ts' />
+      <div className='mt-4 w-1/2'>
         <label
           className='block font-medium text-sm/6 text-white'
           htmlFor='input-example'
@@ -37,7 +37,6 @@ const result = readVnNumber(number);
           />
         </div>
       </div>
-      <DynamicCodeBlock code={displayCode} lang='ts' />
     </div>
   )
 }
