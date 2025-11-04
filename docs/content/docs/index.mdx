@@ -7,6 +7,19 @@ import { Callout } from 'fumadocs-ui/components/callout';
 import { Card, Cards } from 'fumadocs-ui/components/card';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ReadVnNumber } from '@/preview/read-vn-number'
+import { Feather, ShieldCheck } from 'lucide-react';
+
+<Cards>
+  <Card title="Zero Dependencies" icon={<Feather />}>
+    vn-number has zero runtime dependencies, making it lightweight and perfect for
+    performance-critical applications. It uses the standard [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
+    API for formatting operations.
+  </Card>
+  <Card title="Battle-Tested in Production" icon={<ShieldCheck />}>
+    This library is battle-tested in production apps and dashboards, providing
+    reliable number formatting and reading for any applications that need process Vietnamese data.
+  </Card>
+</Cards>
 
 ## Installation
 
@@ -211,17 +224,6 @@ console.log(`Tổng người dùng: ${formatVnNumber(totalUsers)}`);
 console.log(`Tăng trưởng: ${formatVnPercent(growthRate)}`);
 // Output: "Tăng trưởng: 15,7%"
 ```
-
-<Callout title="Zero Dependencies" type="success">
-  vn-number has zero runtime dependencies, making it lightweight and perfect for
-  performance-critical applications. It uses the standard `Intl.NumberFormat`
-  API for formatting operations.
-</Callout>
-
-<Callout title="Battle-Tested in Production" type="info">
-  This library is battle-tested in production apps and dashboards, providing
-  reliable number formatting and reading for Vietnamese language applications.
-</Callout>
 
 ## Next Steps
 
