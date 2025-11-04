@@ -124,3 +124,7 @@ dist
 
 # IDEs
 .idea/
+
+# Lock files for other package managers (only use pnpm)
+package-lock.json
+yarn.lock
