@@ -19,7 +19,7 @@ const result = readVnNumber(${number});
   return (
     <div>
       <DynamicCodeBlock code={displayCode} lang='ts' />
-      <div className='mt-4 w-1/2'>
+      <div className='mt-4 sm:w-1/2'>
         <label
           className='block font-medium text-sm/6 text-white'
           htmlFor='input-example'
