@@ -57,8 +57,8 @@ importers:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
       vn-number:
-        specifier: 2.0.1
-        version: 2.0.1
+        specifier: 2.0.2
+        version: 2.0.2
     devDependencies:
       '@biomejs/biome':
         specifier: 2.3.2
@@ -3086,8 +3086,8 @@ packages:
       jsdom:
         optional: true
 
-  vn-number@2.0.1:
-    resolution: {integrity: sha512-12L/8G9N42vmcngaJl2N4hjHDcTGgDd8ol6nJaXgJzUdpgvd9Jlqj3tqpCJn4HDXFX9JtP9UFunJI7IO8pbyfg==}
+  vn-number@2.0.2:
+    resolution: {integrity: sha512-YomDCmqJfMZeadPxZLZUNyIIbL+RxYenJQ3Zlvy9v5Ps2dLbqSW4q4Y8VMl7ZNdL4u4HVnSTM4IeG7/q7CvUxw==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -6378,7 +6378,7 @@ snapshots:
       - tsx
       - yaml
 
-  vn-number@2.0.1: {}
+  vn-number@2.0.2: {}
 
   which@2.0.2:
     dependencies:
