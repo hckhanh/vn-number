@@ -18,6 +18,5 @@ const DIGIT_MAP: readonly string[] = [
  * Get Vietnamese word for a digit
  */
 export function getDigitWord(digit: string): string {
-  const d = Number(digit)
-  return DIGIT_MAP[d] || ''
+  return DIGIT_MAP[Number(digit)] || ''
 }

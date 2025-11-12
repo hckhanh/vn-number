@@ -4,19 +4,20 @@ import { getDigitWord } from './digits.ts'
  * Read the "hundreds" digit
  */
 function readHundreds(first: string, hasHundredsPosition: boolean): string {
-  if (!hasHundredsPosition) return ''
-  return `${getDigitWord(first)} trăm`
+  return !hasHundredsPosition ? '' : `${getDigitWord(first)} trăm`
 }
 
 /**
  * Read the "tens" digit
  */
 function readTens(second: string, hasTensPosition: boolean): string {
-  if (!hasTensPosition) return ''
-
-  if (second === '0') return ' lẻ'
-  if (second === '1') return ' mười'
-  return ` ${getDigitWord(second)} mươi`
+  return !hasTensPosition
+    ? ''
+    : second === '0'
+      ? ' lẻ'
+      : second === '1'
+        ? ' mười'
+        : ` ${getDigitWord(second)} mươi`
 }
 
 /**
@@ -41,6 +42,7 @@ function readOnes(
   if (last !== '0') {
     return ` ${getDigitWord(last)}`
   }
+
   return ''
 }
 
@@ -94,20 +96,12 @@ export function readFirstGroupBeforeBillion(group: string): string {
  * Read the first group in the number sequence (normal case)
  */
 export function readFirstGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return 'không'
-  }
-
-  return readThreeDigitsCore(group)
+  return isAllZeros(group) ? 'không' : readThreeDigitsCore(group)
 }
 
 /**
  * Read the later (non-first) group in the number sequence
  */
 export function readSubsequentGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return ''
-  }
-
-  return readThreeDigitsCore(group)
+  return isAllZeros(group) ? '' : readThreeDigitsCore(group)
 }

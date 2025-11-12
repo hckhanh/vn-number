@@ -23,9 +23,11 @@ export function allFollowingGroupsAreZero(
 ): boolean {
   for (let j = index + 1; j < groups.length; j++) {
     const g = groups[j]
+
     if (g !== '000' && g !== '00' && g !== '0') {
       return false
     }
   }
+
   return true
 }

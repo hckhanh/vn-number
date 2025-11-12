@@ -11,11 +11,13 @@ import { allFollowingGroupsAreZero } from './utils.ts'
  */
 export function calculateGroupTypes(groupCount: number): number[] {
   const groupTypes: number[] = []
+
   for (let i = groupCount - 1, type = 0; i >= 0; i--) {
     groupTypes[i] = type
     type++
     if (type === 4) type = 1 // cycle back after billion
   }
+
   return groupTypes
 }
 
@@ -101,21 +103,13 @@ export function processGroup(
   const positionFromRight = groups.length - 1 - index
   const hasTrailingZeros = allFollowingGroupsAreZero(groups, index)
 
-  if (index === 0) {
-    const nextGroupType = groups.length > 1 ? groupTypes[1] : -1
-    return processFirstGroup(
-      group,
-      type,
-      nextGroupType,
-      positionFromRight,
-      hasTrailingZeros,
-    )
-  }
-
-  return processSubsequentGroup(
-    group,
-    type,
-    positionFromRight,
-    hasTrailingZeros,
-  )
+  return index === 0
+    ? processFirstGroup(
+        group,
+        type,
+        groups.length > 1 ? groupTypes[1] : -1, // nextGroupType: the type of the next group to determine if we're before billion group
+        positionFromRight,
+        hasTrailingZeros,
+      )
+    : processSubsequentGroup(group, type, positionFromRight, hasTrailingZeros)
 }
