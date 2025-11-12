@@ -11,11 +11,13 @@ import { allFollowingGroupsAreZero } from './utils.ts'
  */
 export function calculateGroupTypes(groupCount: number): number[] {
   const groupTypes: number[] = []
+
   for (let i = groupCount - 1, type = 0; i >= 0; i--) {
     groupTypes[i] = type
     type++
     if (type === 4) type = 1 // cycle back after billion
   }
+
   return groupTypes
 }
 

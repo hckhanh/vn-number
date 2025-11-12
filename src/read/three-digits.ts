@@ -3,9 +3,8 @@ import { getDigitWord } from './digits.ts'
 /**
  * Read the "hundreds" digit
  */
-function readHundreds(first: string, hasHundredsPosition: boolean): string {
-  if (!hasHundredsPosition) return ''
-  return `${getDigitWord(first)} trăm`
+function readHundreds(first: string, groupLength: number): string {
+  return groupLength > 2 ? `${getDigitWord(first)} trăm` : ''
 }
 
 /**
@@ -41,6 +40,7 @@ function readOnes(
   if (last !== '0') {
     return ` ${getDigitWord(last)}`
   }
+
   return ''
 }
 
@@ -53,15 +53,16 @@ function readThreeDigitsCore(group: string): string {
   const second = len > 1 ? group[len - 2] : '0'
   const last = group[len - 1] || '0'
 
-  let result = readHundreds(first, len > 2)
+  let result = readHundreds(first, len)
 
   // If the last two digits are zero, return early
   if (second === '0' && last === '0') {
     return result.trim()
   }
 
-  result += readTens(second, len > 1)
-  result += readOnes(last, second, len > 1)
+  const hasTensPosition = len > 1
+  result += readTens(second, hasTensPosition)
+  result += readOnes(last, second, hasTensPosition)
 
   return result.trim()
 }
@@ -94,20 +95,12 @@ export function readFirstGroupBeforeBillion(group: string): string {
  * Read the first group in the number sequence (normal case)
  */
 export function readFirstGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return 'không'
-  }
-
-  return readThreeDigitsCore(group)
+  return isAllZeros(group) ? 'không' : readThreeDigitsCore(group)
 }
 
 /**
  * Read the later (non-first) group in the number sequence
  */
 export function readSubsequentGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return ''
-  }
-
-  return readThreeDigitsCore(group)
+  return isAllZeros(group) ? '' : readThreeDigitsCore(group)
 }
