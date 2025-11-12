@@ -3,8 +3,8 @@ import { getDigitWord } from './digits.ts'
 /**
  * Read the "hundreds" digit
  */
-function readHundreds(first: string, hasHundredsPosition: boolean): string {
-  return hasHundredsPosition ? `${getDigitWord(first)} trăm` : ''
+function readHundreds(first: string, groupLength: number): string {
+  return groupLength > 2 ? `${getDigitWord(first)} trăm` : ''
 }
 
 /**
@@ -53,7 +53,7 @@ function readThreeDigitsCore(group: string): string {
   const second = len > 1 ? group[len - 2] : '0'
   const last = group[len - 1] || '0'
 
-  let result = readHundreds(first, len > 2)
+  let result = readHundreds(first, len)
 
   // If the last two digits are zero, return early
   if (second === '0' && last === '0') {
