@@ -103,13 +103,21 @@ export function processGroup(
   const positionFromRight = groups.length - 1 - index
   const hasTrailingZeros = allFollowingGroupsAreZero(groups, index)
 
-  return index === 0
-    ? processFirstGroup(
-        group,
-        type,
-        groups.length > 1 ? groupTypes[1] : -1, // nextGroupType: the type of the next group to determine if we're before billion group
-        positionFromRight,
-        hasTrailingZeros,
-      )
-    : processSubsequentGroup(group, type, positionFromRight, hasTrailingZeros)
+  if (index === 0) {
+    const nextGroupType = groups.length > 1 ? groupTypes[1] : -1
+    return processFirstGroup(
+      group,
+      type,
+      nextGroupType,
+      positionFromRight,
+      hasTrailingZeros,
+    )
+  }
+
+  return processSubsequentGroup(
+    group,
+    type,
+    positionFromRight,
+    hasTrailingZeros,
+  )
 }
