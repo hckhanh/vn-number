@@ -11,13 +11,11 @@ function readHundreds(first: string, hasHundredsPosition: boolean): string {
  * Read the "tens" digit
  */
 function readTens(second: string, hasTensPosition: boolean): string {
-  return !hasTensPosition
-    ? ''
-    : second === '0'
-      ? ' lẻ'
-      : second === '1'
-        ? ' mười'
-        : ` ${getDigitWord(second)} mươi`
+  if (!hasTensPosition) return ''
+
+  if (second === '0') return ' lẻ'
+  if (second === '1') return ' mười'
+  return ` ${getDigitWord(second)} mươi`
 }
 
 /**
