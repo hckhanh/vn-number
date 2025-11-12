@@ -60,8 +60,9 @@ function readThreeDigitsCore(group: string): string {
     return result.trim()
   }
 
-  result += readTens(second, len > 1)
-  result += readOnes(last, second, len > 1)
+  const hasTensPosition = len > 1
+  result += readTens(second, hasTensPosition)
+  result += readOnes(last, second, hasTensPosition)
 
   return result.trim()
 }
