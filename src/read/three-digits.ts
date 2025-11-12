@@ -4,7 +4,7 @@ import { getDigitWord } from './digits.ts'
  * Read the "hundreds" digit
  */
 function readHundreds(first: string, hasHundredsPosition: boolean): string {
-  return !hasHundredsPosition ? '' : `${getDigitWord(first)} trăm`
+  return hasHundredsPosition ? `${getDigitWord(first)} trăm` : ''
 }
 
 /**
