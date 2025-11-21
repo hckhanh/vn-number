@@ -37,9 +37,9 @@
   ],
   "semverGroups": [
     {
-      "label": "All non-peer dependencies must be pinned",
+      "label": "All dependencies must be pinned except peer and pnpmOverrides",
       "range": "",
-      "dependencyTypes": ["!peer"],
+      "dependencyTypes": ["!peer", "!pnpmOverrides"],
       "dependencies": ["**"],
       "packages": ["**"]
     },
