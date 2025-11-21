@@ -31,4 +31,4 @@ jobs:
         uses: CodSpeedHQ/action@6a8e2b874c338bf81cc5e8be715ada75908d3871 # v4.3.4
         with:
           run: pnpm vitest bench
-          mode: 'instrumentation'
+          mode: 'simulation'
