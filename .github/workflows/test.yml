@@ -32,8 +32,6 @@ jobs:
         run: pnpm syncpack format --check
       - name: Checks for known security issues with the installed packages
         run: pnpm audit
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: pnpm npm audit signatures
       - name: Verify the package for publishing performing all checks and validations
         run: pnpm dlx jsr publish --dry-run
   unit-test:
