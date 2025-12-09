@@ -27,6 +27,8 @@ jobs:
           mode: firewall
       - name: Optimize dependencies with @socketregistry overrides
         run: socket optimize
+      - name: Install dependencies
+        run: sfw pnpm install
       - name: Format code
         run: pnpm biome check --write
       - name: Fix package.json
