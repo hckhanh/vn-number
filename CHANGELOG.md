@@ -1,5 +1,11 @@
 # vn-number
 
+## 2.0.4
+
+### Patch Changes
+
+- eafda0c: Add PURE annotations to enable better tree-shaking
+
 ## 2.0.3
 
 ### Patch Changes
