@@ -27,7 +27,7 @@ function formatNumber(
   return Number.isNaN(num) ? fallbackValue : formatter.format(num)
 }
 
-const VN_NUMBER_FORMATTER = new Intl.NumberFormat('vi-VN')
+const VN_NUMBER_FORMATTER = /*#__PURE__*/ new Intl.NumberFormat('vi-VN')
 
 /**
  * Formats a number as a Vietnamese formatted number.
@@ -49,7 +49,7 @@ export function formatVnNumber(
   return formatNumber(number, VN_NUMBER_FORMATTER, fallbackValue)
 }
 
-const VN_CURRENCY_FORMATTER = new Intl.NumberFormat('vi-VN', {
+const VN_CURRENCY_FORMATTER = /*#__PURE__*/ new Intl.NumberFormat('vi-VN', {
   currency: 'VND',
   style: 'currency',
 })
@@ -74,7 +74,7 @@ export function formatVnCurrency(
   return formatNumber(money, VN_CURRENCY_FORMATTER, fallbackValue)
 }
 
-const VN_PERCENT_FORMATTER = new Intl.NumberFormat('vi-VN', {
+const VN_PERCENT_FORMATTER = /*#__PURE__*/ new Intl.NumberFormat('vi-VN', {
   style: 'percent',
   maximumFractionDigits: 2,
   minimumFractionDigits: 0,
