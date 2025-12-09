@@ -87,7 +87,8 @@
       "has-symbols": "npm:@socketregistry/has-symbols@^1",
       "has-tostringtag": "npm:@socketregistry/has-tostringtag@^1",
       "hasown": "npm:@socketregistry/hasown@^1",
-      "safer-buffer": "npm:@socketregistry/safer-buffer@^1"
+      "safer-buffer": "npm:@socketregistry/safer-buffer@^1",
+      "mdast-util-to-hast@>=13.0.0 <13.2.1": ">=13.2.1"
     }
   }
 }
