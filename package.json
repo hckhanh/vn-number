@@ -39,11 +39,11 @@
     "@biomejs/biome": "2.3.8",
     "@changesets/cli": "2.29.8",
     "@codspeed/vitest-plugin": "5.0.1",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.15",
     "syncpack": "14.0.0-alpha.32",
     "tsdown": "0.16.8",
     "typescript": "5.9.3",
-    "vitest": "3.2.4"
+    "vitest": "4.0.15"
   },
   "workspaces": [
     "."
