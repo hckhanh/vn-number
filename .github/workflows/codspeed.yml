@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         run: sfw pnpm install
       - name: Run Benchmarks
-        uses: CodSpeedHQ/action@9a74b6ba663684052277e8f342b5eb99c7442a03 # v4.10.5
+        uses: CodSpeedHQ/action@281164b0f014a4e7badd2c02cecad9b595b70537 # v4.11.1
         with:
           run: pnpm vitest bench
           mode: 'simulation'
