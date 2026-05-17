@@ -21,8 +21,12 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup toolchains
         uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
+      - name: Setup Socket Firewall
+        uses: SocketDev/action@4337a545deecc20f19a909e52db7a2f6ba292f42 # v1.2.0
+        with:
+          mode: firewall
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: sfw pnpm install --no-frozen-lockfile
       - name: Format code
         run: pnpm biome check --write
       - name: Fix package.json
@@ -32,7 +36,7 @@ jobs:
       - name: Fix audit issues
         run: pnpm audit --fix
       - name: Update package lock file
-        run: pnpm install --no-frozen-lockfile
+        run: sfw pnpm install --no-frozen-lockfile
       - name: Submit autofix
         uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8 # v1.3.3
         with:
