@@ -85,7 +85,15 @@
       "next@>=16.0.0-beta.0 <16.1.7": ">=16.1.7",
       "next@>=16.0.0-beta.0 <16.2.3": ">=16.2.3",
       "next@>=16.0.1 <16.1.7": ">=16.1.7",
-      "postcss@<8.5.10": ">=8.5.10"
+      "postcss@<8.5.10": ">=8.5.10",
+      "es-define-property": "npm:@socketregistry/es-define-property@^1",
+      "es-set-tostringtag": "npm:@socketregistry/es-set-tostringtag@^1",
+      "function-bind": "npm:@socketregistry/function-bind@^1",
+      "gopd": "npm:@socketregistry/gopd@^1",
+      "has-symbols": "npm:@socketregistry/has-symbols@^1",
+      "has-tostringtag": "npm:@socketregistry/has-tostringtag@^1",
+      "hasown": "npm:@socketregistry/hasown@^1",
+      "safer-buffer": "npm:@socketregistry/safer-buffer@^1"
     }
   }
 }
