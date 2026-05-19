@@ -23,8 +23,8 @@ importers:
         specifier: 2.31.0
         version: 2.31.0(@types/node@24.12.4)
       '@codspeed/vitest-plugin':
-        specifier: 5.1.0
-        version: 5.1.0(tinybench@2.9.0)(vite@7.3.3(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))(vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))
+        specifier: 5.4.0
+        version: 5.4.0(tinybench@2.9.0)(vite@7.3.3(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))(vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))
@@ -273,8 +273,8 @@ packages:
   '@codspeed/core@5.4.0':
     resolution: {integrity: sha512-SwGjXDixN/zX1awBR95LzS0KxIs931qwf7Hbk7BRWv1jAdlMYf9o9GlSnWER4zGBHz941BvzFQJ1O2RIofW3cg==}
 
-  '@codspeed/vitest-plugin@5.1.0':
-    resolution: {integrity: sha512-rA+8DdsbAYxO7lo49K8ZBJqEk7b14Uztpz47ZKm6k8RJcTijffk7OjpG3kOJVUWWta2BVI1bPVj9ENmdfUwrfA==}
+  '@codspeed/vitest-plugin@5.4.0':
+    resolution: {integrity: sha512-Xa9HaZHUjYXn1T39bTipV5hmguk1vIuDZs3Gc5OYA8X4ohftYbKfyoFtBqVFfB/ii/p1ihuwt+tltraKMcRDsA==}
     peerDependencies:
       tinybench: '>=2.9.0'
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
@@ -3659,7 +3659,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@codspeed/vitest-plugin@5.1.0(tinybench@2.9.0)(vite@7.3.3(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))(vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))':
+  '@codspeed/vitest-plugin@5.4.0(tinybench@2.9.0)(vite@7.3.3(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))(vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.30.2))':
     dependencies:
       '@codspeed/core': 5.4.0
       tinybench: 2.9.0
