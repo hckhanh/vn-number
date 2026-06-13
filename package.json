@@ -40,7 +40,7 @@
     "@changesets/cli": "2.31.0",
     "@codspeed/vitest-plugin": "5.4.0",
     "@vitest/coverage-v8": "3.2.4",
-    "syncpack": "14.3.1",
+    "syncpack": "15.3.1",
     "tsdown": "0.22.1",
     "typescript": "5.9.3",
     "vitest": "3.2.6"
