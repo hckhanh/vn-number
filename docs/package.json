@@ -27,7 +27,7 @@
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
-    "postcss": "8.5.15",
+    "postcss": "8.5.23",
     "shiki": "3.23.0",
     "tailwindcss": "4.3.0",
     "typescript": "5.9.3"
