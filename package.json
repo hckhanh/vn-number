@@ -1,13 +1,13 @@
 {
   "name": "vn-number",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.id",
     "url": "https://www.khanh.id"
   },
-  "homepage": "https://vn-number.khanh.id",
+  "homepage": "https://docs.khanh.id/vn-number",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hckhanh/vn-number.git"

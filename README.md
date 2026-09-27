@@ -92,7 +92,7 @@ formatVnPercent(0.5)
 
 For detailed documentation, examples, and API reference, visit:
 
-**[https://vn-number.khanh.id](https://vn-number.khanh.id)**
+**[https://docs.khanh.id/vn-number](https://docs.khanh.id/vn-number)**
 
 ## Common Use Cases
 
