@@ -1,5 +1,9 @@
 # 🇻🇳 vn-number [![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number) [![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
 
+<p align="center">
+  <img src="docs/images/logo.svg" alt="vn-number" width="128" />
+</p>
+
 🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
 
 [![Publish](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml/badge.svg)](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml)
