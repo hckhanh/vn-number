@@ -109,7 +109,7 @@ When working with number-to-text conversion, follow these Vietnamese language co
 
 ### README and Docs
 - Keep `README.md` up to date with API changes
-- Documentation site is in the `docs/` subdirectory
+- Documentation is published at https://docs.khanh.id/vn-number
 - Update documentation when adding or changing public APIs
 
 ## Project Structure

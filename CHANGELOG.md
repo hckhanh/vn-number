@@ -1,5 +1,11 @@
 # vn-number
 
+## 2.0.5
+
+### Patch Changes
+
+- Point documentation at https://docs.khanh.id/vn-number and publish the changes already on main since 2.0.4.
+
 ## 2.0.4
 
 ### Patch Changes

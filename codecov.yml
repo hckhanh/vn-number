@@ -8,6 +8,3 @@ coverage:
       default:
         target: auto
         threshold: 1%
-
-ignore:
-  - 'docs'

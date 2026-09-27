@@ -1,13 +1,13 @@
 {
   "name": "vn-number",
   "description": "A bunch of utility functions that work with number in Vietnamese language",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": {
     "name": "Khánh Hoàng",
     "email": "hi@khanh.id",
     "url": "https://www.khanh.id"
   },
-  "homepage": "https://vn-number.khanh.id",
+  "homepage": "https://docs.khanh.id/vn-number",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hckhanh/vn-number.git"
@@ -39,11 +39,11 @@
     "@biomejs/biome": "2.3.13",
     "@changesets/cli": "2.31.0",
     "@codspeed/vitest-plugin": "5.4.0",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.1.11",
     "syncpack": "14.3.1",
     "tsdown": "0.22.1",
     "typescript": "5.9.3",
-    "vitest": "3.2.6"
+    "vitest": "4.1.11"
   },
   "workspaces": [
     "."
