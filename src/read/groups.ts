@@ -1,6 +1,6 @@
 import {
-  readFirstGroupBeforeBillion,
   readFirstGroup,
+  readFirstGroupBeforeBillion,
   readSubsequentGroup,
 } from './three-digits.ts'
 import { allFollowingGroupsAreZero } from './utils.ts'
@@ -11,18 +11,25 @@ import { allFollowingGroupsAreZero } from './utils.ts'
  */
 export function calculateGroupTypes(groupCount: number): number[] {
   const groupTypes: number[] = []
+
   for (let i = groupCount - 1, type = 0; i >= 0; i--) {
     groupTypes[i] = type
     type++
     if (type === 4) type = 1 // cycle back after billion
   }
+
   return groupTypes
 }
 
 /**
- * Get unit suffix for a group based on its type
+ * Get unit suffix for a group based on its type.
+ * @param type Group type (0=units, 1=thousand, 2=million, 3=billion).
+ * @param positionFromRight Zero-based group position from the right.
+ * @param hasTrailingZeros Whether all following groups are zero.
+ * @return The suffix including its leading space, or an empty string.
+ * @example getUnitSuffix(3, 6, true) // " tỷ tỷ"
  */
-function getUnitSuffix(
+export function getUnitSuffix(
   type: number,
   positionFromRight: number,
   hasTrailingZeros: boolean,
@@ -30,9 +37,10 @@ function getUnitSuffix(
   const needsBillionSuffix = positionFromRight >= 3 && hasTrailingZeros
 
   if (type === 3) {
-    // Billion: double "tỷ" for second billion cycle (position >= 6)
+    // Billion: repeat "tỷ" based on position (position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
     if (positionFromRight >= 6 && hasTrailingZeros) {
-      return ' tỷ tỷ'
+      const billionCount = Math.floor(positionFromRight / 3)
+      return ' tỷ'.repeat(billionCount)
     }
     return ' tỷ'
   }
@@ -72,7 +80,7 @@ function processFirstGroup(
 }
 
 /**
- * Process a subsequent (non-first) group in the number sequence
+ * Process the later (non-first) group in the number sequence
  */
 function processSubsequentGroup(
   group: string,
@@ -111,5 +119,10 @@ export function processGroup(
     )
   }
 
-  return processSubsequentGroup(group, type, positionFromRight, hasTrailingZeros)
+  return processSubsequentGroup(
+    group,
+    type,
+    positionFromRight,
+    hasTrailingZeros,
+  )
 }

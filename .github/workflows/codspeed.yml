@@ -44,9 +44,16 @@ jobs:
           mode: firewall
       - name: Install Dependencies
         run: sfw pnpm install
+      - name: Prepare historical controls
+        run: |
+          git fetch --no-tags origin refs/pull/43/head
+          pnpm exec node benchmarks/prepare-sonar-history.mjs
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@f22792bfac16f3e14eb9fbea76f4a48e9cc22b93 # v4.19.1
         with:
           runner-version: '4.19.1'
-          run: pnpm bench
+          run: |
+            for variant in before first second v3 candidate; do
+              pnpm exec vitest bench benchmarks/results/local/sonar-history/$variant/index.bench.ts --run
+            done
           mode: ${{ inputs.mode || 'simulation' }}

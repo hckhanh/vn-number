@@ -1,15 +1,14 @@
-import { getDigitWord } from './digits.ts'
+import { DIGIT_MAP, getDigitWord } from './digits.ts'
 
 /**
- * Read the hundreds digit
+ * Read the "hundreds" digit
  */
-function readHundreds(first: string, hasHundredsPosition: boolean): string {
-  if (!hasHundredsPosition) return ''
-  return `${getDigitWord(first)} trăm`
+function readHundreds(first: string, groupLength: number): string {
+  return groupLength > 2 ? `${getDigitWord(first)} trăm` : ''
 }
 
 /**
- * Read the tens digit
+ * Read the "tens" digit
  */
 function readTens(second: string, hasTensPosition: boolean): string {
   if (!hasTensPosition) return ''
@@ -20,7 +19,7 @@ function readTens(second: string, hasTensPosition: boolean): string {
 }
 
 /**
- * Read the ones digit with special rules
+ * Read the "ones" digit with special rules
  */
 function readOnes(
   last: string,
@@ -41,29 +40,74 @@ function readOnes(
   if (last !== '0') {
     return ` ${getDigitWord(last)}`
   }
+
   return ''
 }
 
 /**
  * Core reading logic for a 3-digit group
  */
-function readThreeDigitsCore(group: string): string {
+function readNonDigitGroup(group: string): string {
   const len = group.length
   const first = len > 2 ? group[len - 3] : '0'
   const second = len > 1 ? group[len - 2] : '0'
   const last = group[len - 1] || '0'
 
-  let result = readHundreds(first, len > 2)
+  let result = readHundreds(first, len)
 
   // If the last two digits are zero, return early
   if (second === '0' && last === '0') {
     return result.trim()
   }
 
-  result += readTens(second, len > 1)
-  result += readOnes(last, second, len > 1)
+  const hasTensPosition = len > 1
+  result += readTens(second, hasTensPosition)
+  result += readOnes(last, second, hasTensPosition)
 
   return result.trim()
+}
+
+/** Read decimal groups without repeatedly coercing digits or trimming strings. */
+function readThreeDigitsCore(group: string, zeroReading: string = ''): string {
+  const len = group.length
+  const first = len > 2 ? group.charCodeAt(len - 3) - 48 : 0
+  const second = len > 1 ? group.charCodeAt(len - 2) - 48 : 0
+  const last = group.charCodeAt(len - 1) - 48
+  // Reuse decoded digits for zero groups instead of decoding the group twice.
+  if (first === 0 && second === 0 && last === 0) return zeroReading
+  // Preserve the existing handling of non-decimal input without slowing the
+  // documented decimal-integer path with repeated Number() conversions.
+  if (
+    !(
+      first >= 0 &&
+      first <= 9 &&
+      second >= 0 &&
+      second <= 9 &&
+      last >= 0 &&
+      last <= 9
+    )
+  ) {
+    return readNonDigitGroup(group)
+  }
+
+  let result = len > 2 ? DIGIT_MAP[first] + ' trăm' : ''
+  if (second === 0 && last === 0) return result
+
+  if (len > 1) {
+    if (result) result += ' '
+    result +=
+      second === 0 ? 'lẻ' : second === 1 ? 'mười' : DIGIT_MAP[second] + ' mươi'
+  }
+  if (last !== 0) {
+    if (result) result += ' '
+    result +=
+      last === 1 && second > 1
+        ? 'mốt'
+        : last === 5 && second > 0
+          ? 'lăm'
+          : DIGIT_MAP[last]
+  }
+  return result
 }
 
 /**
@@ -94,20 +138,12 @@ export function readFirstGroupBeforeBillion(group: string): string {
  * Read the first group in the number sequence (normal case)
  */
 export function readFirstGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return 'không'
-  }
-
-  return readThreeDigitsCore(group)
+  return group === '' ? 'không' : readThreeDigitsCore(group, 'không')
 }
 
 /**
- * Read the subsequent (non-first) group in the number sequence
+ * Read the later (non-first) group in the number sequence
  */
 export function readSubsequentGroup(group: string): string {
-  if (isAllZeros(group)) {
-    return ''
-  }
-
   return readThreeDigitsCore(group)
 }

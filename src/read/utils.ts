@@ -15,7 +15,7 @@ export function splitIntoGroups(numStr: string): string[] {
 }
 
 /**
- * Check if all groups after given index are zeros
+ * Check if all groups after the given index are zeros
  */
 export function allFollowingGroupsAreZero(
   groups: string[],
@@ -23,9 +23,11 @@ export function allFollowingGroupsAreZero(
 ): boolean {
   for (let j = index + 1; j < groups.length; j++) {
     const g = groups[j]
+
     if (g !== '000' && g !== '00' && g !== '0') {
       return false
     }
   }
+
   return true
 }
