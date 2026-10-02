@@ -54,3 +54,9 @@ describe('readSubsequentGroup', () => {
     expect(readSubsequentGroup('123')).to.equal('một trăm hai mươi ba')
   })
 })
+
+it('preserves empty and unreadable group behavior', () => {
+  expect(readFirstGroup('')).toBe('không')
+  expect(readSubsequentGroup('')).toBe('')
+  expect(readFirstGroupBeforeBillion('x')).toBe('')
+})

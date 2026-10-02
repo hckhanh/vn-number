@@ -1,0 +1,127 @@
+{
+  "timestamp": "2026-10-02T05:52:48.635Z",
+  "runtime": {
+    "node": "v24.16.0",
+    "v8": "13.6.233.17-node.49"
+  },
+  "baselineCommit": "aca1fd91b2bdd0c0dfde4038bbae2e58b3815ce4",
+  "compatibilityChecks": 16395,
+  "methodology": {
+    "rounds": 9,
+    "sampleMs": 30,
+    "alternatingOrder": true,
+    "unit": "us/conversion including full character hash"
+  },
+  "primaryCase": {
+    "input": "'1' + '0'.repeat(3000)",
+    "digits": 3001,
+    "groups": 1001,
+    "oldTrailingGroupChecks": 500500,
+    "newTrailingDigitChecks": 3000,
+    "output": "một nghìn tỷ",
+    "note": "This short output is an existing magnitude-wording defect; the scaling controls above use correctly repeated billion suffixes."
+  },
+  "bundleBytes": {
+    "baseline": 8969,
+    "candidate": 8274
+  },
+  "sink": 1936412304,
+  "results": [
+    {
+      "name": "varying powers of a billion, 1000 digits",
+      "distinctInputs": 9,
+      "outputLengthRange": [335, 337],
+      "baselineMedianUs": 228.4586444444442,
+      "candidateMedianUs": 1.8020159841954075,
+      "speedup": 126.77947723446526,
+      "iterations": {
+        "baseline": 15,
+        "candidate": 1856
+      },
+      "samples": {
+        "baseline": [
+          228.75617777777794, 228.08642222222235, 228.4586444444442,
+          227.9873481481479, 228.58888888888907, 228.64938518518505,
+          228.24691111111153, 227.7271629629636, 228.96759259259247
+        ],
+        "candidate": [
+          1.7987034243295026, 1.7979002035440617, 1.8079626436781595,
+          1.8100330459770098, 1.8019510895593926, 1.8056104525862093,
+          1.7995315493295045, 1.8055131704980873, 1.8020159841954075
+        ]
+      }
+    },
+    {
+      "name": "varying powers of a billion, 1999 digits",
+      "distinctInputs": 9,
+      "outputLengthRange": [668, 670],
+      "baselineMedianUs": 885.2858888888907,
+      "candidateMedianUs": 3.4050172764227704,
+      "speedup": 259.9945365971684,
+      "iterations": {
+        "baseline": 4,
+        "candidate": 984
+      },
+      "samples": {
+        "baseline": [
+          880.3715277777794, 885.2858888888907, 884.2858888888891,
+          885.2847222222206, 880.8773055555562, 904.0532499999977,
+          900.9803055555557, 908.3460555555563, 905.7650277777738
+        ],
+        "candidate": [
+          3.391942411924132, 3.375348125564584, 3.376067976513112,
+          3.4050172764227704, 3.377098351400173, 3.441936653116549,
+          3.431891711833797, 3.4518217028003777, 3.4672866982836714
+        ]
+      }
+    },
+    {
+      "name": "varying powers of a billion, 2998 digits",
+      "distinctInputs": 9,
+      "outputLengthRange": [1001, 1003],
+      "baselineMedianUs": 1971.8055555555466,
+      "candidateMedianUs": 4.953953689821747,
+      "speedup": 398.02664276147,
+      "iterations": {
+        "baseline": 2,
+        "candidate": 667
+      },
+      "samples": {
+        "baseline": [
+          2004.3147777777729, 2007.6157222222262, 2008.1388888888796,
+          1974.2731666666612, 1967.1597222222142, 1971.8055555555466,
+          1965.5162222222264, 1966.9606666666618, 1971.599500000012
+        ],
+        "candidate": [
+          4.989123438280877, 4.976275695485565, 4.965170248209213,
+          4.91937364651007, 4.953953689821747, 4.90899000499748,
+          4.962622855239062, 4.940758787272984, 4.930735965350673
+        ]
+      }
+    },
+    {
+      "name": "varying sparse integers with a terminal nonzero, 3001 digits",
+      "distinctInputs": 9,
+      "outputLengthRange": [26, 28],
+      "baselineMedianUs": 1966.3333333333462,
+      "candidateMedianUs": 10.00443615257051,
+      "speedup": 196.54614246582227,
+      "iterations": {
+        "baseline": 2,
+        "candidate": 335
+      },
+      "samples": {
+        "baseline": [
+          1968.1574444444373, 1959.8425555555473, 1968.9652777777712,
+          1965.1921111111126, 1966.3333333333462, 1970.932833333336,
+          1963.1319444444368, 1962.064833333342, 1981.2152777777908
+        ],
+        "candidate": [
+          10.068172802653367, 9.943877611940284, 10.00443615257051,
+          9.92524875621894, 10.047042454394768, 10.016666666666623,
+          9.993684245439534, 9.948603980099394, 10.274834162520794
+        ]
+      }
+    }
+  ]
+}
