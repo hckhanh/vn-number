@@ -46,7 +46,7 @@ jobs:
         run: sfw pnpm install
       - name: Prepare historical controls
         run: |
-          git fetch --no-tags origin refs/pull/43/head
+          git fetch --no-tags origin refs/pull/43/head 8c763e85fdb5a43a33e49d8a0b9cd589bc64cec7
           pnpm exec node benchmarks/prepare-sonar-history.mjs
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@f22792bfac16f3e14eb9fbea76f4a48e9cc22b93 # v4.19.1
