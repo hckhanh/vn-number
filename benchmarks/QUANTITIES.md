@@ -80,12 +80,13 @@ first-call latency or total startup work. Changing reader code solely to move a
 V8 compilation boundary out of one measured callback would not establish a real
 application improvement.
 
-The smallest next benchmark change is to label and gate settled conversion
-separately from startup/transition measurements, retaining these paired controls.
-If startup performance is a release requirement, profile total startup and the
-first complete user operation separately before changing the reader. This
-bounded diagnosis leaves the original score visible and introduces no speculative
-production fix.
+Follow-up work now covers both remaining questions: the native
+[fresh-process assessment](COLD_START.md) measures first calls and complete
+startup operations, while the [CodSpeed configuration audit](CODSPEED.md)
+identifies missing Node 24 analysis flags and tests them on one runner. Adding
+the two upstream flags reverses the default-seven-warmup quantities result to a
+2.39× improvement with unchanged library bundles. The default results above
+remain historical evidence; no speculative production fix was introduced.
 
 ## Reproduce
 

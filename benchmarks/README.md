@@ -170,3 +170,11 @@ first-call, short-burst and spawn-to-exit time across 510 new Node processes.
 It finds faster first calls and bursts while retaining startup/import overhead
 as a separate cost. This does not replace or redefine the default-warmup
 CodSpeed measurement.
+
+## CodSpeed Node 24 configuration audit
+
+The installed SDK omits two upstream Node 24 analysis flags. A same-runner test
+with unchanged bundles and seven warmups changes quantities from a 0.56× ratio
+to a 2.39× improvement after adding `--no-maglev` and `--no-minor-gc-task`.
+The original scores remain visible. See the [configuration audit](CODSPEED.md)
+for exact versions, raw results, supported upgrade boundaries and limitations.
