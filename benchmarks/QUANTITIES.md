@@ -101,3 +101,9 @@ them in separate invocations in one job, after the unchanged source benchmarks.
 A local `vitest bench` invocation without the CodSpeed instrument reports native
 timings, not simulated scores. Use `bench src/` to select the regular suite while
 the generated probes exist. No release, tag or merge is part of this diagnosis.
+
+## Fresh-process follow-up
+
+The remaining first-call/short-lived usage check is documented in the
+[fresh-process assessment](COLD_START.md). It preserves the default-warmup score
+above and uses native wall-clock measurements with no library warmup.

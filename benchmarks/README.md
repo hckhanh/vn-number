@@ -162,3 +162,11 @@ paired CodSpeed measurements improve 2.05×; native timing on that runner improv
 3.03×, or 3.13× with CodSpeed's V8 flags. Production code is unchanged. See the
 [controlled diagnosis](QUANTITIES.md) for the default-warmup result, exact run
 links, raw data, V8 compiler evidence, and limits on the conclusion.
+
+## Fresh-process usage
+
+A separate [fresh-process assessment](COLD_START.md) measures native import,
+first-call, short-burst and spawn-to-exit time across 510 new Node processes.
+It finds faster first calls and bursts while retaining startup/import overhead
+as a separate cost. This does not replace or redefine the default-warmup
+CodSpeed measurement.
