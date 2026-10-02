@@ -58,8 +58,12 @@ nine alternating samples. Raw evidence:
 
 CodSpeed core 5.7.1's simulation flags include `--no-opt`, `--predictable`,
 `--predictable-gc-schedule`, and `--expose-gc`. Its Vitest analysis runner warms a
-callback seven times, invokes GC, then measures one callback. `--no-opt` disables
-the optimizing compiler, but leaves V8's Sparkplug baseline compiler enabled.
+callback seven times, invokes GC, then measures one callback. On Node 24's V8
+13.6, `--no-opt` aliases `--no-turbofan`: Maglev and Sparkplug remain enabled.
+CodSpeed's [upcoming Node 24 support](https://github.com/CodSpeedHQ/codspeed-node/commit/e3224e7)
+adds `--no-maglev` and `--no-minor-gc-task`; core 5.7.1 supplies neither. A
+separate `node24-flags` probe pair tests that flag set with the original seven
+warmups and unchanged library bundles. This does not upgrade the SDK or runner.
 
 A local replay with these flags plus `--trace-baseline --trace-gc` observed
 baseline batch compilation inside a quantities measurement window, including
@@ -95,7 +99,7 @@ mise exec -- node --interpreted-frames-native-stack --allow-natives-syntax --has
 mise exec -- node benchmarks/prepare-quantities.mjs
 ```
 
-The preparation command writes four explicitly named probes, bundles and metadata
+The preparation command writes six explicitly named probes, bundles and metadata
 under ignored `benchmarks/results/local/quantities/`. The CodSpeed workflow runs
 them in separate invocations in one job, after the unchanged source benchmarks.
 A local `vitest bench` invocation without the CodSpeed instrument reports native

@@ -53,4 +53,6 @@ jobs:
             pnpm vitest bench benchmarks/results/local/quantities/candidate-seven.bench.ts
             pnpm vitest bench benchmarks/results/local/quantities/baseline-settled.bench.ts
             pnpm vitest bench benchmarks/results/local/quantities/candidate-settled.bench.ts
+            pnpm vitest bench --config vitest.codspeed-node24.config.mts benchmarks/results/local/quantities/baseline-node24-flags.bench.ts
+            pnpm vitest bench --config vitest.codspeed-node24.config.mts benchmarks/results/local/quantities/candidate-node24-flags.bench.ts
           mode: 'simulation'

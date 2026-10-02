@@ -33,7 +33,7 @@ try {
     bundles[variant] = createHash('sha256')
       .update(readFileSync(entry))
       .digest('hex')
-    for (const mode of ['seven', 'settled']) {
+    for (const mode of ['seven', 'settled', 'node24-flags']) {
       const warmups = mode === 'settled' ? 1000 : 0
       writeFileSync(
         join(directory, `${variant}-${mode}.bench.ts`),
@@ -53,7 +53,13 @@ describe('controlled ${variant} ${mode}', () => {
   })
   afterAll(() => {
     expect(checksum).toBeGreaterThan(0)
-    console.log('Probe runtime after timing:', JSON.stringify({ node: process.version, v8: process.versions.v8, flags: process.execArgv }))
+${
+  mode === 'node24-flags'
+    ? `    expect(process.execArgv).toContain('--no-maglev')
+    expect(process.execArgv).toContain('--no-minor-gc-task')
+`
+    : ''
+}    console.log('Probe runtime after timing:', JSON.stringify({ node: process.version, v8: process.versions.v8, flags: process.execArgv }))
   })
   for (const scenario of selected) {
     bench(scenario.name, () => {
@@ -75,6 +81,8 @@ describe('controlled ${variant} ${mode}', () => {
     bundles,
     modes: {
       seven: 'CodSpeed default seven warmups',
+      'node24-flags':
+        'Default seven warmups with --no-maglev and --no-minor-gc-task',
       settled:
         '1000 extra rounds outside timing, then CodSpeed default warmups',
     },
