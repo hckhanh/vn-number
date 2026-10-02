@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-10-02T11:55:15.516Z",
+  "baselineRef": "vn-number@2.0.5",
+  "baselineCommit": "aca1fd91b2bdd0c0dfde4038bbae2e58b3815ce4",
+  "candidateHead": "4caad81c8806d61d75a11d607a4357c9ea0b24b4",
+  "candidateSourceSha256": "e620efc38ffd90d4540981d7a1e35ec6a486ad35cdf20220525b05cdec8b54ca",
+  "runtime": {
+    "node": "v24.16.0",
+    "v8": "13.6.233.17-node.49",
+    "icu": "78.3"
+  },
+  "machine": {
+    "cpu": "Intel(R) Xeon(R) 6973P-C",
+    "arch": "x64",
+    "platform": "linux",
+    "release": "6.17.0-1022-azure"
+  },
+  "methodology": {
+    "rounds": 9,
+    "sampleMs": 75,
+    "statistic": "median",
+    "alternatingOrder": true,
+    "seed": "0x564e2026",
+    "unit": "ns/batch",
+    "mode": "bundle"
+  },
+  "bundleBytes": {
+    "baseline": 8969,
+    "candidate": 8274
+  },
+  "checksum": 132166320,
+  "results": [
+    {
+      "name": "read/quantities (50 conversions)",
+      "conversions": 50,
+      "baselineNs": 13149.782222222206,
+      "candidateNs": 4197.412367073649,
+      "speedup": 3.1328306757217588,
+      "baselineNsPerConversion": 262.9956444444441,
+      "candidateNsPerConversion": 83.94824734147298,
+      "iterations": {
+        "baseline": 5625,
+        "candidate": 17773
+      },
+      "samples": {
+        "baseline": [
+          13139.919111111109, 13174.331377777788, 13161.76657777778,
+          13149.782222222206, 13165.67839999999, 13155.546311111095,
+          13109.756444444429, 13131.935822222255, 13136.668266666635
+        ],
+        "candidate": [
+          4241.391717774151, 4224.2882462161715, 4206.489112699038,
+          4184.781016148091, 4185.912845327185, 4192.918809430029,
+          4197.412367073649, 4214.131491588362, 4196.611489337771
+        ]
+      }
+    }
+  ]
+}

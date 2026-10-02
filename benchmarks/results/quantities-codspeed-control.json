@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-02",
+  "githubRun": "https://github.com/hckhanh/vn-number/actions/runs/37003644978",
+  "codspeedRun": "https://app.codspeed.io/hckhanh/vn-number/runs/6abf9c33a9c8c0f373101449",
+  "baselineSourceCommit": "aca1fd91b2bdd0c0dfde4038bbae2e58b3815ce4",
+  "baselineSourceMatches": "fc62f7cab1a0e20c5e32141dc24decde253663e1",
+  "branchHead": "864ffabf4c2525164799369a50a34c8447ddcf9e",
+  "checkoutCommit": "4caad81c8806d61d75a11d607a4357c9ea0b24b4",
+  "productionSourceUnchangedSince": "6ed2598e6015cdc2481689b3f2a6b77d63482487",
+  "inputSha256": "3b27dc3e55ac06339290e197985257e16ffc85bf32ee56d4ebb94d666bc800e8",
+  "bundleSha256": {
+    "baseline": "4baf03e9c187d46076061290c944e75244207b97d25bbf641f6e891b75894dc7",
+    "candidate": "d1d6363cf7e46b8acf936ca286ea9abe885311ac23f9ba5f13464baa9545d163"
+  },
+  "results": [
+    {
+      "uri": "src/read/index.bench.ts::deterministic read workloads::read/quantities (50 conversions)",
+      "seconds": 0.0010827294444444445,
+      "measurementIssues": {
+        "__typename": "MeasurementIssues",
+        "optimizedOut": false,
+        "significantSysTime": false,
+        "unoptimizedQueries": false
+      },
+      "valgrind": {
+        "__typename": "ValgrindResult",
+        "systemTime": 4.1287e-5,
+        "sysCount": "13"
+      }
+    },
+    {
+      "uri": "benchmarks/results/local/quantities/baseline-settled.bench.ts::controlled baseline settled::read/quantities (50 conversions)",
+      "seconds": 0.0001513211111111111,
+      "measurementIssues": {
+        "__typename": "MeasurementIssues",
+        "optimizedOut": false,
+        "significantSysTime": false,
+        "unoptimizedQueries": false
+      },
+      "valgrind": {
+        "__typename": "ValgrindResult",
+        "systemTime": 0,
+        "sysCount": "0"
+      }
+    },
+    {
+      "uri": "benchmarks/results/local/quantities/baseline-seven.bench.ts::controlled baseline seven::read/quantities (50 conversions)",
+      "seconds": 0.00061599,
+      "measurementIssues": {
+        "__typename": "MeasurementIssues",
+        "optimizedOut": false,
+        "significantSysTime": false,
+        "unoptimizedQueries": false
+      },
+      "valgrind": {
+        "__typename": "ValgrindResult",
+        "systemTime": 6.1152e-5,
+        "sysCount": "22"
+      }
+    },
+    {
+      "uri": "benchmarks/results/local/quantities/candidate-settled.bench.ts::controlled candidate settled::read/quantities (50 conversions)",
+      "seconds": 7.367666666666667e-5,
+      "measurementIssues": {
+        "__typename": "MeasurementIssues",
+        "optimizedOut": false,
+        "significantSysTime": false,
+        "unoptimizedQueries": false
+      },
+      "valgrind": {
+        "__typename": "ValgrindResult",
+        "systemTime": 0,
+        "sysCount": "0"
+      }
+    },
+    {
+      "uri": "benchmarks/results/local/quantities/candidate-seven.bench.ts::controlled candidate seven::read/quantities (50 conversions)",
+      "seconds": 0.0011045327777777778,
+      "measurementIssues": {
+        "__typename": "MeasurementIssues",
+        "optimizedOut": false,
+        "significantSysTime": false,
+        "unoptimizedQueries": false
+      },
+      "valgrind": {
+        "__typename": "ValgrindResult",
+        "systemTime": 9.6655e-5,
+        "sysCount": "16"
+      }
+    }
+  ]
+}

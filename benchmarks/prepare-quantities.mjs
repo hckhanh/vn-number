@@ -10,7 +10,7 @@ import {
 } from './baseline.mjs'
 import { scenarios } from './cases.ts'
 
-// Generated probes stay out of the regular benchmark suite and published package.
+// CI selects these generated probes separately; they are not published.
 // Each probe runs in a separate Vitest invocation on the same CI runner.
 const directory = join(root, 'benchmarks/results/local/quantities')
 const baseline = snapshotBaseline('vn-number@2.0.5')
@@ -51,7 +51,10 @@ describe('controlled ${variant} ${mode}', () => {
       for (const scenario of selected) checksum = runScenario(library, scenario.calls)
     }
   })
-  afterAll(() => expect(checksum).toBeGreaterThan(0))
+  afterAll(() => {
+    expect(checksum).toBeGreaterThan(0)
+    console.log('Probe runtime after timing:', JSON.stringify({ node: process.version, v8: process.versions.v8, flags: process.execArgv }))
+  })
   for (const scenario of selected) {
     bench(scenario.name, () => {
       checksum = runScenario(library, scenario.calls)

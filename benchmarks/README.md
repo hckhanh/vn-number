@@ -69,15 +69,17 @@ snapshot. It used five 40 ms rounds in source mode; ratios were approximately
 
 ## Reproduce
 
-Use the repository's pinned toolchain and lockfile. Close other CPU-heavy work
+Use the repository's pinned toolchain and lockfile. The commands below invoke
+Node directly because this Mac's pnpm subprocesses can select a different Node
+version; always check the runtime recorded in each JSON report. Close other CPU-heavy work
 and run benchmarks sequentially on the same machine:
 
 ```sh
 mise exec -- pnpm install --frozen-lockfile
-mise exec -- pnpm bench:verify
-mise exec -- pnpm bench:compare --output /tmp/vn-number-comparison.json
-mise exec -- pnpm bench:compare --output /tmp/vn-number-repeat.json
-mise exec -- pnpm bench
+mise exec -- node benchmarks/verify.mjs
+mise exec -- node benchmarks/compare.mjs --output /tmp/vn-number-comparison.json
+mise exec -- node benchmarks/compare.mjs --output /tmp/vn-number-repeat.json
+mise exec -- node node_modules/vitest/vitest.mjs bench src/ --run
 ```
 
 `bench:compare` defaults to the v2.0.5 tag. It reads that ref with `git show`,
@@ -87,8 +89,8 @@ packages, or rewrites package metadata. Temporary snapshots and bundles are
 removed on completion. To compare another ref or narrow the workload:
 
 ```sh
-mise exec -- pnpm bench:compare --baseline vn-number@2.0.5 --filter read/dashboard
-mise exec -- pnpm bench:compare --mode source --filter 'trailing zeros'
+mise exec -- node benchmarks/compare.mjs --baseline vn-number@2.0.5 --filter read/dashboard
+mise exec -- node benchmarks/compare.mjs --mode source --filter 'trailing zeros'
 ```
 
 All fixtures are generated once from seed `0x564e2026`. Timed callbacks only
@@ -151,3 +153,12 @@ work publishes a package or creates a tag.
 
 See the [complete local validation record](VALIDATION.md) for tests, type checks,
 lint, audit, build, release-plan validation, and package dry runs.
+
+## Quantities: simulation warmup diagnosis
+
+The original CodSpeed quantities slowdown reproduces on a single runner, so the
+CPU mismatch is not its sole cause. With additional settling outside timing,
+paired CodSpeed measurements improve 2.05×; native timing on that runner improves
+3.03×, or 3.13× with CodSpeed's V8 flags. Production code is unchanged. See the
+[controlled diagnosis](QUANTITIES.md) for the default-warmup result, exact run
+links, raw data, V8 compiler evidence, and limits on the conclusion.
