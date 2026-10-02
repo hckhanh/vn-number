@@ -38,7 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "@changesets/cli": "2.31.1",
-    "@codspeed/vitest-plugin": "5.4.0",
+    "@codspeed/vitest-plugin": "5.7.1",
     "@vitest/coverage-v8": "4.1.11",
     "syncpack": "14.3.1",
     "tsdown": "0.22.1",
