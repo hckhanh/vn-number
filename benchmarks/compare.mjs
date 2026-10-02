@@ -6,7 +6,12 @@ import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
 import { parseArgs } from 'node:util'
-import { git, root, snapshotBaseline } from './baseline.mjs'
+import {
+  buildComparison,
+  headCommit,
+  root,
+  snapshotBaseline,
+} from './baseline.mjs'
 import { runScenario, scenarios } from './cases.ts'
 
 const { values } = parseArgs({
@@ -32,35 +37,7 @@ try {
   let baselineEntry = join(temp, 'src/index.ts')
   let candidateEntry = join(root, 'src/index.ts')
   if (values.mode === 'bundle') {
-    const { build } = await import('tsdown')
-    // Match the published ESM build; use one installed toolchain for both refs.
-    // Disable export rewriting so benchmarking never changes package.json.
-    const previousDirectory = process.cwd()
-    try {
-      // Rolldown's region comments use the process directory. Build from each
-      // source root so temporary absolute paths cannot inflate baseline size.
-      for (const [label, sourceRoot] of [
-        ['baseline', temp],
-        ['candidate', root],
-      ]) {
-        process.chdir(sourceRoot)
-        await build({
-          config: false,
-          tsconfig: join(root, 'tsconfig.json'),
-          entry: ['src/index.ts'],
-          outDir: join(temp, label),
-          platform: 'neutral',
-          format: 'esm',
-          dts: false,
-          exports: false,
-          logLevel: 'silent',
-        })
-      }
-    } finally {
-      process.chdir(previousDirectory)
-    }
-    baselineEntry = join(temp, 'baseline/index.js')
-    candidateEntry = join(temp, 'candidate/index.js')
+    ;({ baselineEntry, candidateEntry } = await buildComparison(snapshot))
   }
   const baseline = await import(pathToFileURL(baselineEntry).href)
   const candidate = await import(pathToFileURL(candidateEntry).href)
@@ -158,7 +135,7 @@ try {
         (path) => path.endsWith('.ts') && !/\.(test|bench)\.ts$/.test(path),
       )
       .map((path) => 'src/' + path)
-      .sort()
+      .sort((left, right) => left.localeCompare(right, 'en'))
     for (const path of candidateFiles) {
       sourceHash.update(path).update(readFileSync(join(root, path)))
     }
@@ -166,7 +143,7 @@ try {
       timestamp: new Date().toISOString(),
       baselineRef: values.baseline,
       baselineCommit,
-      candidateHead: git('rev-parse', 'HEAD').trim(),
+      candidateHead: headCommit(),
       candidateSourceSha256: sourceHash.digest('hex'),
       runtime: {
         node: process.version,

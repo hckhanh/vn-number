@@ -3,32 +3,13 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
-import { build } from 'tsdown'
-import { root, snapshotBaseline } from './baseline.mjs'
+import { buildComparison, root, snapshotBaseline } from './baseline.mjs'
 
 // Supplemental controls: variable inputs, output growing with input length,
 // and consumption of every output character, not only the output length.
 const snapshot = snapshotBaseline('vn-number@2.0.5')
-const priorDirectory = process.cwd()
 try {
-  for (const [label, sourceRoot] of [
-    ['baseline', snapshot.directory],
-    ['candidate', root],
-  ]) {
-    process.chdir(sourceRoot)
-    await build({
-      config: false,
-      tsconfig: join(root, 'tsconfig.json'),
-      entry: ['src/index.ts'],
-      outDir: join(snapshot.directory, label),
-      platform: 'neutral',
-      format: 'esm',
-      dts: false,
-      exports: false,
-      logLevel: 'silent',
-    })
-  }
-  process.chdir(priorDirectory)
+  await buildComparison(snapshot)
   const baseline = await import(
     pathToFileURL(join(snapshot.directory, 'baseline/index.js')).href
   )
@@ -85,7 +66,7 @@ try {
   for (const value of [
     null,
     undefined,
-    NaN,
+    Number.NaN,
     Infinity,
     -Infinity,
     -0,
@@ -104,7 +85,7 @@ try {
     for (const value of [
       null,
       undefined,
-      NaN,
+      Number.NaN,
       Infinity,
       -Infinity,
       -0,
@@ -133,7 +114,8 @@ try {
       for (const input of inputs) {
         const output = api.readVnNumber(input)
         for (let index = 0; index < output.length; index++) {
-          checksum = (Math.imul(checksum, 31) + output.charCodeAt(index)) | 0
+          // Math.imul wraps the previous sum to 32 bits on the next step.
+          checksum = Math.imul(checksum, 31) + output.codePointAt(index)
         }
       }
     }
@@ -218,6 +200,5 @@ try {
   )
   console.log(`${compatibilityChecks} additional edge/fallback checks passed.`)
 } finally {
-  process.chdir(priorDirectory)
   snapshot.cleanup()
 }

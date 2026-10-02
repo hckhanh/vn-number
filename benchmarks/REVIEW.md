@@ -49,17 +49,19 @@ Each cell gives min / median / max across nine alternating samples:
 
 | Varied control | Baseline | Candidate | Median speedup |
 | --- | ---: | ---: | ---: |
-| 1,000-digit powers of a billion | 227.727 / 228.459 / 228.968 | 1.798 / 1.802 / 1.810 | 126.78× |
-| 1,999-digit powers of a billion | 880.372 / 885.286 / 908.346 | 3.375 / 3.405 / 3.467 | 259.99× |
-| 2,998-digit powers of a billion | 1,965.516 / 1,971.806 / 2,008.139 | 4.909 / 4.954 / 4.989 | 398.03× |
-| 3,001-digit sparse values, nonzero tail | 1,959.843 / 1,966.333 / 1,981.215 | 9.925 / 10.004 / 10.275 | 196.55× |
+| 1,000-digit powers of a billion | 229.041 / 230.007 / 232.815 | 3.124 / 3.151 / 3.158 | 73.01× |
+| 1,999-digit powers of a billion | 883.416 / 885.311 / 888.862 | 6.052 / 6.065 / 6.077 | 145.96× |
+| 2,998-digit powers of a billion | 1,961.840 / 1,973.155 / 2,112.799 | 8.957 / 9.005 / 9.063 | 219.12× |
+| 3,001-digit sparse values, nonzero tail | 1,959.634 / 1,968.551 / 2,032.771 | 10.032 / 10.068 / 10.385 | 195.53× |
 
 Tripling input length multiplies baseline time by about 8.6 and candidate time
-by about 2.7. These controls support the quadratic-to-linear explanation without
+by about 2.9. These controls support the quadratic-to-linear explanation without
 depending on a constant short output. Raw samples and full fixture definitions
 are in [the review data](results/skeptical-review.json) and `review.mjs`.
 
-Reproduce with `mise exec -- node benchmarks/review.mjs`.
+This control was rerun after the benchmark-helper CI fixes. Its full-output
+checksum now uses `codePointAt`; the unchanged production bundles retain the
+hashes below. Reproduce with `mise exec -- node benchmarks/review.mjs`.
 
 ## Original reported sample ranges
 

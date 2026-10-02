@@ -13,7 +13,10 @@ try {
     pathToFileURL(join(snapshot.directory, 'src/index.ts')).href
   )
   const current = await import(pathToFileURL(join(root, 'src/index.ts')).href)
-  assert.deepEqual(Object.keys(current).sort(), Object.keys(previous).sort())
+  assert.deepEqual(
+    new Set(Object.keys(current)),
+    new Set(Object.keys(previous)),
+  )
   let comparisons = 0
   function check(operation, value) {
     assert.equal(
@@ -59,7 +62,7 @@ try {
     check('readVnNumber', value)
   }
   for (const value of [
-    NaN,
+    Number.NaN,
     Infinity,
     -Infinity,
     -0,
@@ -90,7 +93,7 @@ try {
     '',
     ' ',
     '0x10',
-    NaN,
+    Number.NaN,
     Infinity,
     -Infinity,
     -0,

@@ -14,7 +14,7 @@ The 443× case is exactly `'1' + '0'.repeat(3000)`. Both versions retain a
 pre-existing wording defect and return `một nghìn tỷ` for that extreme magnitude.
 It is a compatibility stress test, not a general Vietnamese-correctness claim.
 Additional varied, correctly spelled powers of a billion with 1,001–1,003 output
-characters still improved 398× when every output character was hashed inside
+characters still improved 219× when every output character was hashed inside
 timing. See the [skeptical review](REVIEW.md) for scaling controls, exact sample
 ranges, build-equivalence verification, and limitations.
 
@@ -99,9 +99,11 @@ Each implementation warms up and calibrates independently; timed samples then
 alternate baseline/candidate order over nine rounds. Results report medians,
 not the best sample. These are steady-state measurements, not cold-import tests.
 
-The harness uses Node's native TypeScript loading and requires Node 24 for the
-development benchmark workflow. That requirement does not change the library's
-runtime compatibility.
+The harness uses Node's native TypeScript loading and requires Node 24 and
+system Git at `/usr/bin/git` (macOS/Linux) for the development comparison
+workflow. Baselines accept branch names, tag names, or commit IDs, not revision
+expressions or command-line options. These development requirements do not
+change the library's runtime compatibility.
 
 ## Profiling
 

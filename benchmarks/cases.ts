@@ -35,9 +35,11 @@ const quantities = integers(50, 1, 100)
 const prices = integers(50, 10000, 50000000)
 const totals = integers(50, 100000, 100000000)
 const amounts = integers(50, 1000000, 10000000000)
-const mixed = integers(30, 0, 100000000).map((value, i) =>
-  i % 3 === 0 ? value : i % 3 === 1 ? String(value) : BigInt(value),
-)
+const mixed = integers(30, 0, 100000000).map((value, i) => {
+  if (i % 3 === 0) return value
+  if (i % 3 === 1) return String(value)
+  return BigInt(value)
+})
 const largeIntegers = amounts.map((value) => BigInt(value) * 100000001n)
 const decimals = prices.map((value) => value / 1000 - 25000)
 const rates = Array.from({ length: 50 }, () => random() * 2 - 0.5)
