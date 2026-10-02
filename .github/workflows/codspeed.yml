@@ -2,6 +2,20 @@ name: CodSpeed
 
 on:
   workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: simulation
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: CodSpeed instrument
+        type: choice
+        options:
+          - simulation
+          - walltime
+          - simulation,walltime
+        default: simulation
   push:
     branches:
       - main
@@ -30,29 +44,9 @@ jobs:
           mode: firewall
       - name: Install Dependencies
         run: sfw pnpm install
-      - name: Prepare controlled quantities comparison
-        run: |
-          git fetch --no-tags --depth=1 origin tag vn-number@2.0.5
-          node benchmarks/prepare-quantities.mjs
-      - name: Compare quantities on this runner
-        run: |
-          node benchmarks/compare.mjs --filter read/quantities --output benchmarks/results/local/quantities/native.json
-          node --interpreted-frames-native-stack --allow-natives-syntax --hash-seed=1 --random-seed=1 --no-opt --predictable --predictable-gc-schedule --expose-gc --no-concurrent-sweeping --max-old-space-size=4096 benchmarks/compare.mjs --filter read/quantities --output benchmarks/results/local/quantities/simulation-flags.json
-          cat benchmarks/results/local/quantities/native.json benchmarks/results/local/quantities/simulation-flags.json
-      - name: Measure fresh-process quantities
-        run: |
-          node benchmarks/cold-start.mjs --output benchmarks/results/local/quantities/cold-start.json
-          cat benchmarks/results/local/quantities/cold-start.json
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@f22792bfac16f3e14eb9fbea76f4a48e9cc22b93 # v4.19.1
         with:
-          run: |
-            set -e
-            pnpm vitest bench src/
-            pnpm vitest bench benchmarks/results/local/quantities/baseline-seven.bench.ts
-            pnpm vitest bench benchmarks/results/local/quantities/candidate-seven.bench.ts
-            pnpm vitest bench benchmarks/results/local/quantities/baseline-settled.bench.ts
-            pnpm vitest bench benchmarks/results/local/quantities/candidate-settled.bench.ts
-            pnpm vitest bench --config vitest.codspeed-node24.config.mts benchmarks/results/local/quantities/baseline-node24-flags.bench.ts
-            pnpm vitest bench --config vitest.codspeed-node24.config.mts benchmarks/results/local/quantities/candidate-node24-flags.bench.ts
-          mode: 'simulation'
+          runner-version: '4.19.1'
+          run: pnpm bench
+          mode: ${{ inputs.mode || 'simulation' }}

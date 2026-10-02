@@ -1,4 +1,4 @@
-import { DIGIT_MAP, getDigitWord } from './digits.ts'
+import { getDigitWord } from './digits.ts'
 
 /**
  * Read the "hundreds" digit
@@ -47,7 +47,7 @@ function readOnes(
 /**
  * Core reading logic for a 3-digit group
  */
-function readNonDigitGroup(group: string): string {
+function readThreeDigitsCore(group: string): string {
   const len = group.length
   const first = len > 2 ? group[len - 3] : '0'
   const second = len > 1 ? group[len - 2] : '0'
@@ -65,47 +65,6 @@ function readNonDigitGroup(group: string): string {
   result += readOnes(last, second, hasTensPosition)
 
   return result.trim()
-}
-
-/** Read decimal groups without repeatedly coercing digits or trimming strings. */
-function readThreeDigitsCore(group: string): string {
-  const len = group.length
-  const first = len > 2 ? group.charCodeAt(len - 3) - 48 : 0
-  const second = len > 1 ? group.charCodeAt(len - 2) - 48 : 0
-  const last = group.charCodeAt(len - 1) - 48
-  // Preserve the existing handling of non-decimal input without slowing the
-  // documented decimal-integer path with repeated Number() conversions.
-  if (
-    !(
-      first >= 0 &&
-      first <= 9 &&
-      second >= 0 &&
-      second <= 9 &&
-      last >= 0 &&
-      last <= 9
-    )
-  ) {
-    return readNonDigitGroup(group)
-  }
-
-  let result = len > 2 ? DIGIT_MAP[first] + ' trăm' : ''
-  if (second === 0 && last === 0) return result
-
-  if (len > 1) {
-    if (result) result += ' '
-    result +=
-      second === 0 ? 'lẻ' : second === 1 ? 'mười' : DIGIT_MAP[second] + ' mươi'
-  }
-  if (last !== 0) {
-    if (result) result += ' '
-    result +=
-      last === 1 && second > 1
-        ? 'mốt'
-        : last === 5 && second > 0
-          ? 'lăm'
-          : DIGIT_MAP[last]
-  }
-  return result
 }
 
 /**

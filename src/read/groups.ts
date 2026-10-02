@@ -22,14 +22,9 @@ export function calculateGroupTypes(groupCount: number): number[] {
 }
 
 /**
- * Get unit suffix for a group based on its type.
- * @param type Group type (0=units, 1=thousand, 2=million, 3=billion).
- * @param positionFromRight Zero-based group position from the right.
- * @param hasTrailingZeros Whether all following groups are zero.
- * @return The suffix including its leading space, or an empty string.
- * @example getUnitSuffix(3, 6, true) // " tỷ tỷ"
+ * Get unit suffix for a group based on its type
  */
-export function getUnitSuffix(
+function getUnitSuffix(
   type: number,
   positionFromRight: number,
   hasTrailingZeros: boolean,
@@ -40,7 +35,12 @@ export function getUnitSuffix(
     // Billion: repeat "tỷ" based on position (position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
     if (positionFromRight >= 6 && hasTrailingZeros) {
       const billionCount = Math.floor(positionFromRight / 3)
-      return ' tỷ'.repeat(billionCount)
+      return (
+        ' ' +
+        /*#__PURE__*/ new Array(billionCount)
+          .fill('tỷ')
+          .join(' ')
+      )
     }
     return ' tỷ'
   }

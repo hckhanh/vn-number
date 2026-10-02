@@ -1,180 +1,68 @@
-# v3 performance report
+# Performance benchmarks
 
-The slowest measured operations in v2.0.5 were long reader inputs containing
-trailing zeros. The reader rescanned the remaining groups at every position and
-built its group array with `unshift`. v3 locates the last nonzero group once,
-reads groups directly from the input, and computes each suffix from its position.
-Zero-heavy input processing is linear in the number of digits instead of
-quadratic. Direct digit lookup also reduces coercion and string trimming on the
-common decimal-integer path. Existing non-decimal behavior is retained separately.
+The maintained suite contains 13 reader and 9 formatting workloads in
+`src/read/index.bench.ts` and `src/format/number.bench.ts`. Fixtures are generated
+once from seed `0x564e2026` in `cases.ts`. Timed callbacks perform the advertised
+conversions and consume output lengths. Setup and assertions are outside timing.
+The dashboard case performs exactly 21 conversions.
 
-## Review qualification for the extreme speedup
+Keep benchmark paths, names, input values, batch sizes and callbacks stable.
+If measured work changes, establish a new baseline rather than treating the old
+score as comparable. In particular, the older randomized suite on `main` does
+not match these 22 cases; a report containing only NEW/SKIPPED cases is not a
+before/after performance gate.
 
-The 443× case is exactly `'1' + '0'.repeat(3000)`. Both versions retain a
-pre-existing wording defect and return `một nghìn tỷ` for that extreme magnitude.
-It is a compatibility stress test, not a general Vietnamese-correctness claim.
-Additional varied, correctly spelled powers of a billion with 1,001–1,003 output
-characters still improved 219× when every output character was hashed inside
-timing. See the [skeptical review](REVIEW.md) for scaling controls, exact sample
-ranges, build-equivalence verification, and limitations.
+## Run through CodSpeed
 
-## Matched before/after results
+The pinned integration is `@codspeed/vitest-plugin` **6.0.0-beta.2**, Node
+**24.16.0**, Vitest **4.1.11**, Vite **7.3.6**, and CodSpeed runner **4.19.1**.
+The SDK is a prerelease chosen explicitly for its Node 24 support. It supplies
+the required simulation V8 flags; no custom flag override is maintained.
 
-Measured on an Apple M2 Pro (arm64, macOS/Darwin 27.0.0), Node **24.16.0**,
-V8 **13.6.233.17-node.49**, ICU **78.3**. The baseline is release
-`vn-number@2.0.5`, commit `aca1fd91b2bdd0c0dfde4038bbae2e58b3815ce4`.
-The starting checkout was `ca91bb335970b7408bd06c5fb0faa0af1460355d`;
-its library source was identical to that release. Both variants use the same
-installed tsdown 0.22.1 / Rolldown 1.0.2 build toolchain and ESM/neutral settings.
-
-Times below are median **microseconds per complete batch**, not per conversion.
-The stress cases are shown first because they had the worst per-conversion
-baseline latency. Each raw report also contains time per conversion.
-
-| Workload | Conversions | v2.0.5 µs | v3 µs | Speedup | Repeat speedup |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 3,001 digits, trailing zeros | 1 | 1,966.221 | 4.434 | 443.45× | 443.53× |
-| 3,000 zero digits | 1 | 1,971.153 | 4.641 | 424.73× | 425.53× |
-| 3,000 dense digits | 1 | 266.592 | 170.712 | 1.56× | 1.56× |
-| 300 dense digits | 1 | 22.422 | 17.215 | 1.30× | 1.32× |
-| Read large bigints | 50 | 75.137 | 56.810 | 1.32× | 1.32× |
-| Read financial amounts | 50 | 45.488 | 32.603 | 1.40× | 1.38× |
-| Read invoices | 50 | 35.862 | 26.992 | 1.33× | 1.32× |
-| Read mixed input types | 30 | 21.439 | 16.010 | 1.34× | 1.32× |
-| Read prices | 50 | 35.287 | 26.348 | 1.34× | 1.33× |
-| Read dashboard | 21 | 10.912 | 7.480 | 1.46× | 1.43× |
-| Read quantities | 50 | 11.577 | 5.244 | 2.21× | 2.16× |
-| Format data table | 300 | 96.537 | 97.330 | 0.99× | 1.00× |
-
-Every reader case improved in both runs. The nine formatting controls were
-unchanged in implementation; their observed speedups were 0.990–1.006× across
-both runs. Those tiny differences are measurement variation, not claimed gains.
-The single fixed quantity case (5) improved from 0.175 to 0.017 µs, but the
-50-value quantity batch is a more representative throughput measure.
-
-The unminified ESM bundle decreased from **8,969 to 8,274 bytes** (7.7%).
-These byte counts include comments and are not compressed transfer sizes.
-There is no new runtime dependency, eager precomputed vocabulary, or growing cache.
-
-Raw data, including every timing sample, calibration counts, runtime metadata,
-and candidate source hash:
-
-- [Final bundle comparison](results/m2-pro-node24.16.0.json)
-- [Independent repeat](results/m2-pro-node24.16.0-repeat.json)
-- [Initial identical-source control](results/baseline-control.json)
-
-The initial control compared the unmodified implementation against its release
-snapshot. It used five 40 ms rounds in source mode; ratios were approximately
-0.97–1.03×. Final results use the bundled implementation and nine 75 ms rounds.
-
-## Reproduce
-
-Use the repository's pinned toolchain and lockfile. The commands below invoke
-Node directly because this Mac's pnpm subprocesses can select a different Node
-version; always check the runtime recorded in each JSON report. Close other CPU-heavy work
-and run benchmarks sequentially on the same machine:
+On a configured CodSpeed runner:
 
 ```sh
-mise exec -- pnpm install --frozen-lockfile
+codspeed run -m simulation -- pnpm bench
+codspeed run -m walltime -- pnpm bench
+```
+
+Routine CI runs only the maintained source suite in simulation mode. The CodSpeed
+workflow also accepts an explicit `mode` through manual dispatch or workflow_call
+for walltime validation. Keep the instrument, SDK/runtime, inputs and build
+settings matched between compared runs. Hosted VM walltime can be noisy; inspect
+hardware and measurement warnings before treating small differences as changes.
+
+The `bench` script selects `src/` explicitly so locally generated diagnostics
+cannot enter routine reports. Diagnostic investigations should use an explicit
+CodSpeed run outside the normal comparison series, with stable matched identities
+for each controlled comparison. Do not repeatedly upload different variants
+under the same URI in a single run.
+
+## Compatibility verification
+
+```sh
 mise exec -- node benchmarks/verify.mjs
-mise exec -- node benchmarks/compare.mjs --output /tmp/vn-number-comparison.json
-mise exec -- node benchmarks/compare.mjs --output /tmp/vn-number-repeat.json
-mise exec -- node node_modules/vitest/vitest.mjs bench src/ --run
 ```
 
-`bench:compare` defaults to the v2.0.5 tag. It reads that ref with `git show`,
-creates a temporary source snapshot, and builds both implementations with the
-same installed toolchain. It never switches branches, changes refs, installs
-packages, or rewrites package metadata. Temporary snapshots and bundles are
-removed on completion. To compare another ref or narrow the workload:
+This compares outputs and public exports against release `vn-number@2.0.5`.
+`baseline.mjs` reads immutable Git source into a temporary directory without
+switching the checkout, changing refs, or installing another toolchain. It uses
+system Git at `/usr/bin/git` and accepts branch names, tags or commit IDs.
+This is a correctness check, not a performance measurement.
 
-```sh
-mise exec -- node benchmarks/compare.mjs --baseline vn-number@2.0.5 --filter read/dashboard
-mise exec -- node benchmarks/compare.mjs --mode source --filter 'trailing zeros'
-```
+## Historical v3 investigation
 
-All fixtures are generated once from seed `0x564e2026`. Timed callbacks only
-perform the advertised conversions and accumulate output lengths. Input
-construction, random generation, type conversion of fixtures, assertions, and
-build work are outside timing. Each case first checks complete output equality.
-Each implementation warms up and calibrates independently; timed samples then
-alternate baseline/candidate order over nine rounds. Results report medians,
-not the best sample. These are steady-state measurements, not cold-import tests.
+The original profiles, paired measurements, startup/warmup/flag probes and raw
+samples are preserved in [the investigation snapshot](https://github.com/hckhanh/vn-number/tree/a69d7db5bce85962a4a4d74380b19fd7e5b0e619/benchmarks)
+and [PR #295](https://github.com/hckhanh/vn-number/pull/295).
+They are historical evidence with their recorded SDK/runtime and measurement
+conditions, not additional routine benchmark cases. The snapshot also preserves
+reproduction scripts for explicitly requested diagnostic work.
 
-The harness uses Node's native TypeScript loading and requires Node 24 and
-system Git at `/usr/bin/git` (macOS/Linux) for the development comparison
-workflow. Baselines accept branch names, tag names, or commit IDs, not revision
-expressions or command-line options. These development requirements do not
-change the library's runtime compatibility.
+Those tests found faster reading while preserving existing output, including
+legacy edge behavior. The extreme trailing-zero stress case retains an existing
+magnitude-wording defect, so its large ratio must not be advertised as general
+Vietnamese correctness. See [migration notes](../docs/migration-v3.md).
 
-## Profiling
-
-Capture profiles separately from wall-clock benchmark runs:
-
-```sh
-mise exec -- node --cpu-prof --cpu-prof-dir=/tmp --cpu-prof-name=vn-baseline.cpuprofile benchmarks/compare.mjs --mode source --profile baseline --filter 'trailing zeros'
-mise exec -- node --cpu-prof --cpu-prof-dir=/tmp --cpu-prof-name=vn-candidate.cpuprofile benchmarks/compare.mjs --mode source --profile candidate --filter 'trailing zeros'
-mise exec -- node --cpu-prof --cpu-prof-dir=/tmp --cpu-prof-name=vn-dashboard.cpuprofile benchmarks/compare.mjs --mode source --profile baseline --filter read/dashboard
-```
-
-A five-second baseline dashboard profile attributed about 41% of samples to
-the core three-digit reader and its hundreds/tens/ones helpers, another 14% to
-the first/subsequent-group wrappers, and 8% to group splitting.
-A diagnostic three-second sparse-input profile with `--no-turbo-inlining`
-attributed about 91% to `processGroup` and `allFollowingGroupsAreZero` combined.
-The source also shows why this becomes quadratic: every zero group causes another
-scan of its remaining zero suffix. Sampling attribution is approximate and can
-move into callers after JIT inlining. The no-inlining diagnostic was not used for
-reported performance timings.
-
-## Correctness and limits
-
-`bench:verify` performs **412,046 byte-for-byte comparisons** against v2.0.5:
-the integer range 0–100,000 as number/string/bigint; seeded large integers;
-leading zeros; dense and sparse groups; malformed strings; and formatting values
-and fallbacks. Public exports must also match. Targeted Vitest regressions cover
-long powers of a billion, zero groups, special Vietnamese endings, and legacy
-non-decimal behavior.
-
-Compatibility with the existing reader is the contract of this optimization.
-It does not establish new linguistic semantics for unsupported negative,
-fractional, exponential, or malformed inputs, nor repair existing large-magnitude
-wording quirks. See [migration notes](../docs/migration-v3.md).
-
-Results describe this machine and runtime. Browser, Deno, other Node/V8 versions,
-and other CPUs can have different ratios. The corrected CodSpeed fixtures have
-new names and exact batch counts; their scores should start a new comparison
-series. In particular, PR #294's Node update also changed the dashboard runner
-CPU, so its historical score change is not evidence of a library regression.
-
-The package keeps version 2.0.5 until the repository's normal Changesets release
-step consumes the pending major Changeset and generates 3.0.0. Nothing in this
-work publishes a package or creates a tag.
-
-See the [complete local validation record](VALIDATION.md) for tests, type checks,
-lint, audit, build, release-plan validation, and package dry runs.
-
-## Quantities: simulation warmup diagnosis
-
-The original CodSpeed quantities slowdown reproduces on a single runner, so the
-CPU mismatch is not its sole cause. With additional settling outside timing,
-paired CodSpeed measurements improve 2.05×; native timing on that runner improves
-3.03×, or 3.13× with CodSpeed's V8 flags. Production code is unchanged. See the
-[controlled diagnosis](QUANTITIES.md) for the default-warmup result, exact run
-links, raw data, V8 compiler evidence, and limits on the conclusion.
-
-## Fresh-process usage
-
-A separate [fresh-process assessment](COLD_START.md) measures native import,
-first-call, short-burst and spawn-to-exit time across 510 new Node processes.
-It finds faster first calls and bursts while retaining startup/import overhead
-as a separate cost. This does not replace or redefine the default-warmup
-CodSpeed measurement.
-
-## CodSpeed Node 24 configuration audit
-
-The installed SDK omits two upstream Node 24 analysis flags. A same-runner test
-with unchanged bundles and seven warmups changes quantities from a 0.56× ratio
-to a 2.39× improvement after adding `--no-maglev` and `--no-minor-gc-task`.
-The original scores remain visible. See the [configuration audit](CODSPEED.md)
-for exact versions, raw results, supported upgrade boundaries and limitations.
+Only `dist` is included in the package allowlist. Benchmark tooling is not shipped
+to library consumers.

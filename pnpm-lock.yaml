@@ -53,8 +53,8 @@ importers:
         specifier: 2.31.1
         version: 2.31.1(@types/node@24.12.4)
       '@codspeed/vitest-plugin':
-        specifier: 5.7.1
-        version: 5.7.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@6.2.0)(vite@7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0))(vitest@4.1.11)
+        specifier: 6.0.0-beta.2
+        version: 6.0.0-beta.2(tinybench@6.2.0)(vite@7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0))(vitest@4.1.11)
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
@@ -236,11 +236,11 @@ packages:
   '@changesets/write@0.4.0':
     resolution: {integrity: sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q==}
 
-  '@codspeed/core@5.7.1':
-    resolution: {integrity: sha512-7mrFkqaY14rXu3XHv3o7bK3btLK0LFRxfeK3bQC8dLduI/Ty9eq8Hv8rx04FAY/onQbRTx3rUUQg5xprYHpATQ==}
+  '@codspeed/core@6.0.0-beta.2':
+    resolution: {integrity: sha512-l/elGsNOwQV/m8PZMK0j7FHRNvFytgeSUUwUFuO6WSDZGYe3uH+da5mMjS1KpRsRElYvshkKrqvnRRqxzWQ/tQ==}
 
-  '@codspeed/vitest-plugin@5.7.1':
-    resolution: {integrity: sha512-yKNqaYVxZZPJYkhVHpz30Oem4TUgcI+/IRDD9YHvcAgi0P42CL6TB/+qYjuFOWghFzTPrm3TUbNFoBsevSTbUA==}
+  '@codspeed/vitest-plugin@6.0.0-beta.2':
+    resolution: {integrity: sha512-mgSN3Cah77d84W1VFRfU3yRIz9W4rI+/sXgb8U1q6f55GyuQ3NyqB0p4lhRpzz1Oe2mRevHD0e7SkPHSOBEjyQ==}
     peerDependencies:
       tinybench: '>=2.9.0'
       vite: 7.3.6
@@ -1900,9 +1900,9 @@ snapshots:
       human-id: 4.1.3
       prettier: 2.8.8
 
-  '@codspeed/core@5.7.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@codspeed/core@6.0.0-beta.2':
     dependencies:
-      axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      axios: 1.20.0
       find-up: 6.3.0
       form-data: 4.0.6
       node-gyp-build: 4.8.4
@@ -1911,9 +1911,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@codspeed/vitest-plugin@5.7.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@6.2.0)(vite@7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0))(vitest@4.1.11)':
+  '@codspeed/vitest-plugin@6.0.0-beta.2(tinybench@6.2.0)(vite@7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0))(vitest@4.1.11)':
     dependencies:
-      '@codspeed/core': 5.7.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@codspeed/core': 6.0.0-beta.2
       tinybench: 6.2.0
       vite: 7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0)
       vitest: 4.1.11(@types/node@24.12.4)(@vitest/coverage-v8@4.1.11)(vite@7.3.6(@types/node@24.12.4)(jiti@2.7.0)(lightningcss@1.32.0))
@@ -2287,9 +2287,9 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.1
 
-  agent-base@6.0.2(supports-color@7.2.0):
+  agent-base@6.0.2:
     dependencies:
-      debug: 4.4.3(supports-color@7.2.0)
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -2319,11 +2319,11 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
+  axios@1.20.0:
     dependencies:
-      follow-redirects: 1.16.0(debug@4.4.3(supports-color@7.2.0))
+      follow-redirects: 1.16.0
       form-data: 4.0.6
-      https-proxy-agent: 5.0.1(supports-color@7.2.0)
+      https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
@@ -2362,11 +2362,9 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@4.4.3(supports-color@7.2.0):
+  debug@4.4.3:
     dependencies:
       ms: 2.1.3
-    optionalDependencies:
-      supports-color: 7.2.0
 
   defu@6.1.7: {}
 
@@ -2484,9 +2482,7 @@ snapshots:
       locate-path: 7.2.0
       path-exists: 5.0.0
 
-  follow-redirects@1.16.0(debug@4.4.3(supports-color@7.2.0)):
-    optionalDependencies:
-      debug: 4.4.3(supports-color@7.2.0)
+  follow-redirects@1.16.0: {}
 
   form-data@4.0.6:
     dependencies:
@@ -2568,10 +2564,10 @@ snapshots:
 
   html-escaper@2.0.2: {}
 
-  https-proxy-agent@5.0.1(supports-color@7.2.0):
+  https-proxy-agent@5.0.1:
     dependencies:
-      agent-base: 6.0.2(supports-color@7.2.0)
-      debug: 4.4.3(supports-color@7.2.0)
+      agent-base: 6.0.2
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 

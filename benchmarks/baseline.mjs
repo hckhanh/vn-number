@@ -14,7 +14,7 @@ export const headCommit = () => git('rev-parse', '--verify', 'HEAD').trim()
 /** Extract released source without switching branches or changing the checkout. */
 export function snapshotBaseline(ref) {
   // CLI refs are names or object IDs, never options or revision expressions.
-  if (typeof ref !== 'string' || !/^[\w][\w./@-]*$/.test(ref)) {
+  if (typeof ref !== 'string' || !/^\w[\w./@-]*$/.test(ref)) {
     throw new TypeError(
       'Baseline must be a branch name, tag name, or commit ID',
     )
@@ -55,35 +55,5 @@ export function snapshotBaseline(ref) {
     files,
     directory,
     cleanup: () => rmSync(directory, { recursive: true, force: true }),
-  }
-}
-
-/** Build sequentially: process.cwd() is global and controls region comments. */
-export async function buildComparison(snapshot) {
-  const { build } = await import('tsdown')
-  const previousDirectory = process.cwd()
-  async function buildFrom(sourceRoot, label) {
-    process.chdir(sourceRoot)
-    await build({
-      config: false,
-      tsconfig: join(root, 'tsconfig.json'),
-      entry: ['src/index.ts'],
-      outDir: join(snapshot.directory, label),
-      platform: 'neutral',
-      format: 'esm',
-      dts: false,
-      exports: false,
-      logLevel: 'silent',
-    })
-  }
-  try {
-    await buildFrom(snapshot.directory, 'baseline')
-    await buildFrom(root, 'candidate')
-  } finally {
-    process.chdir(previousDirectory)
-  }
-  return {
-    baselineEntry: join(snapshot.directory, 'baseline/index.js'),
-    candidateEntry: join(snapshot.directory, 'candidate/index.js'),
   }
 }
