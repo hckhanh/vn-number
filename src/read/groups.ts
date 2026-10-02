@@ -1,8 +1,4 @@
-import {
-  readFirstGroup,
-  readFirstGroupBeforeBillion,
-  readSubsequentGroup,
-} from './three-digits.ts'
+import { readThreeDigits } from './three-digits.ts'
 import { allFollowingGroupsAreZero } from './utils.ts'
 
 /**
@@ -11,25 +7,18 @@ import { allFollowingGroupsAreZero } from './utils.ts'
  */
 export function calculateGroupTypes(groupCount: number): number[] {
   const groupTypes: number[] = []
-
   for (let i = groupCount - 1, type = 0; i >= 0; i--) {
     groupTypes[i] = type
     type++
     if (type === 4) type = 1 // cycle back after billion
   }
-
   return groupTypes
 }
 
 /**
- * Get unit suffix for a group based on its type.
- * @param type Group type (0=units, 1=thousand, 2=million, 3=billion).
- * @param positionFromRight Zero-based group position from the right.
- * @param hasTrailingZeros Whether all following groups are zero.
- * @return The suffix including its leading space, or an empty string.
- * @example getUnitSuffix(3, 6, true) // " tỷ tỷ"
+ * Get unit suffix for a group based on its type
  */
-export function getUnitSuffix(
+function getUnitSuffix(
   type: number,
   positionFromRight: number,
   hasTrailingZeros: boolean,
@@ -37,10 +26,9 @@ export function getUnitSuffix(
   const needsBillionSuffix = positionFromRight >= 3 && hasTrailingZeros
 
   if (type === 3) {
-    // Billion: repeat "tỷ" based on position (position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
+    // Billion: double "tỷ" for second billion cycle (position >= 6)
     if (positionFromRight >= 6 && hasTrailingZeros) {
-      const billionCount = Math.floor(positionFromRight / 3)
-      return ' tỷ'.repeat(billionCount)
+      return ' tỷ tỷ'
     }
     return ' tỷ'
   }
@@ -58,44 +46,6 @@ export function getUnitSuffix(
 }
 
 /**
- * Process the first group in the number sequence
- */
-function processFirstGroup(
-  group: string,
-  type: number,
-  nextGroupType: number,
-  positionFromRight: number,
-  hasTrailingZeros: boolean,
-): string {
-  const isBeforeBillion = type === 0 && nextGroupType === 3
-
-  const groupReading = isBeforeBillion
-    ? readFirstGroupBeforeBillion(group)
-    : readFirstGroup(group)
-
-  if (!groupReading) return ''
-
-  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
-  return `${groupReading}${unitSuffix}`
-}
-
-/**
- * Process the later (non-first) group in the number sequence
- */
-function processSubsequentGroup(
-  group: string,
-  type: number,
-  positionFromRight: number,
-  hasTrailingZeros: boolean,
-): string {
-  const groupReading = readSubsequentGroup(group)
-  if (!groupReading) return ''
-
-  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
-  return `${groupReading}${unitSuffix}`
-}
-
-/**
  * Process a single group and return its reading with unit suffix
  */
 export function processGroup(
@@ -104,25 +54,17 @@ export function processGroup(
   groups: string[],
   groupTypes: number[],
 ): string {
+  const isFirst = index === 0
   const type = groupTypes[index]
+  const nextGroupType = index + 1 < groups.length ? groupTypes[index + 1] : -1
+  const isBeforeBillion = type === 0 && nextGroupType === 3
+
+  const groupReading = readThreeDigits(group, isFirst, isBeforeBillion)
+  if (!groupReading) return ''
+
   const positionFromRight = groups.length - 1 - index
   const hasTrailingZeros = allFollowingGroupsAreZero(groups, index)
+  const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
 
-  if (index === 0) {
-    const nextGroupType = groups.length > 1 ? groupTypes[1] : -1
-    return processFirstGroup(
-      group,
-      type,
-      nextGroupType,
-      positionFromRight,
-      hasTrailingZeros,
-    )
-  }
-
-  return processSubsequentGroup(
-    group,
-    type,
-    positionFromRight,
-    hasTrailingZeros,
-  )
+  return `${groupReading}${unitSuffix}`
 }

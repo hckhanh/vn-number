@@ -1,14 +1,15 @@
-import { DIGIT_MAP, getDigitWord } from './digits.ts'
+import { getDigitWord } from './digits.ts'
 
 /**
- * Read the "hundreds" digit
+ * Read the hundreds digit
  */
-function readHundreds(first: string, groupLength: number): string {
-  return groupLength > 2 ? `${getDigitWord(first)} trăm` : ''
+function readHundreds(first: string, hasHundredsPosition: boolean): string {
+  if (!hasHundredsPosition) return ''
+  return `${getDigitWord(first)} trăm`
 }
 
 /**
- * Read the "tens" digit
+ * Read the tens digit
  */
 function readTens(second: string, hasTensPosition: boolean): string {
   if (!hasTensPosition) return ''
@@ -19,7 +20,7 @@ function readTens(second: string, hasTensPosition: boolean): string {
 }
 
 /**
- * Read the "ones" digit with special rules
+ * Read the ones digit with special rules
  */
 function readOnes(
   last: string,
@@ -40,108 +41,52 @@ function readOnes(
   if (last !== '0') {
     return ` ${getDigitWord(last)}`
   }
-
   return ''
 }
 
 /**
- * Core reading logic for a 3-digit group
+ * Add suffix for first group before billion
  */
-function readNonDigitGroup(group: string): string {
+function addFirstBeforeBillionSuffix(
+  isFirst: boolean,
+  isBeforeBillion: boolean,
+): string {
+  return isFirst && isBeforeBillion ? ' nghìn' : ''
+}
+
+/**
+ * Read a 3-digit group
+ * @param group - 3-digit string (can be 1-3 chars)
+ * @param isFirst - is this the first group
+ * @param isBeforeBillion - is this group before a billion group
+ * @returns Vietnamese reading of the group
+ */
+export function readThreeDigits(
+  group: string,
+  isFirst: boolean,
+  isBeforeBillion: boolean,
+): string {
   const len = group.length
   const first = len > 2 ? group[len - 3] : '0'
   const second = len > 1 ? group[len - 2] : '0'
   const last = group[len - 1] || '0'
 
-  let result = readHundreds(first, len)
+  // Handle all zeros
+  if (first === '0' && second === '0' && last === '0') {
+    return isFirst ? 'không' : ''
+  }
+
+  let result = readHundreds(first, len > 2)
 
   // If the last two digits are zero, return early
   if (second === '0' && last === '0') {
+    result += addFirstBeforeBillionSuffix(isFirst, isBeforeBillion)
     return result.trim()
   }
 
-  const hasTensPosition = len > 1
-  result += readTens(second, hasTensPosition)
-  result += readOnes(last, second, hasTensPosition)
+  result += readTens(second, len > 1)
+  result += readOnes(last, second, len > 1)
+  result += addFirstBeforeBillionSuffix(isFirst, isBeforeBillion)
 
   return result.trim()
-}
-
-/** Read decimal groups without repeatedly coercing digits or trimming strings. */
-function readThreeDigitsCore(group: string): string {
-  const len = group.length
-  const first = len > 2 ? group.charCodeAt(len - 3) - 48 : 0
-  const second = len > 1 ? group.charCodeAt(len - 2) - 48 : 0
-  const last = group.charCodeAt(len - 1) - 48
-  // Preserve the existing handling of non-decimal input without slowing the
-  // documented decimal-integer path with repeated Number() conversions.
-  if (
-    !(
-      first >= 0 &&
-      first <= 9 &&
-      second >= 0 &&
-      second <= 9 &&
-      last >= 0 &&
-      last <= 9
-    )
-  ) {
-    return readNonDigitGroup(group)
-  }
-
-  let result = len > 2 ? DIGIT_MAP[first] + ' trăm' : ''
-  if (second === 0 && last === 0) return result
-
-  if (len > 1) {
-    if (result) result += ' '
-    result +=
-      second === 0 ? 'lẻ' : second === 1 ? 'mười' : DIGIT_MAP[second] + ' mươi'
-  }
-  if (last !== 0) {
-    if (result) result += ' '
-    result +=
-      last === 1 && second > 1
-        ? 'mốt'
-        : last === 5 && second > 0
-          ? 'lăm'
-          : DIGIT_MAP[last]
-  }
-  return result
-}
-
-/**
- * Check if a group contains all zeros
- */
-function isAllZeros(group: string): boolean {
-  const len = group.length
-  const first = len > 2 ? group[len - 3] : '0'
-  const second = len > 1 ? group[len - 2] : '0'
-  const last = group[len - 1] || '0'
-  return first === '0' && second === '0' && last === '0'
-}
-
-/**
- * Read the first group in the number sequence when it's before a billion group
- * This adds a special "nghìn" suffix
- */
-export function readFirstGroupBeforeBillion(group: string): string {
-  if (isAllZeros(group)) {
-    return 'không'
-  }
-
-  const result = readThreeDigitsCore(group)
-  return result ? `${result} nghìn` : ''
-}
-
-/**
- * Read the first group in the number sequence (normal case)
- */
-export function readFirstGroup(group: string): string {
-  return isAllZeros(group) ? 'không' : readThreeDigitsCore(group)
-}
-
-/**
- * Read the later (non-first) group in the number sequence
- */
-export function readSubsequentGroup(group: string): string {
-  return isAllZeros(group) ? '' : readThreeDigitsCore(group)
 }
