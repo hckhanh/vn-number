@@ -23,6 +23,13 @@ The deterministic harness from PR #295 is shared by the tooling baseline and
 performance candidate. Its 22 benchmark identities, fixtures, and timed callbacks
 are identical across the two branches. Production optimization code stays in #295.
 
+CodSpeed action and runner are pinned to stable 5.4.0. The workflow explicitly
+keeps cycle estimation enabled and allocation exclusion disabled, matching the
+runner's defaults. Runner 5 changes simulation instruction costing and switches
+Linux walltime profiling to Samply. Compare fresh baseline/candidate runs using
+the same runner; do not interpret score changes from runner 4 as code speedups.
+The SDK, Node, Vitest, fixtures, and library source are unchanged by this upgrade.
+
 GitHub workflows use Codecov action 7.1.1, mise action 5.0.1, and Changesets action
 2.0.0, pinned to immutable commits. Changesets action 2 requires the renamed
 `publish-script`, `pr-title`, `commit-message`, and `github-token` inputs. The

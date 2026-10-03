@@ -15,9 +15,17 @@ before/after performance gate.
 ## Run through CodSpeed
 
 The pinned integration is `@codspeed/vitest-plugin` **6.0.0-beta.2**, Node
-**24.16.0**, Vitest **4.1.11**, Vite **8.3.2**, and CodSpeed runner **4.19.1**.
+**24.16.0**, Vitest **4.1.11**, Vite **8.3.2**, and CodSpeed action/runner **5.4.0**.
 The SDK is a prerelease chosen explicitly for its Node 24 support. It supplies
 the required simulation V8 flags; no custom flag override is maintained.
+
+The workflow explicitly enables cycle estimation and includes allocation costs.
+Runner 5 weights instructions by estimated cycle cost and uses Samply for Linux
+walltime profiles. Its absolute scores are not comparable with runner 4.19.1.
+Use a fresh baseline and candidate on runner 5.4.0, with matching CPU metadata;
+do not report the instrumentation change as a library performance improvement.
+See the [runner 5 migration notes](https://github.com/CodSpeedHQ/codspeed/releases/tag/v5.0.1)
+and [action 5.4.0 release](https://github.com/CodSpeedHQ/action/releases/tag/v5.4.0).
 
 On a configured CodSpeed runner:
 
