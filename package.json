@@ -3,7 +3,7 @@
   "description": "A bunch of utility functions that work with number in Vietnamese language",
   "version": "2.0.5",
   "author": {
-    "name": "Kh\u00e1nh Ho\u00e0ng",
+    "name": "Khánh Hoàng",
     "email": "hi@khanh.id",
     "url": "https://www.khanh.id"
   },
@@ -35,21 +35,24 @@
     "format": "biome check --write",
     "prepublishOnly": "tsdown",
     "release": "tsdown && changeset publish",
-    "test": "vitest"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
-    "@changesets/cli": "2.31.1",
+    "@changesets/cli": "3.0.3",
     "@codspeed/vitest-plugin": "6.0.0-beta.2",
     "@vitest/coverage-v8": "4.1.11",
     "syncpack": "14.3.1",
-    "tsdown": "0.22.1",
-    "typescript": "5.9.3",
+    "tsdown": "0.22.7",
+    "typescript": "7.0.2",
+    "vite": "8.3.2",
     "vitest": "4.1.11"
   },
   "workspaces": [
     "."
   ],
+  "packageManager": "pnpm@12.8.1",
   "files": [
     "dist"
   ],
