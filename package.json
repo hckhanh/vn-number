@@ -43,7 +43,7 @@
     "@changesets/cli": "3.0.3",
     "@codspeed/vitest-plugin": "6.0.0-beta.2",
     "@vitest/coverage-v8": "4.1.11",
-    "syncpack": "14.3.1",
+    "syncpack": "15.3.3",
     "tsdown": "0.22.7",
     "typescript": "7.0.2",
     "vite": "8.3.2",
