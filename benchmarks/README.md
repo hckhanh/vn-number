@@ -15,7 +15,7 @@ before/after performance gate.
 ## Run through CodSpeed
 
 The pinned integration is `@codspeed/vitest-plugin` **6.0.0-beta.2**, Node
-**24.16.0**, Vitest **4.1.11**, Vite **7.3.6**, and CodSpeed runner **4.19.1**.
+**24.16.0**, Vitest **4.1.11**, Vite **8.3.2**, and CodSpeed runner **4.19.1**.
 The SDK is a prerelease chosen explicitly for its Node 24 support. It supplies
 the required simulation V8 flags; no custom flag override is maintained.
 
@@ -50,6 +50,15 @@ switching the checkout, changing refs, or installing another toolchain. It uses
 system Git at `/usr/bin/git` and accepts branch names, tags or commit IDs.
 This is a correctness check, not a performance measurement.
 
+## Shared baseline for the tooling and performance PRs
+
+[PR #298](https://github.com/hckhanh/vn-number/pull/298) establishes these fixtures
+with the released reader on the upgraded toolchain. [PR #295](https://github.com/hckhanh/vn-number/pull/295)
+uses the same files and dependencies with the optimized reader. Their fresh
+CodSpeed comparisons are the performance evidence for the upgraded environment.
+Older SDK 5 and randomized results are retained as history, not used as the gate
+for this suite. Moving the shared harness does not change production library code.
+
 ## Historical v3 investigation
 
 The original profiles, paired measurements, startup/warmup/flag probes and raw
@@ -62,7 +71,7 @@ reproduction scripts for explicitly requested diagnostic work.
 Those tests found faster reading while preserving existing output, including
 legacy edge behavior. The extreme trailing-zero stress case retains an existing
 magnitude-wording defect, so its large ratio must not be advertised as general
-Vietnamese correctness. See [migration notes](../docs/migration-v3.md).
+Vietnamese correctness. See the [v3 migration notes](https://github.com/hckhanh/vn-number/blob/codex/v3-performance/docs/migration-v3.md).
 
 Only `dist` is included in the package allowlist. Benchmark tooling is not shipped
 to library consumers.
