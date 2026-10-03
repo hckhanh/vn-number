@@ -2,12 +2,24 @@ name: CodSpeed
 
 on:
   workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: simulation
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: CodSpeed instrument
+        type: choice
+        options:
+          - simulation
+          - walltime
+          - simulation,walltime
+        default: simulation
   push:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -35,4 +47,4 @@ jobs:
         with:
           runner-version: '4.19.1'
           run: pnpm bench
-          mode: 'simulation'
+          mode: ${{ inputs.mode || 'simulation' }}
