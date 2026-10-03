@@ -43,8 +43,10 @@ jobs:
       - name: Install Dependencies
         run: sfw pnpm install --frozen-lockfile
       - name: Run Benchmarks
-        uses: CodSpeedHQ/action@f22792bfac16f3e14eb9fbea76f4a48e9cc22b93 # v4.19.1
+        uses: CodSpeedHQ/action@c4fd08a3a159bd0cc208da1e0edf32b8c47d75e5 # v5.4.0
         with:
-          runner-version: '4.19.1'
+          runner-version: '5.4.0'
+          cycle-estimation: 'true'
+          exclude-allocations: 'false'
           run: pnpm bench
           mode: ${{ inputs.mode || 'simulation' }}
