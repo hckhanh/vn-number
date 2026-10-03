@@ -128,3 +128,8 @@ dist
 # Lock files for other package managers (only use pnpm)
 package-lock.json
 yarn.lock
+
+# Local performance profiles and ad-hoc measurement output
+*.cpuprofile
+*.heapprofile
+benchmarks/results/local/
