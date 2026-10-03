@@ -36,7 +36,7 @@ jobs:
       - name: Install Dependencies
         run: sfw pnpm install --frozen-lockfile
       - name: Create Release Pull Request or Publish to npm
-        uses: changesets/action@22ccf9aa43179fe9e27dc62e575971d28cce197c # v2.0.0
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         id: changesets
         with:
           publish-script: pnpm release
