@@ -19,7 +19,9 @@ uses ordinary TypeScript declarations, without custom language plugins.
 Vitest and coverage remain at 4.1.11. CodSpeed 6.0.0-beta.2 supports Vite 8 and the
 Vitest 4 benchmark API. Vitest 5 is deferred until CodSpeed supports its rewritten
 benchmark API. Do not bypass this limitation with a peer dependency override.
-Benchmark source files and names remain unchanged by the tooling migration.
+The deterministic harness from PR #295 is shared by the tooling baseline and
+performance candidate. Its 22 benchmark identities, fixtures, and timed callbacks
+are identical across the two branches. Production optimization code stays in #295.
 
 GitHub workflows use Codecov action 7.1.1, mise action 5.0.1, and Changesets action
 2.0.0, pinned to immutable commits. Changesets action 2 requires the renamed
