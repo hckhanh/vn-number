@@ -57,3 +57,8 @@ describe('processGroup', () => {
     expect(result).to.equal('một tỷ')
   })
 })
+
+// Preserve helper behavior for groups that have no readable digit.
+it('skips an unreadable first group', () => {
+  expect(processGroup('x', 0, ['x'], [0])).toBe('')
+})

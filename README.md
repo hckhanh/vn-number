@@ -182,3 +182,9 @@ MIT © [Khánh Hoàng](https://www.khanh.id)
 ## Release Notes
 
 See [Releases](https://github.com/hckhanh/vn-number/releases) for changelog and release notes.
+
+## v3 performance release
+
+The next major release preserves the public API while speeding up number reading.
+See the [benchmark report](benchmarks/README.md) for reproducible measurements and
+[upgrade notes](docs/migration-v3.md) for compatibility details.

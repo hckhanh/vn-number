@@ -1,5 +1,5 @@
-import { calculateGroupTypes, processGroup } from './groups.ts'
-import { splitIntoGroups } from './utils.ts'
+import { getUnitSuffix } from './groups.ts'
+import { readFirstGroup, readSubsequentGroup } from './three-digits.ts'
 
 /**
  * This is a helper that converts a number to a string like the way a real Vietnamese.
@@ -15,16 +15,38 @@ import { splitIntoGroups } from './utils.ts'
  * @return The Vietnamese number in string.
  */
 export function readVnNumber(number: string | number | bigint): string {
-  const groups = splitIntoGroups('' + number)
-  const groupTypes = calculateGroupTypes(groups.length)
+  const value = '' + number
+  const length = value.length
+  if (length === 0) return ''
+  if (length <= 3) return readFirstGroup(value)
 
-  const parts: string[] = []
-  for (let i = 0; i < groups.length; i++) {
-    const result = processGroup(groups[i], i, groups, groupTypes)
-    if (result) {
-      parts.push(result)
-    }
+  const firstGroupLength = ((length - 1) % 3) + 1
+  let lastGroupEnd = length
+  // Locate the last nonzero group once, instead of rescanning the suffix for
+  // every group. The first group is retained even for an all-zero input.
+  while (
+    lastGroupEnd > firstGroupLength &&
+    value.charCodeAt(lastGroupEnd - 1) === 48 &&
+    value.charCodeAt(lastGroupEnd - 2) === 48 &&
+    value.charCodeAt(lastGroupEnd - 3) === 48
+  ) {
+    lastGroupEnd -= 3
   }
 
+  const parts: string[] = []
+  for (let start = 0, end = firstGroupLength; end <= lastGroupEnd; end += 3) {
+    const group = value.slice(start, end)
+    const reading =
+      start === 0 ? readFirstGroup(group) : readSubsequentGroup(group)
+    if (reading) {
+      const positionFromRight = (length - end) / 3
+      const type =
+        positionFromRight === 0 ? 0 : ((positionFromRight - 1) % 3) + 1
+      parts.push(
+        reading + getUnitSuffix(type, positionFromRight, end === lastGroupEnd),
+      )
+    }
+    start = end
+  }
   return parts.join(' ').trim()
 }

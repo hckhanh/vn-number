@@ -1,7 +1,7 @@
 /**
  * Mapping single digit to Vietnamese word
  */
-const DIGIT_MAP: readonly string[] = [
+export const DIGIT_MAP: readonly string[] = [
   'không',
   'một',
   'hai',
