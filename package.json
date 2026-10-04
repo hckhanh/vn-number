@@ -52,7 +52,7 @@
   "workspaces": [
     "."
   ],
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.8.2",
   "files": [
     "dist"
   ],
