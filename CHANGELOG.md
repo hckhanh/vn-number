@@ -1,5 +1,11 @@
 # vn-number
 
+## 3.0.1
+
+### Patch Changes
+
+- Preserve source module boundaries in the published ESM output with unbundle mode, while retaining the existing public exports and TypeScript declarations.
+
 ## 3.0.0
 
 ### Major Changes
