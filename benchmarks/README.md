@@ -15,7 +15,7 @@ before/after performance gate.
 ## Run through CodSpeed
 
 The pinned integration is `@codspeed/vitest-plugin` **6.0.1**, Node
-**24.21.0**, Vitest **5.0.4**, Vite **8.3.4**, CodSpeed action **5.4.2**, and
+**24.21.0**, Vitest **5.0.4**, Vite **8.3.4**, CodSpeed action **5.5.0**, and
 runner **5.4.0**. The SDK supports Node 24 and Vitest 5 and supplies the required
 simulation V8 flags; no custom flag override is maintained.
 
