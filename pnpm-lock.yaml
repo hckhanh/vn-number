@@ -173,8 +173,8 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       '@codspeed/vitest-plugin':
-        specifier: 6.0.0
-        version: 6.0.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@2.9.0)(vite@8.3.4(yaml@2.9.1))(vitest@4.1.11)
+        specifier: 6.0.1
+        version: 6.0.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@2.9.0)(vite@8.3.4(yaml@2.9.1))(vitest@4.1.11)
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
@@ -346,8 +346,8 @@ packages:
   '@codspeed/core@6.0.1':
     resolution: {integrity: sha512-p6yrZIoz/Bf5vW/QfGhiPOCKccGPES3jQ8NA+03qGcUYR3/U0tZ9h6ZkxVg2zLN10YaHrABEY4GtmTEEE5xF5Q==}
 
-  '@codspeed/vitest-plugin@6.0.0':
-    resolution: {integrity: sha512-t6RTYOMjO5dDeb6G7qCtgWZOBIlKfTgstfLYGNoE5zGHA4m3k2j2PZoiJ94IFgGAm3MqH3rZIn5A/Md4iFOmYw==}
+  '@codspeed/vitest-plugin@6.0.1':
+    resolution: {integrity: sha512-QEIkp3UtXwbT3eB7NZ49+Jz5xpzHopSFMscASF4lpbjTgbOt/Xax6vIPShDSPKB5JErexyJBze7AwCOPgkoNqQ==}
     peerDependencies:
       tinybench: '>=2.9.0'
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -1539,7 +1539,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@codspeed/vitest-plugin@6.0.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@2.9.0)(vite@8.3.4(yaml@2.9.1))(vitest@4.1.11)':
+  '@codspeed/vitest-plugin@6.0.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(tinybench@2.9.0)(vite@8.3.4(yaml@2.9.1))(vitest@4.1.11)':
     dependencies:
       '@codspeed/core': 6.0.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       tinybench: 2.9.0
