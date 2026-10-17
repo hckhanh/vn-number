@@ -1,190 +1,167 @@
-# 🇻🇳 vn-number [![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number) [![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
+# 🇻🇳 vn-number
 
 <p align="center">
   <img src="docs/images/logo.svg" alt="vn-number" width="128" />
 </p>
 
-🛠 A bunch of utility functions that work with number in 🇻🇳 Vietnamese language
+**Read and format numbers in Vietnamese.**
 
+Turn numbers into Vietnamese words, display VND prices, and format totals and
+percentages for invoices, storefronts, and dashboards. Four functions, TypeScript
+types included, and zero runtime dependencies.
+
+[![NPM Downloads](https://img.shields.io/npm/dw/vn-number)](https://www.npmjs.com/package/vn-number)
+[![JSR](https://jsr.io/badges/@hckhanh/vn-number/weekly-downloads)](https://jsr.io/@hckhanh/vn-number)
 [![Publish](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml/badge.svg)](https://github.com/hckhanh/vn-number/actions/workflows/publish.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hckhanh_vn-number&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hckhanh_vn-number)
 [![codecov](https://codecov.io/gh/hckhanh/vn-number/graph/badge.svg?token=UG10IM2LLW)](https://codecov.io/gh/hckhanh/vn-number)
-[![CodSpeed Badge](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/hckhanh/vn-number?utm_source=badge)
+[![CodSpeed Badge](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://app.codspeed.io/hckhanh/vn-number)
+
+[Documentation](https://docs.khanh.id/vn-number) ·
+[Upgrade to v3](docs/migration-v3.md) ·
+[Releases](https://github.com/hckhanh/vn-number/releases)
 
 ## Features
 
-- Zero dependencies
-- Built-in support for Edge runtime
-- Typesafe with TypeScript
-- Fully documented
-- Works with `number`, `string`, and `bigint` types
-- Handles very large numbers (up to quintillions)
-- Battle-tested in production apps and dashboards
+- **Vietnamese number reading**, including “lăm”, “mốt”, and “lẻ”.
+- **Localized formatting** for numbers, VND currency, and percentages using `Intl.NumberFormat`.
+- **Flexible inputs**: `number`, `string`, and `bigint`, with custom fallbacks for formatting.
+- **Ready for JavaScript and TypeScript**: ESM exports, included types, and no runtime dependencies.
 
 ## Installation
 
-```bash
+Install from npm with pnpm:
+
+```sh
 pnpm add vn-number
 ```
 
-```bash
+Or from JSR with Deno:
+
+```sh
 deno add jsr:@hckhanh/vn-number
 ```
 
-## Quick Start
+For the Deno installation, use `'@hckhanh/vn-number'` as the import specifier in
+the examples below.
 
-### Read Vietnamese Numbers
-
-Convert numbers to Vietnamese text:
+## Quick start
 
 ```ts
-import { readVnNumber } from 'vn-number'
+import {
+  formatVnCurrency,
+  formatVnNumber,
+  formatVnPercent,
+  readVnNumber,
+} from 'vn-number'
 
 readVnNumber(1250000)
-// Output: "một triệu hai trăm năm mươi nghìn"
+// 'một triệu hai trăm năm mươi nghìn'
 
-readVnNumber(15)
-// Output: "mười lăm"
+formatVnNumber(1234567.89)
+// '1.234.567,89'
 
-readVnNumber(21)
-// Output: "hai mươi mốt"
+formatVnCurrency(1250000)
+// '1.250.000 ₫'
+
+formatVnPercent(0.157)
+// '15,7%'
 ```
 
-### Format Numbers in Vietnamese Style
+Percentages take a fraction: `0.157` means 15.7%. Currency output includes a
+non-breaking space (`\u00A0`) before `₫`; locale details and rounding depend on
+the runtime's `Intl.NumberFormat` implementation.
 
-Format numbers with Vietnamese thousand separators (dots):
+## API at a glance
+
+| Function | Returns | Default fallback |
+| --- | --- | --- |
+| `readVnNumber(value)` | A non-negative integer in Vietnamese words | — |
+| `formatVnNumber(value, fallback?)` | A number with Vietnamese separators | `'0'` |
+| `formatVnCurrency(value, fallback?)` | A VND amount | `'0 ₫'` |
+| `formatVnPercent(value, fallback?)` | A percentage with up to two decimal places | `'0%'` |
+
+### Exact large integers
+
+Use a decimal integer string or `bigint` with `readVnNumber` to avoid losing
+precision before conversion. For formatting integers beyond
+`Number.MAX_SAFE_INTEGER`, pass a `bigint`: the formatting functions convert
+string inputs to JavaScript numbers.
 
 ```ts
 import { formatVnNumber } from 'vn-number'
 
-formatVnNumber(1250000)
-// Output: "1.250.000"
-
-formatVnNumber(BigInt('9999999999999999'))
-// Output: "9.999.999.999.999.999"
+formatVnNumber(9999999999999999n)
+// '9.999.999.999.999.999'
 ```
 
-### Format Vietnamese Currency (VND)
+Use non-negative decimal integers with `readVnNumber`. See the
+[v3 compatibility notes](docs/migration-v3.md) for the preserved legacy behavior
+of negative, fractional, exponential, and malformed reader inputs.
 
-Format numbers as Vietnamese Dong currency:
+### Missing values and fallbacks
+
+The three formatting functions return their fallback for `null`, `undefined`,
+`NaN`, or strings that convert to `NaN`. Pass a second argument to choose the
+text shown in your UI.
 
 ```ts
-import { formatVnCurrency } from 'vn-number'
+import { formatVnCurrency, formatVnPercent } from 'vn-number'
 
-formatVnCurrency(1250000)
-// Output: "1.250.000 ₫"
+formatVnCurrency(null, 'Chưa có giá')
+// 'Chưa có giá'
 
-formatVnCurrency(null, 'Không giới hạn')
-// Output: "Không giới hạn"
+formatVnPercent('not-a-number', '—')
+// '—'
 ```
 
-### Format Percentages
-
-Format numbers as Vietnamese-style percentages:
+### Vietnamese spelling
 
 ```ts
-import { formatVnPercent } from 'vn-number'
+import { readVnNumber } from 'vn-number'
 
-formatVnPercent(0.991)
-// Output: "99,1%"
+readVnNumber(15)
+// 'mười lăm'
 
-formatVnPercent(0.5)
-// Output: "50%"
+readVnNumber(21)
+// 'hai mươi mốt'
+
+readVnNumber(101)
+// 'một trăm lẻ một'
+
+readVnNumber(1001)
+// 'một nghìn không trăm lẻ một'
 ```
 
-## Documentation
+## Faster number reading in v3
 
-For detailed documentation, examples, and API reference, visit:
+[v3.0.0](https://github.com/hckhanh/vn-number/releases/tag/vn-number%403.0.0)
+speeds up `readVnNumber` while preserving all four public functions and their
+signatures. Existing calls require no code changes.
 
-**[https://docs.khanh.id/vn-number](https://docs.khanh.id/vn-number)**
+In a [matched CodSpeed comparison](https://app.codspeed.io/hckhanh/vn-number/runs/compare/6ac0836c4dc8300af8602dca..6ac083654dc8300af8602dc7),
+the deterministic `read/quantities` workload (**50 conversions**) improved from **25.628 µs to
+9.858 µs** in minimum walltime (**2.60×**); modeled CPU time improved **2.12×**.
+Both runs used Node 24.16.0, Vitest 4.1.11, CodSpeed SDK 6.0.0-beta.2, and runner
+5.4.0 with matching hardware metadata. Results depend on the workload and runtime;
+shared-runner walltime can vary. Formatting controls were classified unchanged.
 
-## Common Use Cases
+See the [benchmark guide](benchmarks/README.md) for the fixtures and repeatable
+commands, and the [upgrade notes](docs/migration-v3.md) for compatibility details.
 
-### E-commerce
+## Runtime support
 
-```ts
-import { formatVnCurrency, readVnNumber } from 'vn-number'
-
-const price = 1500000
-
-console.log(formatVnCurrency(price))
-// Output: "1.500.000 ₫"
-
-console.log(readVnNumber(price))
-// Output: "một triệu năm trăm nghìn"
-```
-
-### Banking and Financial Documents
-
-```ts
-import { readVnNumber, formatVnCurrency } from 'vn-number'
-
-const amount = 2450000
-
-console.log(`Số tiền: ${formatVnCurrency(amount)}`)
-// Output: "Số tiền: 2.450.000 ₫"
-
-console.log(`Bằng chữ: ${readVnNumber(amount)} đồng`)
-// Output: "Bằng chữ: hai triệu bốn trăm năm mươi nghìn đồng"
-```
-
-### Data Visualization
-
-```ts
-import { formatVnNumber, formatVnPercent } from 'vn-number'
-
-const totalUsers = 1234567
-const growthRate = 0.157
-
-console.log(`Tổng người dùng: ${formatVnNumber(totalUsers)}`)
-// Output: "Tổng người dùng: 1.234.567"
-
-console.log(`Tăng trưởng: ${formatVnPercent(growthRate)}`)
-// Output: "Tăng trưởng: 15,7%"
-```
-
-## Vietnamese Language Rules
-
-The `readVnNumber` function follows Vietnamese language conventions:
-
-- **"lăm" rule**: 15 → "mười lăm", 25 → "hai mươi lăm"
-- **"mốt" rule**: 21 → "hai mươi mốt", 31 → "ba mươi mốt"
-- **"lẻ" rule**: 101 → "một trăm lẻ một", 305 → "ba trăm lẻ năm"
-- **Zero handling**: 1001 → "một nghìn không trăm lẻ một"
-
-## API Functions
-
-| Function | Description | Example |
-|----------|-------------|---------|
-| `readVnNumber(number)` | Convert number to Vietnamese text | `readVnNumber(1250000)` → `"một triệu hai trăm năm mươi nghìn"` |
-| `formatVnNumber(number, fallback?)` | Format number in Vietnamese style | `formatVnNumber(1250000)` → `"1.250.000"` |
-| `formatVnCurrency(money, fallback?)` | Format as VND currency | `formatVnCurrency(1250000)` → `"1.250.000 ₫"` |
-| `formatVnPercent(value, fallback?)` | Format as percentage | `formatVnPercent(0.991)` → `"99,1%"` |
-
-## Browser and Runtime Compatibility
-
-- ✅ Node.js 14+
-- ✅ Bun
-- ✅ Deno
-- ✅ Modern browsers (Chrome, Firefox, Safari, Edge)
-- ✅ React Native
-- ✅ Electron
-- ✅ Edge Runtime (Vercel, Cloudflare Workers, etc.)
+The package uses ESM and has no Node.js-specific runtime dependencies. Use it in
+Node.js, Bun, Deno, browsers, and edge runtimes with `Intl.NumberFormat` support
+for the `vi-VN` locale. The bigint examples require `BigInt` support.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Open an
+[issue](https://github.com/hckhanh/vn-number/issues) or a pull request.
+See the [development tooling guide](TOOLING.md) for the pinned toolchain and
+validation commands. Please run the tests and `pnpm format` before submitting.
 
 ## License
 
-MIT © [Khánh Hoàng](https://www.khanh.id)
-
-## Release Notes
-
-See [Releases](https://github.com/hckhanh/vn-number/releases) for changelog and release notes.
-
-## v3 performance release
-
-The next major release preserves the public API while speeding up number reading.
-See the [benchmark report](benchmarks/README.md) for reproducible measurements and
-[upgrade notes](docs/migration-v3.md) for compatibility details.
+[MIT](LICENSE) © [Khánh Hoàng](https://www.khanh.id)
