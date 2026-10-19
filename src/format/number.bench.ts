@@ -1,17 +1,20 @@
-import { afterAll, bench, describe, expect } from 'vitest'
+import { expect, test } from 'vitest'
 import { runScenario, scenarios } from '../../benchmarks/cases.ts'
 import * as library from '../index.ts'
 
-describe('deterministic format workloads', () => {
-  let checksum = 0
-  afterAll(() => {
+test(
+  'deterministic format workloads',
+  { timeout: 120_000 },
+  async ({ bench }) => {
+    let checksum = 0
+
+    for (const scenario of scenarios.filter(({ name }) =>
+      name.startsWith('format/'),
+    )) {
+      await bench(scenario.name, () => {
+        checksum = runScenario(library, scenario.calls)
+      }).run()
+    }
     expect(checksum).toBeGreaterThan(0)
-  })
-  for (const scenario of scenarios.filter(({ name }) =>
-    name.startsWith('format/'),
-  )) {
-    bench(scenario.name, () => {
-      checksum = runScenario(library, scenario.calls)
-    })
-  }
-})
+  },
+)
