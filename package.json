@@ -41,7 +41,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "@changesets/cli": "3.0.3",
-    "@codspeed/vitest-plugin": "6.0.1",
+    "@codspeed/vitest-plugin": "6.1.0",
     "@vitest/coverage-v8": "5.0.4",
     "syncpack": "15.3.3",
     "tsdown": "0.23.1",
@@ -52,7 +52,7 @@
   "workspaces": [
     "."
   ],
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.14.0",
   "files": [
     "dist"
   ],

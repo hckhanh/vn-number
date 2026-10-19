@@ -14,14 +14,20 @@ before/after performance gate.
 
 ## Run through CodSpeed
 
-The pinned integration is `@codspeed/vitest-plugin` **6.0.1**, Node
-**24.21.0**, Vitest **5.0.4**, Vite **8.3.4**, CodSpeed action **5.5.0**, and
+The pinned integration is `@codspeed/vitest-plugin` **6.1.0**, Node
+**24.22.0**, Vitest **5.0.4**, Vite **8.3.4**, CodSpeed action **5.5.0**, and
 runner **5.4.0**. The SDK supports Node 24 and Vitest 5 and supplies the required
 simulation V8 flags; no custom flag override is maintained.
 
 Vitest 5 benchmarks use the `bench` fixture inside an async `test`, with each
 workload awaited through `bench(name, callback).run()`. Preserve the enclosing
 test name and workload names to retain the existing CodSpeed benchmark IDs.
+
+CodSpeed 6.1.0 disables Vitest 5's diagnostic export-getter tracking by default.
+The tracker previously ran inside the measured code, inflating results on
+CodSpeed 6.0.0 and 6.0.1. Treat changes from those versions as a measurement
+correction, not a production-library speedup. See the
+[6.1.0 release notes](https://github.com/CodSpeedHQ/codspeed-node/releases/tag/v6.1.0).
 
 The workflow explicitly enables cycle estimation and includes allocation costs.
 Runner 5 weights instructions by estimated cycle cost and uses Samply for Linux

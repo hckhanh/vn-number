@@ -9,5 +9,5 @@ minimumReleaseAgeExcludePrune: true
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@codspeed/core@6.0.1'
-  - '@codspeed/vitest-plugin@6.0.1'
+  - '@codspeed/core@6.1.0'
+  - '@codspeed/vitest-plugin@6.1.0'
