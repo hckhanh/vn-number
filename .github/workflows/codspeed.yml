@@ -45,7 +45,7 @@ jobs:
       - name: Run Benchmarks
         uses: CodSpeedHQ/action@821a40cd6c80e3cfe387caf55668287addd808da # v5.5.0
         with:
-          runner-version: '5.4.0'
+          runner-version: '5.5.0'
           cycle-estimation: 'true'
           exclude-allocations: 'false'
           run: pnpm bench
