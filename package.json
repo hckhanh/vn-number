@@ -44,7 +44,7 @@
     "@codspeed/vitest-plugin": "6.1.0",
     "@vitest/coverage-v8": "5.0.5",
     "syncpack": "15.3.3",
-    "tsdown": "0.23.2",
+    "tsdown": "0.23.3",
     "typescript": "7.0.2",
     "vite": "8.3.5",
     "vitest": "5.0.5"
