@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util'
 import { root, snapshotBaseline } from './baseline.mjs'
 
 const { values } = parseArgs({
-  options: { baseline: { type: 'string', default: 'vn-number@2.0.5' } },
+  options: { baseline: { type: 'string', default: 'vn-number@3.0.3' } },
 })
 const snapshot = snapshotBaseline(values.baseline)
 try {

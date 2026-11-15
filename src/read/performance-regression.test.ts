@@ -26,11 +26,13 @@ describe('linear group traversal regressions', () => {
     expect(readVnNumber('0'.repeat(3000))).toBe('không' + ' tỷ'.repeat(333))
   })
 
-  it('skips interior zero groups without moving the final group suffix', () => {
+  it('retains billion scales across long runs of interior zero groups', () => {
     expect(readVnNumber('1' + '0'.repeat(2996) + '1')).toBe(
-      'một tỷ không trăm lẻ một',
+      'một' + ' tỷ'.repeat(333) + ' không trăm lẻ một',
     )
-    expect(readVnNumber('1000000000000000001')).toBe('một tỷ không trăm lẻ một')
+    expect(readVnNumber('1000000000000000001')).toBe(
+      'một tỷ tỷ không trăm lẻ một',
+    )
   })
 
   it('keeps full hundreds and special endings across many dense groups', () => {
