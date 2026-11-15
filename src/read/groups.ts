@@ -35,26 +35,24 @@ export function getUnitSuffix(
   hasTrailingZeros: boolean,
 ): string {
   const needsBillionSuffix = positionFromRight >= 3 && hasTrailingZeros
+  const billionSuffix = needsBillionSuffix
+    ? ' tỷ'.repeat(Math.floor(positionFromRight / 3))
+    : ''
 
   if (type === 3) {
-    // Billion: repeat "tỷ" based on position (position 6 = "tỷ tỷ", position 9 = "tỷ tỷ tỷ", etc.)
-    if (positionFromRight >= 6 && hasTrailingZeros) {
-      const billionCount = Math.floor(positionFromRight / 3)
-      return ' tỷ'.repeat(billionCount)
-    }
-    return ' tỷ'
+    return billionSuffix || ' tỷ'
   }
 
   if (type === 2) {
-    return needsBillionSuffix ? ' triệu tỷ' : ' triệu'
+    return ' triệu' + billionSuffix
   }
 
   if (type === 1) {
-    return needsBillionSuffix ? ' nghìn tỷ' : ' nghìn'
+    return ' nghìn' + billionSuffix
   }
 
   // Type 0 (units)
-  return needsBillionSuffix ? ' tỷ' : ''
+  return billionSuffix
 }
 
 /**
@@ -89,7 +87,9 @@ function processSubsequentGroup(
   hasTrailingZeros: boolean,
 ): string {
   const groupReading = readSubsequentGroup(group)
-  if (!groupReading) return ''
+  if (!groupReading) {
+    return group === '000' && type === 3 && !hasTrailingZeros ? 'tỷ' : ''
+  }
 
   const unitSuffix = getUnitSuffix(type, positionFromRight, hasTrailingZeros)
   return `${groupReading}${unitSuffix}`

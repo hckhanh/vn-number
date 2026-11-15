@@ -45,6 +45,10 @@ export function readVnNumber(number: string | number | bigint): string {
       parts.push(
         reading + getUnitSuffix(type, positionFromRight, end === lastGroupEnd),
       )
+    } else if (group === '000' && (length - end) % 9 === 0) {
+      // A zero billion group still closes a scale before lower nonzero groups.
+      // Trailing zero groups are already included in the last reading's suffix.
+      parts.push('tỷ')
     }
     start = end
   }

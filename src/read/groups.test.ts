@@ -56,6 +56,20 @@ describe('processGroup', () => {
     const result = processGroup('1', 0, groups, groupTypes)
     expect(result).to.equal('một tỷ')
   })
+
+  it('preserves a zero billion group before a nonzero lower group', () => {
+    const groups = ['1', '000', '000', '000', '001']
+    expect(
+      processGroup('000', 1, groups, calculateGroupTypes(groups.length)),
+    ).toBe('tỷ')
+  })
+
+  it('does not duplicate a billion suffix already included by trailing zeros', () => {
+    const groups = ['1', '000', '000', '000', '000']
+    expect(
+      processGroup('000', 1, groups, calculateGroupTypes(groups.length)),
+    ).toBe('')
+  })
 })
 
 // Preserve helper behavior for groups that have no readable digit.

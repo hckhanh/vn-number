@@ -62,7 +62,10 @@ under the same URI in a single run.
 mise exec -- node benchmarks/verify.mjs
 ```
 
-This compares outputs and public exports against release `vn-number@2.0.5`.
+This compares outputs and public exports against release `vn-number@3.0.3`.
+Earlier releases omit billion scales for some sparse large numbers, so they are
+not a correctness baseline for those inputs. The hotfix regression tests cover
+the corrected readings; performance comparisons can still use older releases.
 `baseline.mjs` reads immutable Git source into a temporary directory without
 switching the checkout, changing refs, or installing another toolchain. It uses
 system Git at `/usr/bin/git` and accepts branch names, tags or commit IDs.
